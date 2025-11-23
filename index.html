@@ -181,100 +181,59 @@
   </style>
 
   <style id="light-dark-theme">
-    /* MEDIUM THEME - Comfortable middle ground (not too dark!) */
+    /* SUBTLE WARM THEME - Warm and clean */
     body {
-      background-color: #D4D6DC !important;
+      background-color: #F5F3F0 !important;
     }
     
-    /* Main background areas - soft gray */
+    /* Main background areas - warm beige-gray */
     .bg-gray-100,
     .min-h-screen {
-      background-color: #D4D6DC !important;
+      background-color: #F5F3F0 !important;
     }
     
-    /* Cards - light gray, not white */
+    /* Cards - warm off-white */
     .bg-white {
-      background-color: #E8EAEF !important;
-      border-color: #C0C3CC !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      background-color: #FDFCFA !important;
+      border-color: #E8E6E3 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
     
-    /* Text colors - darker for good contrast */
-    .text-gray-800 {
-      color: #2D3142 !important;
+    /* Keep original text colors */
+    
+    /* Borders - warm subtle */
+    .border-gray-100 {
+      border-color: #F0EDE9 !important;
     }
     
-    .text-gray-600 {
-      color: #4F5668 !important;
-    }
-    
-    .text-gray-700 {
-      color: #3A3F51 !important;
-    }
-    
-    .text-gray-500 {
-      color: #6B7280 !important;
-    }
-    
-    .text-gray-400 {
-      color: #9CA3AF !important;
-    }
-    
-    /* Borders - subtle but visible */
-    .border-gray-100,
     .border-gray-200 {
-      border-color: #C0C3CC !important;
+      border-color: #E8E6E3 !important;
     }
     
-    /* Input fields - light but not stark white */
+    /* Input fields - warm tint */
     input[type="text"],
     input[type="email"],
     input[type="password"],
     input[type="search"],
     select,
     textarea {
-      background-color: #F5F6F8 !important;
-      border-color: #C0C3CC !important;
-      color: #2D3142 !important;
+      background-color: #FAF9F7 !important;
+      border-color: #E8E6E3 !important;
     }
     
-    input::placeholder {
-      color: #9CA3AF !important;
-    }
-    
-    /* Sidebar - slightly darker than cards */
+    /* Sidebar - warm gray tint */
     .bg-gray-50 {
-      background-color: #DFE1E6 !important;
-      border-color: #C0C3CC !important;
+      background-color: #F8F7F5 !important;
     }
     
     /* Category dividers */
     .bg-gray-200 {
-      background-color: #C8CBDB !important;
-      color: #3A3F51 !important;
+      background-color: #F0EDE9 !important;
     }
     
-    /* Buttons keep nice shadows */
+    /* Subtle shadows */
     button {
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    }
-    
-    /* Hover states */
-    .hover\:bg-gray-100:hover {
-      background-color: #D4D6DC !important;
-    }
-    
-    /* Modals - slightly more opaque backdrop */
-    .bg-black\/50 {
-      background-color: rgba(0,0,0,0.6) !important;
-    }
-    
-    /* Keep brand colors vibrant */
-    [style*="#00A676"],
-    [style*="#FBAF00"],
-    [style*="#BB342F"],
-    [style*="#525174"] {
-      filter: saturate(1.1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
   </style>
 </head>
@@ -1253,9 +1212,9 @@
       }
 
       return (
-        <div className="min-h-screen" style={{ backgroundColor: '#D4D6DC' }}>
-          <div className="flex-1 max-w-7xl mx-auto px-4 py-6">
-            <div className="max-w-2xl mx-auto">
+        <div className="min-h-screen" style={{ backgroundColor: '#F7F8FA' }}>
+          <div className="flex-1 mx-auto px-4 py-6" style={{ maxWidth: '1200px' }}>
+            <div className="mx-auto">
               <div className="text-center mb-6 mobile-header">
                 <div className="flex items-center justify-between mb-2 mobile-auth-buttons">
                   <div className="flex-1 hidden md:block"></div>
@@ -1285,7 +1244,7 @@
                   </div>
                 </div>
               </div>
-              <div className="flex gap-2 mb-4">
+              <div className="flex gap-2 mb-4" style={{ maxWidth: '824px', margin: '0 auto' }}>
                 <button 
                   onClick={() => setView("database")} 
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
@@ -1311,7 +1270,9 @@
             </div>
 
             {view === "database" && (
-              <div className="max-w-7xl mx-auto flex gap-4 items-start">
+              <div style={{ maxWidth: '824px', margin: '0 auto' }}>
+                <div className="mb-6"></div>
+                <div className="flex gap-4 items-start" style={{ marginLeft: sidebarOpen ? '-272px' : '0' }}>
                 {/* Mobile backdrop */}
                 <div 
                   className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
@@ -1333,26 +1294,19 @@
 
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setLanguage("en")}
-                          className={`flex-1 p-1.5 rounded border-2 transition-colors ${
-                            language === "en" ? "border-gray-300 hover:border-gray-400" : "border-gray-300 hover:border-gray-400"
-                          }`}
-                          style={language === "en" ? { borderColor: '#525174', backgroundColor: '#f3f4f6' } : {}}
-                        >
-                          <FlagUS className="w-full h-4" />
-                        </button>
-                        <button
-                          onClick={() => setLanguage("de")}
-                          className={`flex-1 p-1.5 rounded border-2 transition-colors ${
-                            language === "de" ? "border-gray-300 hover:border-gray-400" : "border-gray-300 hover:border-gray-400"
-                          }`}
-                          style={language === "de" ? { borderColor: '#525174', backgroundColor: '#f3f4f6' } : {}}
-                        >
-                          <FlagDE className="w-full h-4" />
-                        </button>
-                      </div>
+                      <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="w-full px-3 py-2 rounded border border-gray-300 text-sm outline-none"
+                        style={{ 
+                          borderColor: '#E5E7EB',
+                          backgroundColor: '#FAFBFC',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <option value="en">🇺🇸 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                      </select>
                     </div>
 
                     <div className="mb-4">
@@ -1431,26 +1385,19 @@
                   <div className="desktop-sidebar w-64 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setLanguage("en")}
-                          className={`flex-1 p-1.5 rounded border-2 transition-colors ${
-                            language === "en" ? "border-gray-300 hover:border-gray-400" : "border-gray-300 hover:border-gray-400"
-                          }`}
-                          style={language === "en" ? { borderColor: '#525174', backgroundColor: '#f3f4f6' } : {}}
-                        >
-                          <FlagUS className="w-full h-4" />
-                        </button>
-                        <button
-                          onClick={() => setLanguage("de")}
-                          className={`flex-1 p-1.5 rounded border-2 transition-colors ${
-                            language === "de" ? "border-gray-300 hover:border-gray-400" : "border-gray-300 hover:border-gray-400"
-                          }`}
-                          style={language === "de" ? { borderColor: '#525174', backgroundColor: '#f3f4f6' } : {}}
-                        >
-                          <FlagDE className="w-full h-4" />
-                        </button>
-                      </div>
+                      <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="w-full px-3 py-2 rounded border border-gray-300 text-sm outline-none"
+                        style={{ 
+                          borderColor: '#E5E7EB',
+                          backgroundColor: '#FAFBFC',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <option value="en">🇺🇸 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                      </select>
                     </div>
 
                     <div className="mb-4">
@@ -1524,7 +1471,7 @@
                   </div>
                 )}
 
-                <div className="flex-1 main-content" style={{ maxWidth: '60%' }}>
+                <div className="flex-1 main-content">
                   <div className="relative mb-4">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -1586,10 +1533,12 @@
                   </div>
                 </div>
               </div>
+              </div>
             )}
 
             {view === "profile" && (
-              <div className="max-w-2xl mx-auto space-y-4">
+              <div className="space-y-4" style={{ maxWidth: '824px', margin: '0 auto' }}>
+                <div className="mb-6"></div>
                 {user && (
                   <div className="bg-white rounded-lg p-4 border">
                     <h2 className="font-semibold text-gray-800 text-base mb-2">Account</h2>
@@ -1811,7 +1760,8 @@
             )}
 
             {view === "info" && (
-              <div className="max-w-2xl mx-auto space-y-4">
+              <div className="space-y-4" style={{ maxWidth: '824px', margin: '0 auto' }}>
+                <div className="mb-6"></div>
                 <div className="bg-white rounded-lg p-5 border">
                   <h2 className="font-semibold text-gray-800 text-lg mb-3">About Histamine Intolerance</h2>
                   <p className="text-base text-gray-600 mb-4">
