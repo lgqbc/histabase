@@ -181,104 +181,100 @@
   </style>
 
   <style id="light-dark-theme">
-    /* PROPER LIGHT-DARK THEME - Clearly visible middle ground */
+    /* MEDIUM THEME - Comfortable middle ground (not too dark!) */
     body {
-      background-color: #2A2D3A !important;
+      background-color: #D4D6DC !important;
     }
     
-    /* Main background areas */
-    .bg-gray-40,
+    /* Main background areas - soft gray */
+    .bg-gray-100,
     .min-h-screen {
-      background-color: #2A2D3A !important;
+      background-color: #D4D6DC !important;
     }
     
-    /* Cards - lighter than background but still dark */
+    /* Cards - light gray, not white */
     .bg-white {
-      background-color: #363A4A !important;
-      border-color: #4A4E5E !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      background-color: #E8EAEF !important;
+      border-color: #C0C3CC !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     }
     
-    /* Text colors */
+    /* Text colors - darker for good contrast */
     .text-gray-800 {
-      color: #E8E9ED !important;
+      color: #2D3142 !important;
     }
     
     .text-gray-600 {
-      color: #B8BAC5 !important;
+      color: #4F5668 !important;
     }
     
     .text-gray-700 {
-      color: #D0D2DD !important;
+      color: #3A3F51 !important;
     }
     
     .text-gray-500 {
-      color: #9499A8 !important;
+      color: #6B7280 !important;
     }
     
     .text-gray-400 {
-      color: #7A7F8F !important;
+      color: #9CA3AF !important;
     }
     
-    /* Borders */
+    /* Borders - subtle but visible */
     .border-gray-100,
     .border-gray-200 {
-      border-color: #4A4E5E !important;
+      border-color: #C0C3CC !important;
     }
     
-    /* Input fields */
+    /* Input fields - light but not stark white */
     input[type="text"],
     input[type="email"],
     input[type="password"],
     input[type="search"],
     select,
     textarea {
-      background-color: #2F3340 !important;
-      border-color: #4A4E5E !important;
-      color: #E8E9ED !important;
+      background-color: #F5F6F8 !important;
+      border-color: #C0C3CC !important;
+      color: #2D3142 !important;
     }
     
     input::placeholder {
-      color: #7A7F8F !important;
+      color: #9CA3AF !important;
     }
     
-    /* Sidebar */
+    /* Sidebar - slightly darker than cards */
     .bg-gray-50 {
-      background-color: #32364A !important;
-      border-color: #4A4E5E !important;
+      background-color: #DFE1E6 !important;
+      border-color: #C0C3CC !important;
     }
     
-    /* Category dividers and light backgrounds */
+    /* Category dividers */
     .bg-gray-200 {
-      background-color: #404555 !important;
-      color: #D0D2DD !important;
+      background-color: #C8CBDB !important;
+      color: #3A3F51 !important;
     }
     
-    /* Buttons and interactive elements - keep brand colors visible */
+    /* Buttons keep nice shadows */
     button {
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
     
-    /* Hover states for better contrast */
+    /* Hover states */
     .hover\:bg-gray-100:hover {
-      background-color: #404555 !important;
+      background-color: #D4D6DC !important;
     }
     
-    /* Keep purple accent strong */
-    [style*="#525174"] {
-      filter: brightness(1.1);
-    }
-    
-    /* Modals */
+    /* Modals - slightly more opaque backdrop */
     .bg-black\/50 {
-      background-color: rgba(0,0,0,0.75) !important;
+      background-color: rgba(0,0,0,0.6) !important;
     }
     
-    /* Make sure green/yellow/red stay vibrant */
+    /* Keep brand colors vibrant */
     [style*="#00A676"],
     [style*="#FBAF00"],
-    [style*="#BB342F"] {
-      filter: saturate(1.2) brightness(1.05);
+    [style*="#BB342F"],
+    [style*="#525174"] {
+      filter: saturate(1.1);
     }
   </style>
 </head>
@@ -1257,7 +1253,7 @@
       }
 
       return (
-        <div className="min-h-screen" style={{ backgroundColor: '#2A2D3A' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#D4D6DC' }}>
           <div className="flex-1 max-w-7xl mx-auto px-4 py-6">
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-6 mobile-header">
