@@ -637,7 +637,7 @@
             const categorySimilarity = fuzzyMatch(f.category, q);
             const descSimilarity = fuzzyMatch(f.description, q);
             
-            const threshold = 0.6; // Adjust this to make search more/less tolerant
+            const threshold = 0.4; // Lower = more forgiving for typos
             if (nameSimilarity > threshold || categorySimilarity > threshold || descSimilarity > threshold) {
               return true;
             }
@@ -1329,22 +1329,22 @@
                       <p className="font-semibold text-gray-500 mb-2 text-sm">DIET</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "all" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "all" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         All Foods
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "vegetarian" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegetarian" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         Vegetarian
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "vegan" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegan" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         Vegan
                       </button>
@@ -1423,22 +1423,22 @@
                       <p className="font-semibold text-gray-500 mb-2 text-sm">DIET</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "all" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "all" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         All Foods
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "vegetarian" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegetarian" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         Vegetarian
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm ${dietFilter === "vegan" ? "text-gray-600 hover:bg-gray-100" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegan" ? { backgroundColor: '#f3f4f6', color: '#525174' } : {}}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         Vegan
                       </button>
@@ -1498,8 +1498,21 @@
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder="Search foods..."
-                      className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 text-base outline-none"
+                      className="w-full pl-12 pr-12 py-3 rounded-lg border border-gray-200 text-base outline-none"
                     />
+                    {search && (
+                      <button
+                        onClick={() => setSearch("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Clear search"
+                      >
+                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="m15 9-6 6"/>
+                          <path d="m9 9 6 6"/>
+                        </svg>
+                      </button>
+                    )}
                   </div>
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-3">
