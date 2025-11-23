@@ -191,7 +191,7 @@
     /* Desktop only - keep sidebar visible */
     @media (min-width: 769px) {
       .mobile-sidebar {
-        display: none;
+        display: block;
       }
       
       .desktop-sidebar {
@@ -773,10 +773,7 @@
           
           // Get the button's position relative to the viewport
           const buttonRect = filterButtonRef.current.getBoundingClientRect();
-          
-          // Button should float if it's scrolled out of view (top of button goes above viewport)
-          const shouldFloat = buttonRect.top < 0;
-          setIsFilterButtonFloating(shouldFloat);
+
         };
         
         window.addEventListener('scroll', handleScroll);
