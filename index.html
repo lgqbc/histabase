@@ -380,15 +380,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "Ãœber HistaminunvertrÃ¤glichkeit",
-        aboutP1: "HistaminunvertrÃ¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃ¤higkeit des KÃ¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃ¶st, kann fÃ¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃ¶nliches Reaktionstagebuch zu fÃ¼hren.",
+        aboutTitle: "ÃƒÅ“ber HistaminunvertrÃƒÂ¤glichkeit",
+        aboutP1: "HistaminunvertrÃƒÂ¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÂ¤higkeit des KÃƒÂ¶rpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÂ¶st, kann fÃƒÂ¼r eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÂ¶nliches Reaktionstagebuch zu fÃƒÂ¼hren.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃ¼tzen",
+        supportTitle: "HistaBase unterstÃƒÂ¼tzen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -400,7 +400,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "ErnÃ¤hrung",
+        diet: "ErnÃƒÂ¤hrung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -411,24 +411,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃ¤hrung",
+        defaultDiet: "StandardernÃƒÂ¤hrung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃ¤hle deinen Standard-ErnÃ¤hrungsfilter fÃ¼r die Datenbank",
+        chooseDietFilter: "WÃƒÂ¤hle deinen Standard-ErnÃƒÂ¤hrungsfilter fÃƒÂ¼r die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃŸen",
+        inModeration: "In MaÃƒÅ¸en",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "Ãœber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃ¤gst, ohne Symptome",
+        aboutYourRatings: "ÃƒÅ“ber deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut vertrÃƒÂ¤gst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃ¶sen",
+        avoidDesc: "Lebensmittel, die Symptome auslÃƒÂ¶sen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -437,7 +437,7 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃ¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "WÃƒÂ¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
     };
@@ -1489,6 +1489,64 @@
                       >
                         &times;
                       </button>
+                    </div>
+
+                    {/* Mobile Secondary Navigation */}
+                    <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => {
+                            setView("navbar");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "navbar" ? '#525174' : '#E9D5FF',
+                            color: view === "navbar" ? 'white' : '#525174'
+                          }}
+                        >
+                          Navbar
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("database");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
+                            color: view === "database" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations[language].database}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("profile");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
+                            color: view === "profile" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations[language].profile}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("info");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
+                            color: view === "info" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations[language].info}
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mb-4">
