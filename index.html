@@ -170,10 +170,33 @@
 
       .mobile-show-filters-btn.floating {
         position: fixed;
-        top: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 50%;
+        left: 2rem;
+        transform: translateY(-50%);
         z-index: 500;
+      }
+      
+      /* Floating filter menu icon button */
+      .floating-filter-icon {
+        position: fixed;
+        top: 50%;
+        left: 2rem;
+        transform: translateY(-50%);
+        z-index: 500;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 2px solid rgba(82, 81, 116, 0.2);
+        background-color: transparent;
+        cursor: pointer;
+        transition: opacity 0.3s ease, border-color 0.3s ease;
+      }
+      
+      .floating-filter-icon:hover {
+        border-color: rgba(82, 81, 116, 0.4);
       }
 
     /* Desktop only - keep sidebar visible */
@@ -759,15 +782,17 @@
         const handleScroll = () => {
           if (!filterButtonRef.current) return;
           
+          // Get the button's position relative to the viewport
           const buttonRect = filterButtonRef.current.getBoundingClientRect();
-          const buttonTop = buttonRect.top + window.scrollY;
           
-          // If button top is above current scroll position, make it float
-          const shouldFloat = window.scrollY > buttonTop;
+          // Button should float if it's scrolled out of view (top of button goes above viewport)
+          const shouldFloat = buttonRect.top < 0;
           setIsFilterButtonFloating(shouldFloat);
         };
         
         window.addEventListener('scroll', handleScroll);
+        // Initial check
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
       }, []);
 
@@ -2067,6 +2092,23 @@
                   </button>
                 </div>
               </div>
+            )}
+
+            {/* Floating filter icon button - only visible on mobile when scrolled past original button */}
+            {isFilterButtonFloating && window.innerWidth <= 768 && (
+              <button
+                onClick={() => {
+                  setMobileSidebarOpen(true);
+                }}
+                className="floating-filter-icon"
+                title="Show Filters"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#525174' }}>
+                  <line x1="4" y1="6" x2="20" y2="6" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="4" y1="12" x2="20" y2="12" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="4" y1="18" x2="20" y2="18" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
             )}
 
             {showAuthModal && (
