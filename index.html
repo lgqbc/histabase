@@ -73,7 +73,7 @@
 
       .main-content {
         max-width: 100% !important;
-        padding: 0 1rem !important;
+        padding: 0 0.5rem !important;
       }
 
       /* Better mobile spacing */
@@ -81,80 +81,86 @@
         padding: 1rem;
       }
 
-      /* Adjust food cards for mobile */
-      .food-card-mobile {
-        font-size: 0.9rem;
-      }
-
-      /* Fix food card layout for mobile - stack vertically */
-      .food-card-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .food-card-top {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        width: 100%;
-      }
-
-      .food-card-name-row {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        width: 100%;
-      }
-
-      .food-card-badges-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.5rem;
-        width: 100%;
-      }
-
-      .food-card-name {
-        font-size: 0.95rem !important;
-        flex: 1;
-        min-width: 0;
-      }
-
-      .food-card-badge {
-        font-size: 0.75rem !important;
-        padding: 0.25rem 0.5rem !important;
-        white-space: nowrap;
-      }
-
-      /* On mobile, reorganize the card layout */
+      /* Mobile food card - 2 row layout */
       .food-card-inner {
         flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 0.75rem !important;
+        align-items: stretch !important;
+        gap: 0.5rem !important;
+        padding: 0.75rem !important;
       }
 
       .food-card-first-row {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        gap: 0.5rem;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .food-card-first-row > div:first-child {
+        flex-shrink: 0 !important;
+      }
+
+      .food-card-first-row > span {
+        flex: 1 !important;
+        min-width: 0 !important;
+        font-size: 0.9rem !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .food-card-second-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        flex-wrap: nowrap !important;
       }
 
-      /* Make badges smaller */
-      .food-card-second-row span {
+      /* Rating buttons container - always visible on mobile */
+      .food-card-second-row > div:first-child {
+        display: flex !important;
+        gap: 0.25rem !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Rating buttons */
+      .food-card-second-row button {
+        width: 2rem !important;
+        height: 2rem !important;
+        font-size: 1rem !important;
+        padding: 0 !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Status badge (Safe/Moderate/Avoid) */
+      .food-card-second-row > span:nth-of-type(1) {
         font-size: 0.7rem !important;
-        padding: 0.25rem 0.5rem !important;
-        min-width: auto !important;
+        padding: 0.3rem 0.5rem !important;
+        white-space: nowrap !important;
+        min-width: 60px !important;
+        text-align: center !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* User score badge (percentage) */
+      .food-card-second-row > span:nth-of-type(2) {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.4rem !important;
+        white-space: nowrap !important;
+        min-width: 45px !important;
+        text-align: center !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Chevron icon */
+      .food-card-second-row svg:last-child {
+        flex-shrink: 0 !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        margin-left: auto !important;
       }
 
       /* Stack login button on mobile */
@@ -1072,6 +1078,7 @@
                 className="px-4 py-3 cursor-pointer food-card-inner flex items-center gap-3" 
                 onClick={() => setExpanded(isExp ? null : food.id)}
               >
+                {/* First Row: Icon + Name + Rating indicator */}
                 <div className="food-card-first-row flex items-center gap-2 flex-1 min-w-0">
                   <div className="flex-shrink-0">
                     {getScoreIcon(food.level)}
@@ -1083,51 +1090,57 @@
                     </span>
                   )}
                 </div>
+                
+                {/* Second Row: Rating buttons + Badges + Chevron */}
                 <div className="food-card-second-row flex items-center gap-3 ml-auto flex-shrink-0">
-                  {!isExp && (
-                    <div className="flex gap-1 w-[84px]" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => submitRating(food.id, "tolerate")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
-                        }`}
-                        style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
-                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
-                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                      >
-                        {'\u25B2'}
-                      </button>
-                      <button
-                        onClick={() => submitRating(food.id, "moderation")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                          myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
-                        }`}
-                        style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
-                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
-                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                      >
-                        {'\u25CF'}
-                      </button>
-                      <button
-                        onClick={() => submitRating(food.id, "avoid")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                          myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
-                        }`}
-                        style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
-                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
-                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                      >
-                        {'\u25BC'}
-                      </button>
-                    </div>
-                  )}
-                  {isExp && <div className="w-[84px]"></div>}
+                  {/* Rating buttons - always visible on mobile */}
+                  <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => submitRating(food.id, "tolerate")}
+                      className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
+                      }`}
+                      style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
+                      onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
+                      onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                    >
+                      {'\u25B2'}
+                    </button>
+                    <button
+                      onClick={() => submitRating(food.id, "moderation")}
+                      className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
+                      }`}
+                      style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
+                      onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
+                      onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                    >
+                      {'\u25CF'}
+                    </button>
+                    <button
+                      onClick={() => submitRating(food.id, "avoid")}
+                      className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
+                      }`}
+                      style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
+                      onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
+                      onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                    >
+                      {'\u25BC'}
+                    </button>
+                  </div>
+                  
+                  {/* Status badge */}
                   <span className={`px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap min-w-[80px] text-center ${getScoreColor(food.score)}`}>
                     {getScoreLabel(food.level)}
                   </span>
+                  
+                  {/* User score badge */}
                   <span className="px-3 py-1 rounded-full text-sm font-semibold min-w-[60px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
                     {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
                   </span>
+                  
+                  {/* Chevron */}
                   {isExp ? <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" /> : <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />}
                 </div>
               </div>
@@ -1304,8 +1317,8 @@
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="en">🇺🇸 English</option>
-                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
+                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
                       </select>
                     </div>
 
@@ -1395,8 +1408,8 @@
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="en">🇺🇸 English</option>
-                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
+                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
                       </select>
                     </div>
 
