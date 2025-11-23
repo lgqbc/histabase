@@ -1739,76 +1739,6 @@
                     ))}
                   </div>
                 </div>
-
-                <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations[language].defaultDiet}</h2>
-                  <p className="text-sm text-gray-600 mb-3">{translations[language].chooseDietFilter}</p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("all");
-                        setDietFilter("all");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "all" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      {translations[language].allFoods}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("vegetarian");
-                        setDietFilter("vegetarian");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "vegetarian" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      {translations[language].vegetarian}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("vegan");
-                        setDietFilter("vegan");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "vegan" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "vegan" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      Vegan
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">Default Language</h2>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setDefaultLanguage('en');
-                        setLanguage('en');
-                      }}
-                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
-                      title="English"
-                    >
-                      <FlagUS className="w-8 h-5" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultLanguage('de');
-                        setLanguage('de');
-                      }}
-                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
-                      title="Deutsch"
-                    >
-                      <FlagDE className="w-8 h-5" />
-                    </button>
-                  </div>
-                </div>
-
                 <div className="bg-white rounded-lg p-4 border">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="font-semibold text-gray-800 text-base">
@@ -1924,6 +1854,75 @@
                         {avoidList.length === 0 && <p className="text-sm text-gray-400">None yet</p>}
                       </div>
                     </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg p-4 border">
+                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations[language].defaultDiet}</h2>
+                  <p className="text-sm text-gray-600 mb-3">{translations[language].chooseDietFilter}</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setDefaultDiet("all");
+                        setDietFilter("all");
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        defaultDiet === "all" ? "text-white" : "bg-gray-100 text-gray-600"
+                      }`}
+                      style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
+                    >
+                      {translations[language].allFoods}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDefaultDiet("vegetarian");
+                        setDietFilter("vegetarian");
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        defaultDiet === "vegetarian" ? "text-white" : "bg-gray-100 text-gray-600"
+                      }`}
+                      style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
+                    >
+                      {translations[language].vegetarian}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDefaultDiet("vegan");
+                        setDietFilter("vegan");
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        defaultDiet === "vegan" ? "text-white" : "bg-gray-100 text-gray-600"
+                      }`}
+                      style={defaultDiet === "vegan" ? { backgroundColor: '#525174' } : {}}
+                    >
+                      Vegan
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border">
+                  <h2 className="font-semibold text-gray-800 text-base mb-3">Default Language</h2>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setDefaultLanguage('en');
+                        setLanguage('en');
+                      }}
+                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                      title="English"
+                    >
+                      <FlagUS className="w-8 h-5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDefaultLanguage('de');
+                        setLanguage('de');
+                      }}
+                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                      title="Deutsch"
+                    >
+                      <FlagDE className="w-8 h-5" />
+                    </button>
                   </div>
                 </div>
 
