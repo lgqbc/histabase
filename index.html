@@ -442,6 +442,10 @@
             console.log('[MOUNT] Session found, loading user data...');
             setUser(session.user);
             await loadUserData(session.user.id);
+          } else {
+            // No user logged in - still load community ratings
+            console.log('[MOUNT] No session, loading community ratings only...');
+            await loadCommunityRatings();
           }
           initialCheckDone = true;
           console.log('[MOUNT] Initial check complete');
