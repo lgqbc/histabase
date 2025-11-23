@@ -164,17 +164,7 @@
       }
     }
       /* Floating show filters button */
-      .mobile-show-filters-btn {
-        transition: position 0.3s ease, top 0.3s ease;
-      }
-
-      .mobile-show-filters-btn.floating {
-        position: fixed;
-        top: 50%;
-        left: 2rem;
-        transform: translateY(-50%);
-        z-index: 500;
-      }
+      
       
       /* Floating filter menu icon button */
       .floating-filter-icon {
@@ -1723,7 +1713,7 @@
                             setMobileSidebarOpen(true);
                           }
                         }}
-                        className={`text-sm flex items-center gap-1 mobile-show-filters-btn ${isFilterButtonFloating ? 'floating' : ''}`}
+                        className="text-sm flex items-center gap-1"
                         style={{ color: '#525174' }}
                       >
                         <Filter className="w-4 h-4" /> {sidebarOpen && window.innerWidth > 768 ? "Hide" : "Show"} Filters
