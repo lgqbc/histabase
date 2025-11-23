@@ -2084,7 +2084,7 @@
             )}
 
             {/* Floating filter icon button - only visible on mobile when scrolled past original button */}
-            {isFilterButtonFloating && window.innerWidth <= 768 && (
+            {window.innerWidth <= 768 && (
               <button
                 onClick={() => {
                   setMobileSidebarOpen(true);
