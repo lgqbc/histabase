@@ -1069,85 +1069,66 @@
             )}
             <div className="bg-white rounded-lg border border-gray-100 mb-2">
               <div 
-                className="px-4 py-3 cursor-pointer" 
+                className="px-4 py-3 cursor-pointer food-card-inner flex items-center gap-3" 
                 onClick={() => setExpanded(isExp ? null : food.id)}
               >
-                <div className="food-card-container">
-                  {/* Row 1: Icon + Name + My Rating */}
-                  <div className="food-card-name-row">
-                    <div className="flex-shrink-0">
-                      {getScoreIcon(food.level)}
-                    </div>
-                    <span className="food-card-name font-medium text-gray-800 text-base truncate">{food.name}</span>
-                    {myRating && (
-                      <span className="text-base flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
-                        {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
-                      </span>
-                    )}
+                <div className="food-card-first-row flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex-shrink-0">
+                    {getScoreIcon(food.level)}
                   </div>
-
-                  {/* Row 2: Rating buttons + Badges + Chevron */}
+                  <span className="font-medium text-gray-800 text-base truncate">{food.name}</span>
+                  {myRating && (
+                    <span className="text-base flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
+                      {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
+                    </span>
+                  )}
+                </div>
+                <div className="food-card-second-row flex items-center gap-3 ml-auto flex-shrink-0">
                   {!isExp && (
-                    <div className="food-card-badges-row">
-                      <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => submitRating(food.id, "tolerate")}
-                          className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                            myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
-                          }`}
-                          style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
-                          onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
-                          onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                        >
-                          {'\u25B2'}
-                        </button>
-                        <button
-                          onClick={() => submitRating(food.id, "moderation")}
-                          className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                            myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
-                          }`}
-                          style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
-                          onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
-                          onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                        >
-                          {'\u25CF'}
-                        </button>
-                        <button
-                          onClick={() => submitRating(food.id, "avoid")}
-                          className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
-                            myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
-                          }`}
-                          style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
-                          onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
-                          onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                        >
-                          {'\u25BC'}
-                        </button>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`food-card-badge px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap ${getScoreColor(food.score)}`}>
-                          {getScoreLabel(food.level)}
-                        </span>
-                        <span className="food-card-badge px-3 py-1 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: '#A7ACD9' }}>
-                          {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
-                        </span>
-                        <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      </div>
+                    <div className="flex gap-1 w-[84px]" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => submitRating(food.id, "tolerate")}
+                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25B2'}
+                      </button>
+                      <button
+                        onClick={() => submitRating(food.id, "moderation")}
+                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                          myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25CF'}
+                      </button>
+                      <button
+                        onClick={() => submitRating(food.id, "avoid")}
+                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                          myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25BC'}
+                      </button>
                     </div>
                   )}
-
-                  {/* Expanded view - keep rating buttons hidden */}
-                  {isExp && (
-                    <div className="flex items-center justify-end gap-2 mt-2">
-                      <span className={`food-card-badge px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap ${getScoreColor(food.score)}`}>
-                        {getScoreLabel(food.level)}
-                      </span>
-                      <span className="food-card-badge px-3 py-1 rounded-full text-sm font-semibold text-white" style={{ backgroundColor: '#A7ACD9' }}>
-                        {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
-                      </span>
-                      <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                    </div>
-                  )}
+                  {isExp && <div className="w-[84px]"></div>}
+                  <span className={`px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap min-w-[80px] text-center ${getScoreColor(food.score)}`}>
+                    {getScoreLabel(food.level)}
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-sm font-semibold min-w-[60px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
+                    {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
+                  </span>
+                  {isExp ? <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" /> : <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />}
                 </div>
               </div>
               {isExp && (
@@ -1323,8 +1304,8 @@
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
-                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
+                        <option value="en">🇺🇸 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
                       </select>
                     </div>
 
@@ -1414,8 +1395,8 @@
                           cursor: 'pointer'
                         }}
                       >
-                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
-                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
+                        <option value="en">🇺🇸 English</option>
+                        <option value="de">🇩🇪 Deutsch</option>
                       </select>
                     </div>
 
