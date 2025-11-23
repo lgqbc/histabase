@@ -163,6 +163,18 @@
         gap: 0.5rem;
       }
     }
+      /* Floating show filters button */
+      .mobile-show-filters-btn {
+        transition: position 0.3s ease, top 0.3s ease;
+      }
+
+      .mobile-show-filters-btn.floating {
+        position: fixed;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 500;
+      }
 
     /* Desktop only - keep sidebar visible */
     @media (min-width: 769px) {
@@ -356,15 +368,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "Über Histaminunverträglichkeit",
-        aboutP1: "Histaminunverträglichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der Fähigkeit des Körpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslöst, kann für eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persönliches Reaktionstagebuch zu führen.",
+        aboutTitle: "Ãœber HistaminunvertrÃ¤glichkeit",
+        aboutP1: "HistaminunvertrÃ¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃ¤higkeit des KÃ¶rpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃ¶st, kann fÃ¼r eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃ¶nliches Reaktionstagebuch zu fÃ¼hren.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstützen",
+        supportTitle: "HistaBase unterstÃ¼tzen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -376,7 +388,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "Ernährung",
+        diet: "ErnÃ¤hrung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -387,24 +399,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "Standardernährung",
+        defaultDiet: "StandardernÃ¤hrung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "Wähle deinen Standard-Ernährungsfilter für die Datenbank",
+        chooseDietFilter: "WÃ¤hle deinen Standard-ErnÃ¤hrungsfilter fÃ¼r die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In Maßen",
+        inModeration: "In MaÃŸen",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "Über deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut verträgst, ohne Symptome",
+        aboutYourRatings: "Ãœber deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut vertrÃ¤gst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslösen",
+        avoidDesc: "Lebensmittel, die Symptome auslÃ¶sen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -413,7 +425,7 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "Wähle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "WÃ¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
     };
@@ -527,6 +539,8 @@
       const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
       const [showDownloadMenu, setShowDownloadMenu] = useState(false);
       const [sortBy, setSortBy] = useState("score");
+      const [isFilterButtonFloating, setIsFilterButtonFloating] = useState(false);
+      const filterButtonRef = React.useRef(null);
 
       // Authentication state
       const [user, setUser] = useState(null);
@@ -737,6 +751,26 @@
         }
         save();
       }, [userConditions, defaultDiet, defaultLanguage, user]);
+
+      // Handle floating filter button on mobile
+      useEffect(() => {
+        if (window.innerWidth > 768) return; // Only on mobile
+        
+        const handleScroll = () => {
+          if (!filterButtonRef.current) return;
+          
+          const buttonRect = filterButtonRef.current.getBoundingClientRect();
+          const buttonTop = buttonRect.top + window.scrollY;
+          
+          // If button top is above current scroll position, make it float
+          const shouldFloat = window.scrollY > buttonTop;
+          setIsFilterButtonFloating(shouldFloat);
+        };
+        
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
 
       // Calculate user score percentage for a food
       function getUserScorePercentage(foodId) {
@@ -1655,6 +1689,7 @@
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-3">
                       <button 
+                        ref={filterButtonRef}
                         onClick={() => {
                           // Desktop: toggle sidebar visibility
                           setSidebarOpen(!sidebarOpen);
@@ -1663,7 +1698,7 @@
                             setMobileSidebarOpen(true);
                           }
                         }}
-                        className="text-sm flex items-center gap-1"
+                        className={`text-sm flex items-center gap-1 mobile-show-filters-btn ${isFilterButtonFloating ? 'floating' : ''}`}
                         style={{ color: '#525174' }}
                       >
                         <Filter className="w-4 h-4" /> {sidebarOpen && window.innerWidth > 768 ? "Hide" : "Show"} Filters
