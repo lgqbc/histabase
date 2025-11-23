@@ -235,6 +235,17 @@
     button {
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
+    
+    /* Remove shadow from voting buttons */
+    .vote-button {
+      box-shadow: none !important;
+      border: none !important;
+    }
+    
+    /* Remove shadow from language buttons */
+    .language-button {
+      box-shadow: none !important;
+    }
   </style>
 </head>
 <body>
@@ -1085,10 +1096,10 @@
                 </div>
                 <div className="food-card-second-row flex items-center gap-3 ml-auto flex-shrink-0">
                   {!isExp && (
-                    <div className="flex gap-1 w-[84px]" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex gap-1 w-[96px]" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => submitRating(food.id, "tolerate")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
                           myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
@@ -1099,7 +1110,7 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "moderation")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
                           myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
@@ -1110,7 +1121,7 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "avoid")}
-                        className={`w-7 h-7 flex items-center justify-center rounded text-base transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
                           myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
@@ -1121,7 +1132,7 @@
                       </button>
                     </div>
                   )}
-                  {isExp && <div className="w-[84px]"></div>}
+                  {isExp && <div className="w-[96px]"></div>}
                   <span className="px-3 py-1 rounded-full text-sm font-semibold min-w-[60px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
                     {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
                   </span>
@@ -1213,21 +1224,18 @@
 
       return (
         <div className="min-h-screen" style={{ backgroundColor: '#F7F8FA' }}>
-          <div className="flex-1 mx-auto px-4 py-6" style={{ maxWidth: '1200px' }}>
+          <div className="flex-1 mx-auto px-4 py-6" style={{ maxWidth: '1000px' }}>
             <div className="mx-auto">
               <div className="text-center mb-6 mobile-header">
-                <div className="flex items-center justify-between mb-2 mobile-auth-buttons">
-                  <div className="flex-1 hidden md:block"></div>
-                  <div className="flex-1 text-center">
+                <div className="flex items-center mb-2 mobile-auth-buttons">
+                  <div className="flex-1"></div>
+                  <div className="text-center">
                     <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#525174' }}>HistaBase</h1>
                     <p className="text-gray-400 text-xs md:text-sm">The histamine food database</p>
                   </div>
-                  <div className="flex-1 flex justify-end items-center gap-2">
+                  <div className="flex-1 flex items-center gap-2 ml-6">
                     {user ? (
                       <>
-                        <span className="hidden sm:inline text-sm font-medium text-gray-600">
-                          {user.email.split('@')[0]}
-                        </span>
                         <button
                           onClick={handleLogout}
                           className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium text-white"
@@ -1235,6 +1243,9 @@
                         >
                           <LogOut className="w-3 h-3 md:w-4 md:h-4" /> Logout
                         </button>
+                        <span className="hidden sm:inline text-sm font-medium text-gray-600">
+                          {user.email.split('@')[0]}
+                        </span>
                       </>
                     ) : (
                       <button
@@ -1296,19 +1307,22 @@
 
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
-                      <select
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                        className="w-full px-3 py-2 rounded border border-gray-300 text-sm outline-none"
-                        style={{ 
-                          borderColor: '#E5E7EB',
-                          backgroundColor: '#FAFBFC',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
-                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
-                      </select>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setLanguage('en')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => setLanguage('de')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mb-4">
@@ -1387,19 +1401,22 @@
                   <div className="desktop-sidebar w-64 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
-                      <select
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                        className="w-full px-3 py-2 rounded border border-gray-300 text-sm outline-none"
-                        style={{ 
-                          borderColor: '#E5E7EB',
-                          backgroundColor: '#FAFBFC',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <option value="en">ðŸ‡ºðŸ‡¸ English</option>
-                        <option value="de">ðŸ‡©ðŸ‡ª Deutsch</option>
-                      </select>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setLanguage('en')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => setLanguage('de')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mb-4">
@@ -1733,7 +1750,7 @@
                   </div>
                 </div>
 
-                <div className="rounded-lg p-4 border" style={{ background: 'linear-gradient(to right, #f0f9ff, #ede9fe)', borderColor: '#bfdbfe' }}>
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#EDE9FE', borderColor: '#D8B4FE' }}>
                   <h3 className="font-semibold text-gray-800 text-base mb-2">About Your Ratings</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-start gap-2">
@@ -1755,7 +1772,7 @@
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 p-2 rounded text-xs text-gray-600" style={{ backgroundColor: '#D4C5F9' }}>
+                  <div className="mt-3 pt-3 border-t text-xs text-gray-600" style={{ borderColor: '#D8B4FE' }}>
                     All votes are anonymous and help build community insights.
                   </div>
                 </div>
