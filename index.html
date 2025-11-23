@@ -181,41 +181,104 @@
   </style>
 
   <style id="light-dark-theme">
+    /* PROPER LIGHT-DARK THEME - Clearly visible middle ground */
     body {
-      background-color: #E8E9ED;
+      background-color: #2A2D3A !important;
     }
     
-    /* Cards with subtle depth */
+    /* Main background areas */
+    .bg-gray-100,
+    .min-h-screen {
+      background-color: #2A2D3A !important;
+    }
+    
+    /* Cards - lighter than background but still dark */
     .bg-white {
-      background-color: #FAFBFC !important;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      background-color: #363A4A !important;
+      border-color: #4A4E5E !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     
-    /* Softer borders */
-    .border-gray-100 {
-      border-color: #DFE1E6 !important;
+    /* Text colors */
+    .text-gray-800 {
+      color: #E8E9ED !important;
     }
     
+    .text-gray-600 {
+      color: #B8BAC5 !important;
+    }
+    
+    .text-gray-700 {
+      color: #D0D2DD !important;
+    }
+    
+    .text-gray-500 {
+      color: #9499A8 !important;
+    }
+    
+    .text-gray-400 {
+      color: #7A7F8F !important;
+    }
+    
+    /* Borders */
+    .border-gray-100,
     .border-gray-200 {
-      border-color: #CFD1D6 !important;
+      border-color: #4A4E5E !important;
     }
     
-    /* Warmer input backgrounds */
+    /* Input fields */
     input[type="text"],
     input[type="email"],
     input[type="password"],
-    select {
-      background-color: #F5F6F8 !important;
+    input[type="search"],
+    select,
+    textarea {
+      background-color: #2F3340 !important;
+      border-color: #4A4E5E !important;
+      color: #E8E9ED !important;
     }
     
-    /* Sidebar background */
+    input::placeholder {
+      color: #7A7F8F !important;
+    }
+    
+    /* Sidebar */
     .bg-gray-50 {
-      background-color: #F0F1F4 !important;
+      background-color: #32364A !important;
+      border-color: #4A4E5E !important;
     }
     
-    /* Category dividers */
+    /* Category dividers and light backgrounds */
     .bg-gray-200 {
-      background-color: #DFE1E6 !important;
+      background-color: #404555 !important;
+      color: #D0D2DD !important;
+    }
+    
+    /* Buttons and interactive elements - keep brand colors visible */
+    button {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    /* Hover states for better contrast */
+    .hover\:bg-gray-100:hover {
+      background-color: #404555 !important;
+    }
+    
+    /* Keep purple accent strong */
+    [style*="#525174"] {
+      filter: brightness(1.1);
+    }
+    
+    /* Modals */
+    .bg-black\/50 {
+      background-color: rgba(0,0,0,0.75) !important;
+    }
+    
+    /* Make sure green/yellow/red stay vibrant */
+    [style*="#00A676"],
+    [style*="#FBAF00"],
+    [style*="#BB342F"] {
+      filter: saturate(1.2) brightness(1.05);
     }
   </style>
 </head>
@@ -838,7 +901,7 @@
             });
             byCategory[category].forEach(foodName => {
               content.push({
-                text: `${symbol} ${foodName}`,
+                text: `  ${foodName}`,
                 fontSize: 9,
                 color: color,
                 margin: [0, 2, 0, 2]
@@ -905,39 +968,39 @@
                   width: '*',
                   stack: [
                     {
-                      text: 'I CAN EAT [OK]',
+                      text: 'I CAN EAT',
                       fontSize: 12,
                       bold: true,
                       color: '#00A676',
                       margin: [0, 0, 0, 10]
                     },
-                    ...buildColumnContent(tolerateByCategory, '#00A676', '▲')
+                    ...buildColumnContent(tolerateByCategory, '#00A676', '')
                   ]
                 },
                 {
                   width: '*',
                   stack: [
                     {
-                      text: 'IN MODERATION [MOD]',
+                      text: 'IN MODERATION',
                       fontSize: 12,
                       bold: true,
                       color: '#FBAF00',
                       margin: [0, 0, 0, 10]
                     },
-                    ...buildColumnContent(moderationByCategory, '#FBAF00', '●')
+                    ...buildColumnContent(moderationByCategory, '#FBAF00', '')
                   ]
                 },
                 {
                   width: '*',
                   stack: [
                     {
-                      text: 'I SHOULD AVOID [AVOID]',
+                      text: 'I SHOULD AVOID',
                       fontSize: 12,
                       bold: true,
                       color: '#BB342F',
                       margin: [0, 0, 0, 10]
                     },
-                    ...buildColumnContent(avoidByCategory, '#BB342F', '▼')
+                    ...buildColumnContent(avoidByCategory, '#BB342F', '')
                   ]
                 }
               ],
@@ -1194,7 +1257,7 @@
       }
 
       return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen" style={{ backgroundColor: '#2A2D3A' }}>
           <div className="flex-1 max-w-7xl mx-auto px-4 py-6">
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-6 mobile-header">
