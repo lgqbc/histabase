@@ -1422,7 +1422,7 @@
                           <LogOut className="w-3 h-3 md:w-4 md:h-4" /> Logout
                         </button>
                       <button
-                        onClick={translations.goToProfile}
+                        onClick={() => setView("profile")} 
                         className="
                           hidden sm:inline
                           text-sm font-medium text-gray-700
