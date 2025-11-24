@@ -164,11 +164,12 @@
         align-items: center;
       }
 
-      /* On mobile, hide the flex spacers and remove margin from login container */
-      .mobile-auth-buttons > .flex-1 {
+      /* On mobile, hide only the first empty flex spacer, not the one with the button */
+      .mobile-auth-buttons > .flex-1:first-child {
         display: none;
       }
 
+      /* Remove margin and center the login button container on mobile */
       .mobile-auth-buttons > div:last-child {
         margin-left: 0 !important;
         justify-content: center;
@@ -1627,6 +1628,18 @@
 
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].categories.toUpperCase()}</p>
+                      
+                      {/* Group by Category toggle for mobile */}
+                      <label className="flex items-center gap-2 text-gray-700 cursor-pointer py-2 mb-2 font-medium text-sm border-b border-gray-200 pb-3">
+                        <input
+                          type="checkbox"
+                          checked={categorySort}
+                          onChange={(e) => setCategorySort(e.target.checked)}
+                          className="w-4 h-4"
+                        />
+                        Group by Category
+                      </label>
+                      
                       <div>
                         {categories.map(c => (
                           <label key={c} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
@@ -1839,7 +1852,7 @@
                           </button>
                         </div>
                         
-                        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                        <label className="hidden md:flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                           <input
                             type="checkbox"
                             checked={categorySort}
