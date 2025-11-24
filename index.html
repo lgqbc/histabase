@@ -1817,7 +1817,7 @@
                             className="text-gray-600 hover:text-gray-900 p-1"
                             title={sortDirection === "asc" ? "Ascending" : "Descending"}
                           >
-                            <span className="text-sm">{sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}</span>
+                            {sortDirection === "asc" ? (<svg width="16" height="16" viewBox="0 0 12 12" fill="currentColor"><polygon points="6,3 3,9 9,9" /></svg>) : (<svg width="16" height="16" viewBox="0 0 12 12" fill="currentColor"><polygon points="6,9 3,3 9,3" /></svg>)}
                           </button>
                         </div>
                         
@@ -1846,7 +1846,7 @@
                           Name
                           {sortBy === "name" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
                             </span>
                           )}
                         </button>
@@ -1860,7 +1860,7 @@
                           Community
                           {sortBy === "userscore" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
                             </span>
                           )}
                         </button>
@@ -1871,7 +1871,7 @@
                           Database
                           {sortBy === "score" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
                             </span>
                           )}
                         </button>
@@ -1983,7 +1983,7 @@
                   </div>
                 </div>
                 
-                <div className="bg-white rounded-lg p-4 border">
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#52517410' }}>
                   <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
                   <div className="flex flex-wrap gap-2">
                     {conditions.map(c => (
