@@ -330,146 +330,67 @@
     const DATABASE_URL_DE = 'https://gist.githubusercontent.com/lgqbc/9536daa095a866617edb1c14df15608d/raw/b3569c67237078d792fbb7da9a9ee208c613d873/foodDatabase_german.json';
 
     const allSources = ["SIGHI", "FDA", "USDA", "CFCD"];
-    const sourceLinks = {
-      en: {
-        "SIGHI": "https://www.mastzellaktivierung.info/downloads/foodlist/SIGHI-FoodList_EN_Histamin_alphabetisch_inKategorien.pdf",
-        "FDA": "https://www.fda.gov/",
-        "USDA": "https://fdc.nal.usda.gov/",
-        "CFCD (No Histamine Data)": "https://www.nutridatabaze.cz/en/search-food-data/alphabetical-list/?letter="
-      },
-      de: {
-        "SIGHI": "https://www.mastzellaktivierung.info/downloads/foodlist/11_FoodList_DE_alphabetisch_mitKat.pdf",
-        "FDA": "https://www.fda.gov/",
-        "USDA": "https://fdc.nal.usda.gov/",
-        "CFCD (No Histamine Data)": "https://www.nutridatabaze.cz/en/search-food-data/alphabetical-list/?letter="
-      }
-    };
+    const getSourceLinks = (lang) => ({
+      "SIGHI": lang === "de" 
+        ? "https://www.mastzellaktivierung.info/downloads/foodlist/11_FoodList_DE_alphabetisch_mitKat.pdf"
+        : "https://www.mastzellaktivierung.info/downloads/foodlist/SIGHI-FoodList_EN_Histamin_alphabetisch_inKategorien.pdf",
+      "FDA": "https://www.fda.gov/",
+      "USDA": "https://fdc.nal.usda.gov/",
+      "CFCD (No Histamine Data)": "https://www.nutridatabaze.cz/en/search-food-data/alphabetical-list/?letter="
+    });
     
     const translations = {
-      en: {
-        // Info section
-        aboutTitle: "About Histamine Intolerance",
-        aboutP1: "Histamine intolerance occurs when there's an imbalance between histamine intake and the body's ability to break it down.",
-        aboutP2: "Everyone is different! What triggers symptoms in one person may be fine for another.",
-        aboutP3: "HistaBase combines research and user reports to help you track which foods affect your histamine levels and keep a personalized log of your reactions.",
-        sourcesTitle: "Our Sources",
-        contactTitle: "Contact",
-        contactText: "Questions?",
-        contactEmail: "hello@histabase.com",
-        supportTitle: "Support HistaBase",
-        supportText: "Help us maintain this free resource.",
-        donateButton: "Donate",
-        
-        // Navigation
-        database: "Database",
-        profile: "Profile",
-        info: "Info",
-        
-        // Sidebar/Filters
-        filters: "Filters",
-        language: "Language",
-        diet: "Diet",
-        categories: "Categories",
-        sources: "Sources",
-        allFoods: "All Foods",
-        vegetarian: "Vegetarian",
-        vegan: "Vegan",
-        
-        // Profile section
-        account: "Account",
-        loggedInAs: "Logged in as:",
-        yourConditions: "Your Conditions",
-        defaultDiet: "Default Diet",
-        defaultLanguage: "Default Language",
-        chooseDietFilter: "Choose your default diet filter for the database",
-        
-        // Ratings section
-        yourRatings: "Your Ratings",
-        downloadPDF: "Download as PDF",
-        whatICanEat: "What I Can Eat",
-        inModeration: "In Moderation",
-        whatIShouldAvoid: "What I Should Avoid",
-        iCanEat: "I Can Eat",
-        noneYet: "None yet",
-        
-        // About ratings
-        aboutYourRatings: "About Your Ratings",
-        canEatDesc: "Foods you tolerate well without symptoms",
-        moderationDesc: "Foods that are okay in small amounts or occasionally",
-        avoidDesc: "Foods that trigger symptoms",
-        allVotesAnonymous: "All votes are anonymous and help build community insights.",
-        
-        // PDF titles
-        allMyRatings: "All My Ratings",
-        myConditions: "My Conditions",
-        
-        // Modal
-        setConditionsFirst: "Set Your Conditions First",
-        selectCondition: "Select at least one condition to rate foods.",
-        goToProfile: "Go to Profile"
-      },
-      de: {
-        // Info section
-        aboutTitle: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œber HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤glichkeit",
-        aboutP1: "HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤higkeit des KÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶st, kann fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼hren.",
-        sourcesTitle: "Unsere Quellen",
-        contactTitle: "Kontakt",
-        contactText: "Fragen?",
-        contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼tzen",
-        supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
-        donateButton: "Spenden",
-        
-        // Navigation
-        database: "Datenbank",
-        profile: "Profil",
-        info: "Info",
-        
-        // Sidebar/Filters
-        filters: "Filter",
-        language: "Sprache",
-        diet: "ErnÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤hrung",
-        categories: "Kategorien",
-        sources: "Quellen",
-        allFoods: "Alle Lebensmittel",
-        vegetarian: "Vegetarisch",
-        vegan: "Vegan",
-        
-        // Profile section
-        account: "Konto",
-        loggedInAs: "Angemeldet als:",
-        yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤hrung",
-        defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤hle deinen Standard-ErnÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤hrungsfilter fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼r die Datenbank",
-        
-        // Ratings section
-        yourRatings: "Deine Bewertungen",
-        downloadPDF: "PDF herunterladen",
-        whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸en",
-        whatIShouldAvoid: "Was ich vermeiden sollte",
-        iCanEat: "Was ich essen kann",
-        noneYet: "Noch keine",
-        
-        // About ratings
-        aboutYourRatings: "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤gst, ohne Symptome",
-        moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶sen",
-        allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
-        
-        // PDF titles
-        allMyRatings: "Alle meine Bewertungen",
-        myConditions: "Meine Bedingungen",
-        
-        // Modal
-        setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
-        goToProfile: "Zum Profil gehen"
-      }
+      // All UI text - English only
+      aboutTitle: "About Histamine Intolerance",
+      aboutP1: "Histamine intolerance occurs when there's an imbalance between histamine intake and the body's ability to break it down.",
+      aboutP2: "Everyone is different! What triggers symptoms in one person may be fine for another.",
+      aboutP3: "HistaBase combines research and user reports to help you track which foods affect your histamine levels and keep a personalized log of your reactions.",
+      
+      detailedInfoTitle: "Understanding Histamine Intolerance",
+      detailedInfoButton: "Read More About Histamine Management",
+      detailedInfoHideButton: "Hide Details",
+      
+      sourcesTitle: "Our Sources",
+      contactTitle: "Contact",
+      contactText: "Questions?",
+      contactEmail: "hello@histabase.com",
+      supportTitle: "Support HistaBase",
+      supportText: "Help us maintain this free resource.",
+      donateButton: "Donate",
+      
+      database: "Database",
+      profile: "Profile",
+      info: "Info",
+      
+      filters: "Filters",
+      language: "Language",
+      diet: "Diet",
+      categories: "Categories",
+      sources: "Sources",
+      allFoods: "All Foods",
+      vegetarian: "Vegetarian",
+      vegan: "Vegan",
+      
+      account: "Account",
+      loggedInAs: "Logged in as:",
+      yourConditions: "Your Conditions",
+      yourRatings: "Your Ratings",
+      downloadPDF: "Download PDF",
+      whatICanEat: "What I Can Eat",
+      inModeration: "In Moderation",
+      whatIShouldAvoid: "What I Should Avoid",
+      allMyRatings: "All My Ratings",
+      iCanEat: "I Can Eat",
+      canEatDesc: "Foods that you tolerate well and don't trigger symptoms.",
+      moderationDesc: "Foods that you can eat occasionally or in small amounts.",
+      avoidDesc: "Foods that consistently trigger symptoms and should be avoided.",
+      noneYet: "None yet",
+      defaultDiet: "Default Diet Preference",
+      chooseDietFilter: "Choose which foods to show by default:",
+      allVotesAnonymous: "All votes are anonymous and help the community.",
+      setConditionsFirst: "Set Your Conditions First",
+      selectCondition: "Please select at least one condition in your profile to start rating foods.",
+      goToProfile: "Go to Profile"
     };
     
     const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
@@ -585,6 +506,7 @@
       const [categorySort, setCategorySort] = useState(false); // separate category grouping toggle
       const [isFilterButtonFloating, setIsFilterButtonFloating] = useState(false);
       const filterButtonRef = React.useRef(null);
+      const [showDetailedInfo, setShowDetailedInfo] = useState(false); // for expandable detailed info section
 
       // Authentication state
       const [user, setUser] = useState(null);
@@ -1394,7 +1316,7 @@
                     <div className="flex flex-wrap gap-1">
                       {food.sources.map((s, i) => {
                         const sourceName = s === "CFCD" ? "CFCD (No Histamine Data)" : s;
-                        const sourceUrl = sourceLinks[language][sourceName];
+                        const sourceUrl = getSourceLinks(language)[sourceName];
                         
                         return sourceUrl ? (
                           <a 
@@ -1518,21 +1440,21 @@
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Search className="w-4 h-4 inline mr-1" />{translations[language].database}
+                  <Search className="w-4 h-4 inline mr-1" />{translations.database}
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <User className="w-4 h-4 inline mr-1" />{translations[language].profile}
+                  <User className="w-4 h-4 inline mr-1" />{translations.profile}
                 </button>
                 <button 
                   onClick={() => setView("info")} 
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "info" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Info className="w-4 h-4 inline mr-1" />{translations[language].info}
+                  <Info className="w-4 h-4 inline mr-1" />{translations.info}
                 </button>
               </div>
             </div>
@@ -1572,7 +1494,7 @@
                             color: view === "database" ? 'white' : '#525174'
                           }}
                         >
-                          {translations[language].database}
+                          {translations.database}
                         </button>
                         <button
                           onClick={() => {
@@ -1585,7 +1507,7 @@
                             color: view === "profile" ? 'white' : '#525174'
                           }}
                         >
-                          {translations[language].profile}
+                          {translations.profile}
                         </button>
                         <button
                           onClick={() => {
@@ -1598,13 +1520,13 @@
                             color: view === "info" ? 'white' : '#525174'
                           }}
                         >
-                          {translations[language].info}
+                          {translations.info}
                         </button>
                       </div>
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].language.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.language.toUpperCase()}</p>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setLanguage('en')}
@@ -1624,32 +1546,32 @@
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].diet.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].allFoods}
+                        {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].vegetarian}
+                        {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].vegan}
+                        {translations.vegan}
                       </button>
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].categories.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.categories.toUpperCase()}</p>
                       
                       {/* Group by Category toggle for mobile */}
                       <label className="flex items-center gap-2 text-gray-700 cursor-pointer py-2 mb-2 font-medium text-sm border-b border-gray-200 pb-3">
@@ -1684,7 +1606,7 @@
                     </div>
 
                     <div>
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].sources.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.sources.toUpperCase()}</p>
                       {allSources.map(s => (
                         <label key={s} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
                           <input
@@ -1710,7 +1632,7 @@
                 {sidebarOpen && (
                   <div className="desktop-sidebar w-64 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].language.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.language.toUpperCase()}</p>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setLanguage('en')}
@@ -1730,32 +1652,32 @@
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].diet.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].allFoods}
+                        {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].vegetarian}
+                        {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
                         style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
-                        {translations[language].vegan}
+                        {translations.vegan}
                       </button>
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].categories.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.categories.toUpperCase()}</p>
                       <div>
                         {categories.map(c => (
                           <label key={c} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
@@ -1778,7 +1700,7 @@
                     </div>
 
                     <div>
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations[language].sources.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.sources.toUpperCase()}</p>
                       {allSources.map(s => (
                         <label key={s} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
                           <input
@@ -1957,15 +1879,15 @@
               <div className="max-w-2xl mx-auto space-y-4">
                 {user && (
                   <div className="bg-white rounded-lg p-4 border">
-                    <h2 className="font-semibold text-gray-800 text-base mb-2">{translations[language].account}</h2>
+                    <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
                     <p className="text-sm text-gray-600">
-                      {translations[language].loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
+                      {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
                     </p>
                   </div>
                 )}
                 
                 <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations[language].yourConditions}</h2>
+                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
                   <div className="flex flex-wrap gap-2">
                     {conditions.map(c => (
                       <button
@@ -1990,7 +1912,7 @@
                 <div className="bg-white rounded-lg p-4 border">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="font-semibold text-gray-800 text-base">
-                      {translations[language].yourRatings} ({tolerateList.length + moderationList.length + avoidList.length})
+                      {translations.yourRatings} ({tolerateList.length + moderationList.length + avoidList.length})
                     </h2>
                     <div className="relative">
                       <button 
@@ -2000,7 +1922,7 @@
                         onMouseEnter={(e) => e.target.style.backgroundColor = '#3f3e5c'}
                         onMouseLeave={(e) => e.target.style.backgroundColor = '#525174'}
                       >
-                        <Download className="w-4 h-4" /> {translations[language].downloadPDF}
+                        <Download className="w-4 h-4" /> {translations.downloadPDF}
                       </button>
                       {showDownloadMenu && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10">
@@ -2008,25 +1930,25 @@
                             onClick={() => generatePDF("tolerate")} 
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg"
                           >
-                            {translations[language].whatICanEat}
+                            {translations.whatICanEat}
                           </button>
                           <button 
                             onClick={() => generatePDF("moderation")} 
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           >
-                            {translations[language].inModeration}
+                            {translations.inModeration}
                           </button>
                           <button 
                             onClick={() => generatePDF("avoid")} 
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           >
-                            {translations[language].whatIShouldAvoid}
+                            {translations.whatIShouldAvoid}
                           </button>
                           <button 
                             onClick={() => generatePDF("all")} 
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg border-t"
                           >
-                            {translations[language].allMyRatings}
+                            {translations.allMyRatings}
                           </button>
                         </div>
                       )}
@@ -2035,7 +1957,7 @@
 
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <p className="text-sm font-medium mb-3" style={{ color: '#00A676' }}>{translations[language].iCanEat} ({tolerateList.length})</p>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#00A676' }}>{translations.iCanEat} ({tolerateList.length})</p>
                       <div className="space-y-2">
                         {tolerateList.map(([key, rating]) => {
                           const food = foodDatabase.find(f => f.id === parseInt(key));
@@ -2053,12 +1975,12 @@
                             </div>
                           );
                         })}
-                        {tolerateList.length === 0 && <p className="text-sm text-gray-400">{translations[language].noneYet}</p>}
+                        {tolerateList.length === 0 && <p className="text-sm text-gray-400">{translations.noneYet}</p>}
                       </div>
                     </div>
 
                     <div>
-                      <p className="text-sm font-medium mb-3" style={{ color: '#FBAF00' }}>{translations[language].inModeration} ({moderationList.length})</p>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#FBAF00' }}>{translations.inModeration} ({moderationList.length})</p>
                       <div className="space-y-2">
                         {moderationList.map(([key, rating]) => {
                           const food = foodDatabase.find(f => f.id === parseInt(key));
@@ -2076,12 +1998,12 @@
                             </div>
                           );
                         })}
-                        {moderationList.length === 0 && <p className="text-sm text-gray-400">{translations[language].noneYet}</p>}
+                        {moderationList.length === 0 && <p className="text-sm text-gray-400">{translations.noneYet}</p>}
                       </div>
                     </div>
 
                     <div>
-                      <p className="text-sm font-medium mb-3" style={{ color: '#BB342F' }}>{translations[language].whatIShouldAvoid} ({avoidList.length})</p>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#BB342F' }}>{translations.whatIShouldAvoid} ({avoidList.length})</p>
                       <div className="space-y-2">
                         {avoidList.map(([key, rating]) => {
                           const food = foodDatabase.find(f => f.id === parseInt(key));
@@ -2106,8 +2028,8 @@
                 </div>
                 
                 <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations[language].defaultDiet}</h2>
-                  <p className="text-sm text-gray-600 mb-3">{translations[language].chooseDietFilter}</p>
+                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.defaultDiet}</h2>
+                  <p className="text-sm text-gray-600 mb-3">{translations.chooseDietFilter}</p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
@@ -2119,7 +2041,7 @@
                       }`}
                       style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
                     >
-                      {translations[language].allFoods}
+                      {translations.allFoods}
                     </button>
                     <button
                       onClick={() => {
@@ -2131,7 +2053,7 @@
                       }`}
                       style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
                     >
-                      {translations[language].vegetarian}
+                      {translations.vegetarian}
                     </button>
                     <button
                       onClick={() => {
@@ -2175,29 +2097,29 @@
                 </div>
 
                 <div className="rounded-lg p-4 border" style={{ backgroundColor: '#faf8fc', borderColor: '#D8B4FE' }}>
-                  <h3 className="font-semibold text-gray-800 text-base mb-2">{translations[language].aboutYourRatings}</h3>
+                  <h3 className="font-semibold text-gray-800 text-base mb-2">{translations.aboutYourRatings}</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-start gap-2">
                       <span className="font-bold" style={{ color: '#00A676' }}>{'\u25B2'}</span>
                       <div>
-                        <strong>{translations[language].iCanEat}:</strong> {translations[language].canEatDesc}
+                        <strong>{translations.iCanEat}:</strong> {translations.canEatDesc}
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="font-bold" style={{ color: '#FBAF00' }}>{'\u25CF'}</span>
                       <div>
-                        <strong>{translations[language].inModeration}:</strong> {translations[language].moderationDesc}
+                        <strong>{translations.inModeration}:</strong> {translations.moderationDesc}
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="font-bold" style={{ color: '#BB342F' }}>{'\u25BC'}</span>
                       <div>
-                        <strong>{translations[language].whatIShouldAvoid}:</strong> {translations[language].avoidDesc}
+                        <strong>{translations.whatIShouldAvoid}:</strong> {translations.avoidDesc}
                       </div>
                     </div>
                   </div>
                   <div className="mt-3 pt-3 border-t text-xs text-gray-600" style={{ borderColor: '#D8B4FE' }}>
-                    {translations[language].allVotesAnonymous}
+                    {translations.allVotesAnonymous}
                   </div>
                 </div>
               </div>
@@ -2206,25 +2128,160 @@
             {view === "info" && (
               <div className="max-w-2xl mx-auto space-y-4">
                 <div className="bg-white rounded-lg p-5 border">
-                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations[language].aboutTitle}</h2>
+                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                   <p className="text-base text-gray-600 mb-4">
-                    {translations[language].aboutP1}
+                    {translations.aboutP1}
                   </p>
                   <p className="text-base text-gray-600 mb-4">
-                    {translations[language].aboutP2}
+                    {translations.aboutP2}
                   </p>
                   <p className="text-base text-gray-600">
-                    {translations[language].aboutP3}
+                    {translations.aboutP3}
                   </p>
                 </div>
 
+                {/* Expandable Detailed Info Section */}
                 <div className="bg-white rounded-lg p-5 border">
-                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations[language].sourcesTitle}</h2>
+                  <button
+                    onClick={() => setShowDetailedInfo(!showDetailedInfo)}
+                    className="w-full text-left group"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h2 className="font-semibold text-gray-800 text-lg">
+                        {translations.detailedInfoTitle}
+                      </h2>
+                      <span className="text-gray-400 group-hover:text-gray-600 transition-colors text-xl">
+                        {showDetailedInfo ? '−' : '+'}
+                      </span>
+                    </div>
+                    
+                    {!showDetailedInfo && (
+                      <div className="relative">
+                        <div className="text-gray-600 text-sm leading-relaxed" style={{ maxHeight: '4.5rem', overflow: 'hidden' }}>
+                          <p>
+                            Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.
+                          </p>
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                      </div>
+                    )}
+                  </button>
+                  
+                  {showDetailedInfo && (
+                    <div className="mt-4 space-y-4 text-gray-600 text-sm leading-relaxed">
+                      <p>
+                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>¹</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Most Likely to Cause Problems</h3>
+                      <p>
+                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>²</sup></a> Common triggers include:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Aged cheeses</li>
+                        <li>Fermented sausages</li>
+                        <li>Sauerkraut</li>
+                        <li>Alcohol (especially red wine and champagne)</li>
+                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>³</sup></a></li>
+                      </ul>
+                      <p className="mt-2">
+                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>³</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
+                      <p>
+                        Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Fresh fish kept at 0–4°C stays safe.</li>
+                        <li>Temperatures above 10°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>³</sup></a></li>
+                      </ul>
+                      <p className="mt-2">
+                        This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Histamine-Releasing Foods</h3>
+                      <p>
+                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>¹</sup></a> Common examples:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Citrus fruits</li>
+                        <li>Strawberries</li>
+                        <li>Tomatoes</li>
+                        <li>Spinach</li>
+                        <li>Chocolate</li>
+                      </ul>
+                      <p className="mt-2">
+                        Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>⁴</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
+                      <p>
+                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>⁵</sup></a> Often well-tolerated:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Freshly cooked meat and poultry</li>
+                        <li>Most fresh vegetables (except known triggers like tomatoes, spinach, and eggplant)</li>
+                        <li>Fresh dairy products</li>
+                        <li>Grains (including gluten-containing grains)</li>
+                        <li>Fresh herbs</li>
+                        <li>Most cooking oils</li>
+                      </ul>
+                      <p className="mt-2">
+                        Tolerance varies, but these foods provide a reliable starting point.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Storage and Preparation Guidelines</h3>
+                      <p>
+                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>⁶</sup></a> Core rules:
+                      </p>
+                      <ol className="list-decimal list-inside ml-4 space-y-1">
+                        <li>Refrigerate immediately after cooking or purchasing.</li>
+                        <li>Freeze portions right away if not eating soon.</li>
+                        <li>Consume leftovers within 24 hours.</li>
+                        <li>Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.</li>
+                      </ol>
+                      <p className="mt-2">
+                        These steps help keep histamine levels low even in foods you normally tolerate.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Individual Thresholds Matter</h3>
+                      <p>
+                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>⁷</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
+                      </p>
+                      <p className="mt-2">
+                        The practical approach:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Identify your personal triggers.</li>
+                        <li>Keep meals simple and fresh.</li>
+                        <li>Add foods back slowly to test tolerance.</li>
+                        <li>Track symptoms and patterns.</li>
+                      </ul>
+                      
+                      <div className="mt-6 pt-4 border-t border-gray-200">
+                        <h3 className="font-semibold text-gray-800 text-base mb-3">Sources</h3>
+                        <ul className="space-y-2 text-xs">
+                          <li id="ref1" className="scroll-mt-4">¹ Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
+                          <li id="ref2" className="scroll-mt-4">² Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
+                          <li id="ref3" className="scroll-mt-4">³ Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
+                          <li id="ref4" className="scroll-mt-4">⁴ Wöhrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref5" className="scroll-mt-4">⁵ Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
+                          <li id="ref6" className="scroll-mt-4">⁶ Küfner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref7" className="scroll-mt-4">⁷ Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-lg p-5 border">
+                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.sourcesTitle}</h2>
                   <div className="space-y-2">
-                    {Object.keys(sourceLinks[language]).map(name => (
+                    {Object.keys(getSourceLinks(language)).map(name => (
                       <a
                         key={name}
-                        href={sourceLinks[language][name]}
+                        href={getSourceLinks(language)[name]}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm hover:underline"
@@ -2238,25 +2295,25 @@
 
                 <div className="bg-white rounded-lg p-5 border">
                   <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
-                    <Mail className="w-5 h-5" /> {translations[language].contactTitle}
+                    <Mail className="w-5 h-5" /> {translations.contactTitle}
                   </h2>
                   <p className="text-base text-gray-600">
-                    {translations[language].contactText} <span style={{ color: '#525174' }}>{translations[language].contactEmail}</span>
+                    {translations.contactText} <span style={{ color: '#525174' }}>{translations.contactEmail}</span>
                   </p>
                 </div>
 
                 <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border border-pink-100">
                   <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-pink-500" /> {translations[language].supportTitle}
+                    <Heart className="w-5 h-5 text-pink-500" /> {translations.supportTitle}
                   </h2>
-                  <p className="text-base text-gray-600 mb-3">{translations[language].supportText}</p>
+                  <p className="text-base text-gray-600 mb-3">{translations.supportText}</p>
                   <a 
                     href="https://www.paypal.com/donate/?hosted_button_id=NYTSTRHQFJEE8"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block bg-pink-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-pink-600"
                   >
-                    {translations[language].donateButton}
+                    {translations.donateButton}
                   </a>
                 </div>
               </div>
@@ -2265,9 +2322,9 @@
             {showModal && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                 <div className="bg-white rounded-xl p-5 max-w-sm w-full">
-                  <h3 className="font-semibold text-lg mb-3">{translations[language].setConditionsFirst}</h3>
+                  <h3 className="font-semibold text-lg mb-3">{translations.setConditionsFirst}</h3>
                   <p className="text-base text-gray-600 mb-4">
-                    {translations[language].selectCondition}
+                    {translations.selectCondition}
                   </p>
                   <button 
                     onClick={() => { setShowModal(false); setView("profile"); }} 
@@ -2276,7 +2333,7 @@
                     onMouseEnter={(e) => e.target.style.backgroundColor = '#3f3e5c'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = '#525174'}
                   >
-                    {translations[language].goToProfile}
+                    {translations.goToProfile}
                   </button>
                 </div>
               </div>
