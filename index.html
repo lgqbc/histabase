@@ -1722,7 +1722,7 @@
                         className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
                         style={{ backgroundColor: '#f4d7f7' }}
                       >
-                        {user.email.split('@')[0]}
+                        {displayName || user.email.split('@')[0]}
                       </button>
 
                       </>
@@ -2280,6 +2280,28 @@
                       <p className="text-sm text-gray-600 mb-4">
                         {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
                       </p>
+                      
+                      {/* Display Name */}
+                      <div className="mb-4">
+                        <h3 className="font-semibold text-gray-800 text-sm mb-2">{translations.displayName}</h3>
+                        <p className="text-sm text-gray-600 mb-2">{translations.displayNameDesc}</p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            placeholder="Enter your name"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                          <button
+                            onClick={() => saveDisplayName(displayName)}
+                            className="px-4 py-2 text-white rounded-lg text-sm font-medium"
+                            style={{ backgroundColor: '#525174' }}
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
                     </>
                   )}
                   
@@ -2353,29 +2375,6 @@
                     </div>
                   </div>
                 </div>
-                
-                {user && (
-                  <div className="bg-white rounded-lg p-4 border">
-                    <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.displayName}</h2>
-                    <p className="text-sm text-gray-600 mb-3">{translations.displayNameDesc}</p>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={displayName}
-                        onChange={(e) => setDisplayName(e.target.value)}
-                        placeholder="Enter your name"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      <button
-                        onClick={() => saveDisplayName(displayName)}
-                        className="px-4 py-2 text-white rounded-lg text-sm font-medium"
-                        style={{ backgroundColor: '#525174' }}
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
-                )}
                 
                 <div className="rounded-lg p-4 border" style={{ backgroundColor: '#A7ACD9' }}>
                   <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
