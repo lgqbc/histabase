@@ -304,8 +304,8 @@
     const LogIn = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>;
 
     // Database URLs
-    const DATABASE_URL_EN = 'https://gist.githubusercontent.com/lgqbc/58c82d7d2c3440c824a98b92927e597d/raw/FoodDatabaseExtended.json';
-    const DATABASE_URL_DE = 'https://gist.githubusercontent.com/lgqbc/9536daa095a866617edb1c14df15608d/raw/b3569c67237078d792fbb7da9a9ee208c613d873/foodDatabase_german.json';
+    const DATABASE_URL_EN = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase.json';
+    const DATABASE_URL_DE = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase_german.json';
 
     const allSources = ["SIGHI", "FDA", "USDA", "CFCD"];
     const sourceLinks = { 
@@ -380,15 +380,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "ÃƒÆ’Ã…â€œber HistaminunvertrÃƒÆ’Ã‚Â¤glichkeit",
-        aboutP1: "HistaminunvertrÃƒÆ’Ã‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã‚Â¤higkeit des KÃƒÆ’Ã‚Â¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã‚Â¶st, kann fÃƒÆ’Ã‚Â¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã‚Â¼hren.",
+        aboutTitle: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit",
+        aboutP1: "HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤higkeit des KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶rpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶st, kann fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼hren.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃƒÆ’Ã‚Â¼tzen",
+        supportTitle: "HistaBase unterstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼tzen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -400,7 +400,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "ErnÃƒÆ’Ã‚Â¤hrung",
+        diet: "ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -411,24 +411,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃƒÆ’Ã‚Â¤hrung",
+        defaultDiet: "StandardernÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃƒÆ’Ã‚Â¤hle deinen Standard-ErnÃƒÆ’Ã‚Â¤hrungsfilter fÃƒÆ’Ã‚Â¼r die Datenbank",
+        chooseDietFilter: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle deinen Standard-ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrungsfilter fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃƒÆ’Ã…Â¸en",
+        inModeration: "In MaÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸en",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "ÃƒÆ’Ã…â€œber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã‚Â¤gst, ohne Symptome",
+        aboutYourRatings: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤gst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã‚Â¶sen",
+        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶sen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -437,7 +437,7 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃƒÆ’Ã‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
     };
@@ -598,9 +598,9 @@
             setUser(session.user);
             await loadUserData(session.user.id);
           } else {
-            // No user logged in - still load community ratings
-            console.log('[MOUNT] No session, loading community ratings only...');
-            await loadCommunityRatings();
+            // No user logged in - load community ratings in background (non-blocking)
+            console.log('[MOUNT] No session, loading community ratings in background...');
+            loadCommunityRatings(); // ← No await! Loads in background
           }
           initialCheckDone = true;
           console.log('[MOUNT] Initial check complete');
@@ -629,7 +629,7 @@
             setDefaultDiet("all");
             setDefaultLanguage("en");
             setLanguage("en");
-            await loadCommunityRatings();
+            loadCommunityRatings(); // Background load
           }
         });
 
@@ -2625,15 +2625,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "ÃƒÆ’Ã…â€œber HistaminunvertrÃƒÆ’Ã‚Â¤glichkeit",
-        aboutP1: "HistaminunvertrÃƒÆ’Ã‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã‚Â¤higkeit des KÃƒÆ’Ã‚Â¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã‚Â¶st, kann fÃƒÆ’Ã‚Â¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã‚Â¼hren.",
+        aboutTitle: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit",
+        aboutP1: "HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤higkeit des KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶rpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶st, kann fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼hren.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃƒÆ’Ã‚Â¼tzen",
+        supportTitle: "HistaBase unterstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼tzen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -2645,7 +2645,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "ErnÃƒÆ’Ã‚Â¤hrung",
+        diet: "ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -2656,24 +2656,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃƒÆ’Ã‚Â¤hrung",
+        defaultDiet: "StandardernÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃƒÆ’Ã‚Â¤hle deinen Standard-ErnÃƒÆ’Ã‚Â¤hrungsfilter fÃƒÆ’Ã‚Â¼r die Datenbank",
+        chooseDietFilter: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle deinen Standard-ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrungsfilter fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃƒÆ’Ã…Â¸en",
+        inModeration: "In MaÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸en",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "ÃƒÆ’Ã…â€œber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã‚Â¤gst, ohne Symptome",
+        aboutYourRatings: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤gst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã‚Â¶sen",
+        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶sen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -2682,7 +2682,7 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃƒÆ’Ã‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
     };
