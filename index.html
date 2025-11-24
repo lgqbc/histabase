@@ -161,6 +161,17 @@
       .mobile-auth-buttons {
         flex-direction: column;
         gap: 0.5rem;
+        align-items: center;
+      }
+
+      /* On mobile, hide the flex spacers and remove margin from login container */
+      .mobile-auth-buttons > .flex-1 {
+        display: none;
+      }
+
+      .mobile-auth-buttons > div:last-child {
+        margin-left: 0 !important;
+        justify-content: center;
       }
 
       /* Hide column headers on mobile since layout is stacked */
@@ -1797,6 +1808,37 @@
                       </button>
                       <div className="flex items-center gap-3">
                         <span className="text-sm text-gray-400">{filteredFoods.length} foods</span>
+                        
+                        {/* Mobile-only sorting dropdown */}
+                        <div className="md:hidden flex items-center gap-2">
+                          <select
+                            value={sortBy}
+                            onChange={(e) => {
+                              const newSortBy = e.target.value;
+                              setSortBy(newSortBy);
+                              // Set appropriate default direction for the new sort
+                              if (newSortBy === "name") {
+                                setSortDirection("asc");
+                              } else {
+                                setSortDirection("desc");
+                              }
+                            }}
+                            className="text-xs border border-gray-200 rounded px-2 py-1 outline-none"
+                            style={{ focusBorderColor: '#525174' }}
+                          >
+                            <option value="score">Database Score</option>
+                            <option value="userscore">Community Score</option>
+                            <option value="name">Name</option>
+                          </select>
+                          <button
+                            onClick={() => setSortDirection(sortDirection === "asc" ? "desc" : "asc")}
+                            className="text-gray-600 hover:text-gray-900 p-1"
+                            title={sortDirection === "asc" ? "Ascending" : "Descending"}
+                          >
+                            <span className="text-sm">{sortDirection === "asc" ? "▲" : "▼"}</span>
+                          </button>
+                        </div>
+                        
                         <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                           <input
                             type="checkbox"
