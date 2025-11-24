@@ -162,6 +162,11 @@
         flex-direction: column;
         gap: 0.5rem;
       }
+
+      /* Hide column headers on mobile since layout is stacked */
+      .column-headers-row {
+        display: none;
+      }
     }
       /* Floating show filters button */
       
@@ -200,6 +205,11 @@
 
       .mobile-backdrop {
         display: none !important;
+      }
+
+      /* Show column headers on desktop */
+      .column-headers-row {
+        display: block;
       }
     }
   </style>
@@ -1801,7 +1811,7 @@
                   </div>
                   
                   {/* Column Headers */}
-                  <div className="bg-gray-50 border-y border-gray-200 mb-2">
+                  <div className="column-headers-row border-b border-gray-200 mb-2">
                     <div className="px-4 py-2 flex items-center gap-3">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <div className="flex-shrink-0 w-5"></div>
