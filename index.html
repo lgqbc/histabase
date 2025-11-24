@@ -1392,11 +1392,27 @@
                       }
                     </p>
                     <div className="flex flex-wrap gap-1">
-                      {food.sources.map((s, i) => (
-                        <span key={i} className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                          {s === "CFCD" ? "CFCD (No Histamine Data)" : s}
-                        </span>
-                      ))}
+                      {food.sources.map((s, i) => {
+                        const sourceName = s === "CFCD" ? "CFCD (No Histamine Data)" : s;
+                        const sourceUrl = sourceLinks[language][sourceName];
+                        
+                        return sourceUrl ? (
+                          <a 
+                            key={i}
+                            href={sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors cursor-pointer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {sourceName}
+                          </a>
+                        ) : (
+                          <span key={i} className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                            {sourceName}
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                   {stats && (
