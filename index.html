@@ -291,7 +291,9 @@
     /* Remove shadow from language buttons */
     .language-button {
       box-shadow: none !important;
+      border: none !important;
     }
+    
   </style>
 </head>
 <body>
@@ -396,7 +398,7 @@
     const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
     const categories = ["Vegetables", "Fruits", "Meat", "Seafood", "Dairy", "Grains", "Legumes", "Nuts & Seeds", "Fermented", "Beverages", "Oils & Fats", "Condiments", "Sweets", "Eggs", "Spices"];
 
-    // Flag icons as inline SVG components
+    // Flag icons for language selection
     const FlagUS = ({ className }) => (
       <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
         <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
@@ -1526,7 +1528,7 @@
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.language.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setLanguage('en')}
@@ -1632,7 +1634,7 @@
                 {sidebarOpen && (
                   <div className="desktop-sidebar w-64 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.language.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setLanguage('en')}
