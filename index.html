@@ -1817,7 +1817,7 @@
                             className="text-gray-600 hover:text-gray-900 p-1"
                             title={sortDirection === "asc" ? "Ascending" : "Descending"}
                           >
-                            <span className="text-sm">{sortDirection === "asc" ? "â–²" : "â–¼"}</span>
+                            <span className="text-sm">{sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}</span>
                           </button>
                         </div>
                         
@@ -1846,7 +1846,7 @@
                           Name
                           {sortBy === "name" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "â–²" : "â–¼"}
+                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
                             </span>
                           )}
                         </button>
@@ -1860,7 +1860,7 @@
                           Community
                           {sortBy === "userscore" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "â–²" : "â–¼"}
+                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
                             </span>
                           )}
                         </button>
@@ -1871,7 +1871,7 @@
                           Database
                           {sortBy === "score" && (
                             <span className="text-xs">
-                              {sortDirection === "asc" ? "â–²" : "â–¼"}
+                              {sortDirection === "asc" ? "Ã¢â€“Â²" : "Ã¢â€“Â¼"}
                             </span>
                           )}
                         </button>
@@ -1902,15 +1902,86 @@
 
             {view === "profile" && (
               <div className="max-w-2xl mx-auto space-y-4">
-                {user && (
-                  <div className="rounded-lg p-4 border" style={{ backgroundColor: '#f6e3fa' }}>
-                    <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
-                    <p className="text-sm text-gray-600">
-          
-                      {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
-                    </p>
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#f6e3fa' }}>
+                  {user && (
+                    <>
+                      <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
+                      <p className="text-sm text-gray-600 mb-4">
+                        {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
+                      </p>
+                    </>
+                  )}
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-sm mb-2">Default Language</h3>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setDefaultLanguage('en');
+                            setLanguage('en');
+                          }}
+                          className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultLanguage('de');
+                            setLanguage('de');
+                          }}
+                          className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-sm mb-2">{translations.defaultDiet}</h3>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("all");
+                            setDietFilter("all");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "all" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          {translations.allFoods}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("vegetarian");
+                            setDietFilter("vegetarian");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "vegetarian" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          {translations.vegetarian}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("vegan");
+                            setDietFilter("vegan");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "vegan" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "vegan" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          Vegan
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
                 
                 <div className="bg-white rounded-lg p-4 border">
                   <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
@@ -2052,75 +2123,6 @@
                     </div>
                   </div>
                 </div>
-                
-                <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.defaultDiet}</h2>
-                  <p className="text-sm text-gray-600 mb-3">{translations.chooseDietFilter}</p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("all");
-                        setDietFilter("all");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "all" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      {translations.allFoods}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("vegetarian");
-                        setDietFilter("vegetarian");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "vegetarian" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      {translations.vegetarian}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultDiet("vegan");
-                        setDietFilter("vegan");
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                        defaultDiet === "vegan" ? "text-white" : "bg-gray-100 text-gray-600"
-                      }`}
-                      style={defaultDiet === "vegan" ? { backgroundColor: '#525174' } : {}}
-                    >
-                      Vegan
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-lg p-4 border">
-                  <h2 className="font-semibold text-gray-800 text-base mb-3">Default Language</h2>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setDefaultLanguage('en');
-                        setLanguage('en');
-                      }}
-                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
-                      title="English"
-                    >
-                      <FlagUS className="w-8 h-5" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDefaultLanguage('de');
-                        setLanguage('de');
-                      }}
-                      className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
-                      title="Deutsch"
-                    >
-                      <FlagDE className="w-8 h-5" />
-                    </button>
-                  </div>
-                </div>
 
                 <div className="rounded-lg p-4 border" style={{ backgroundColor: '#faf8fc', borderColor: '#D8B4FE' }}>
                   <h3 className="font-semibold text-gray-800 text-base mb-2">{translations.aboutYourRatings}</h3>
@@ -2177,7 +2179,7 @@
                         {translations.detailedInfoTitle}
                       </h2>
                       <span className="text-gray-400 group-hover:text-gray-600 transition-colors text-xl">
-                        {showDetailedInfo ? 'âˆ’' : '+'}
+                        {showDetailedInfo ? 'Ã¢Ë†â€™' : '+'}
                       </span>
                     </div>
                     
@@ -2196,31 +2198,31 @@
                   {showDetailedInfo && (
                     <div className="mt-4 space-y-4 text-gray-600 text-sm leading-relaxed">
                       <p>
-                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Â¹</sup></a>
+                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ã‚Â¹</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Most Likely to Cause Problems</h3>
                       <p>
-                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>Â²</sup></a> Common triggers include:
+                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>Ã‚Â²</sup></a> Common triggers include:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Aged cheeses</li>
                         <li>Fermented sausages</li>
                         <li>Sauerkraut</li>
                         <li>Alcohol (especially red wine and champagne)</li>
-                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>Â³</sup></a></li>
+                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a></li>
                       </ul>
                       <p className="mt-2">
-                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Â³</sup></a>
+                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If foodâ€”especially fish, meat, or leftoversâ€”is stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodÃ¢â‚¬â€especially fish, meat, or leftoversÃ¢â‚¬â€is stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0â€“4Â°C stays safe.</li>
-                        <li>Temperatures above 10Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Â³</sup></a></li>
+                        <li>Fresh fish kept at 0Ã¢â‚¬â€œ4Ã‚Â°C stays safe.</li>
+                        <li>Temperatures above 10Ã‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -2228,7 +2230,7 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Histamine-Releasing Foods</h3>
                       <p>
-                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Â¹</sup></a> Common examples:
+                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ã‚Â¹</sup></a> Common examples:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Citrus fruits</li>
@@ -2238,12 +2240,12 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additivesâ€”including benzoates and sulfitesâ€”may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>â´</sup></a>
+                        Certain additivesÃ¢â‚¬â€including benzoates and sulfitesÃ¢â‚¬â€may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ´</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
                       <p>
-                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>âµ</sup></a> Often well-tolerated:
+                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂµ</sup></a> Often well-tolerated:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Freshly cooked meat and poultry</li>
@@ -2259,13 +2261,13 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Storage and Preparation Guidelines</h3>
                       <p>
-                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>â¶</sup></a> Core rules:
+                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ¶</sup></a> Core rules:
                       </p>
                       <ol className="list-decimal list-inside ml-4 space-y-1">
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple timesâ€”cooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesÃ¢â‚¬â€cooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -2273,7 +2275,7 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Individual Thresholds Matter</h3>
                       <p>
-                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>â·</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
+                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ·</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
                       </p>
                       <p className="mt-2">
                         The practical approach:
@@ -2288,13 +2290,13 @@
                       <div className="mt-6 pt-4 border-t border-gray-200">
                         <h3 className="font-semibold text-gray-800 text-base mb-3">Sources</h3>
                         <ul className="space-y-2 text-xs">
-                          <li id="ref1" className="scroll-mt-4">Â¹ Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
-                          <li id="ref2" className="scroll-mt-4">Â² Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
-                          <li id="ref3" className="scroll-mt-4">Â³ Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">â´ WÃ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
-                          <li id="ref5" className="scroll-mt-4">âµ Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">â¶ KÃ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
-                          <li id="ref7" className="scroll-mt-4">â· Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
+                          <li id="ref1" className="scroll-mt-4">Ã‚Â¹ Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
+                          <li id="ref2" className="scroll-mt-4">Ã‚Â² Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
+                          <li id="ref3" className="scroll-mt-4">Ã‚Â³ Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
+                          <li id="ref4" className="scroll-mt-4">Ã¢ÂÂ´ WÃƒÂ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref5" className="scroll-mt-4">Ã¢ÂÂµ Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
+                          <li id="ref6" className="scroll-mt-4">Ã¢ÂÂ¶ KÃƒÂ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref7" className="scroll-mt-4">Ã¢ÂÂ· Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
                     </div>
