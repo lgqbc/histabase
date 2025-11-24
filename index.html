@@ -332,6 +332,13 @@
     const ArrowUpDown = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>;
     const LogOut = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
     const LogIn = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>;
+    const BookOpen = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+    const Plus = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>;
+    const X = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+    const Edit = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
+    const Trash2 = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
+    const Globe = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>;
+    const Lock = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
 
     // Database URLs
     const DATABASE_URL_EN = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase.json';
@@ -367,6 +374,7 @@
       donateButton: "Donate",
       
       database: "Database",
+      recipes: "Recipes",
       profile: "Profile",
       info: "Info",
       
@@ -399,7 +407,34 @@
       setConditionsFirst: "Set Your Conditions First",
       selectCondition: "Please select at least one condition in your profile to start rating foods.",
       goToProfile: "Go to Profile",
-      aboutYourRatings: "About Your Ratings"
+      aboutYourRatings: "About Your Ratings",
+      
+      // Recipe translations
+      createRecipe: "Create Recipe",
+      myRecipes: "My Recipes",
+      allRecipes: "All Recipes",
+      recipeTitle: "Recipe Title",
+      recipeDescription: "Description",
+      recipeInstructions: "Instructions",
+      ingredients: "Ingredients",
+      addIngredient: "Add Ingredient",
+      ingredientName: "Ingredient name",
+      makePublic: "Make this recipe public",
+      saveRecipe: "Save Recipe",
+      cancel: "Cancel",
+      editRecipe: "Edit Recipe",
+      deleteRecipe: "Delete Recipe",
+      deleteConfirm: "Are you sure you want to delete this recipe?",
+      by: "by",
+      public: "Public",
+      private: "Private",
+      noRecipes: "No recipes yet",
+      createFirstRecipe: "Create your first recipe to get started!",
+      setNameFirst: "Please set your display name in your profile before creating recipes.",
+      displayName: "Display Name",
+      displayNameDesc: "This name will be shown on your public recipes",
+      ingredientsInDatabase: "Ingredients in Database",
+      ingredientNotFound: "Not in database"
     };
     
     const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
@@ -525,6 +560,22 @@
       const [authPassword, setAuthPassword] = useState("");
       const [authError, setAuthError] = useState("");
       const [authLoading, setAuthLoading] = useState(false);
+      
+      // Recipe state
+      const [recipes, setRecipes] = useState([]);
+      const [showRecipeForm, setShowRecipeForm] = useState(false);
+      const [editingRecipe, setEditingRecipe] = useState(null);
+      const [recipeForm, setRecipeForm] = useState({
+        title: '',
+        description: '',
+        instructions: '',
+        ingredients: [],
+        is_public: false
+      });
+      const [currentIngredient, setCurrentIngredient] = useState('');
+      const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
+      const [displayName, setDisplayName] = useState('');
+      const [showNameModal, setShowNameModal] = useState(false);
       
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
@@ -696,6 +747,208 @@
           console.error('Error loading community ratings:', err);
         }
       }
+
+      // Load recipes from Supabase
+      async function loadRecipes() {
+        try {
+          const { data: allRecipes, error } = await supabase
+            .from('recipes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          setRecipes(allRecipes || []);
+        } catch (err) {
+          console.error('Error loading recipes:', err);
+        }
+      }
+
+      // Load display name from profile
+      async function loadDisplayName(userId) {
+        try {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('display_name')
+            .eq('id', userId)
+            .single();
+
+          if (error && error.code !== 'PGRST116') {
+            console.error('Error loading display name:', error);
+          }
+          
+          if (profile?.display_name) {
+            setDisplayName(profile.display_name);
+          }
+        } catch (err) {
+          console.error('Error loading display name:', err);
+        }
+      }
+
+      // Save display name to profile
+      async function saveDisplayName(name) {
+        if (!user) return;
+        
+        try {
+          const { error } = await supabase
+            .from('profiles')
+            .update({ display_name: name })
+            .eq('id', user.id);
+
+          if (error) throw error;
+          setDisplayName(name);
+          setShowNameModal(false);
+        } catch (err) {
+          console.error('Error saving display name:', err);
+          alert('Error saving display name. Please try again.');
+        }
+      }
+
+      // Create or update recipe
+      async function saveRecipe(e) {
+        e.preventDefault();
+        if (!user) return;
+        
+        if (!displayName) {
+          setShowNameModal(true);
+          return;
+        }
+
+        try {
+          const recipeData = {
+            user_id: user.id,
+            author_name: displayName,
+            title: recipeForm.title,
+            description: recipeForm.description,
+            instructions: recipeForm.instructions,
+            ingredients: recipeForm.ingredients,
+            is_public: recipeForm.is_public,
+            updated_at: new Date().toISOString()
+          };
+
+          if (editingRecipe) {
+            // Update existing recipe
+            const { error } = await supabase
+              .from('recipes')
+              .update(recipeData)
+              .eq('id', editingRecipe.id);
+
+            if (error) throw error;
+          } else {
+            // Create new recipe
+            recipeData.created_at = new Date().toISOString();
+            const { error } = await supabase
+              .from('recipes')
+              .insert([recipeData]);
+
+            if (error) throw error;
+          }
+
+          // Reset form and reload recipes
+          setRecipeForm({
+            title: '',
+            description: '',
+            instructions: '',
+            ingredients: [],
+            is_public: false
+          });
+          setEditingRecipe(null);
+          setShowRecipeForm(false);
+          await loadRecipes();
+        } catch (err) {
+          console.error('Error saving recipe:', err);
+          alert('Error saving recipe. Please try again.');
+        }
+      }
+
+      // Delete recipe
+      async function deleteRecipe(recipeId) {
+        if (!confirm(translations.deleteConfirm)) return;
+
+        try {
+          const { error } = await supabase
+            .from('recipes')
+            .delete()
+            .eq('id', recipeId);
+
+          if (error) throw error;
+          await loadRecipes();
+        } catch (err) {
+          console.error('Error deleting recipe:', err);
+          alert('Error deleting recipe. Please try again.');
+        }
+      }
+
+      // Start editing a recipe
+      function startEditRecipe(recipe) {
+        setEditingRecipe(recipe);
+        setRecipeForm({
+          title: recipe.title,
+          description: recipe.description,
+          instructions: recipe.instructions,
+          ingredients: recipe.ingredients || [],
+          is_public: recipe.is_public
+        });
+        setShowRecipeForm(true);
+      }
+
+      // Handle ingredient input change with autocomplete
+      function handleIngredientInput(value) {
+        setCurrentIngredient(value);
+        
+        if (value.trim().length > 0) {
+          const suggestions = foodDatabase
+            .filter(food => food.name.toLowerCase().includes(value.toLowerCase()))
+            .slice(0, 10)
+            .map(food => ({ name: food.name, id: food.id }));
+          setIngredientSuggestions(suggestions);
+        } else {
+          setIngredientSuggestions([]);
+        }
+      }
+
+      // Add ingredient to recipe
+      function addIngredient(ingredientName = currentIngredient) {
+        if (!ingredientName.trim()) return;
+        
+        const matchingFood = foodDatabase.find(
+          food => food.name.toLowerCase() === ingredientName.toLowerCase()
+        );
+        
+        const ingredient = {
+          name: ingredientName.trim(),
+          inDatabase: !!matchingFood,
+          foodId: matchingFood?.id || null
+        };
+        
+        setRecipeForm({
+          ...recipeForm,
+          ingredients: [...recipeForm.ingredients, ingredient]
+        });
+        setCurrentIngredient('');
+        setIngredientSuggestions([]);
+      }
+
+      // Remove ingredient from recipe
+      function removeIngredient(index) {
+        setRecipeForm({
+          ...recipeForm,
+          ingredients: recipeForm.ingredients.filter((_, i) => i !== index)
+        });
+      }
+
+      // Load recipes when view changes to recipes
+      useEffect(() => {
+        if (view === 'recipes') {
+          loadRecipes();
+        }
+      }, [view]);
+
+      // Load display name when user logs in
+      useEffect(() => {
+        if (user) {
+          loadDisplayName(user.id);
+        }
+      }, [user]);
 
       // Load user data from storage
       useEffect(() => {
@@ -1474,6 +1727,13 @@
                   <Search className="w-4 h-4 inline mr-1" />{translations.database}
                 </button>
                 <button 
+                  onClick={() => setView("recipes")} 
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
+                  style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
+                >
+                  <BookOpen className="w-4 h-4 inline mr-1" />{translations.recipes}
+                </button>
+                <button 
                   onClick={() => setView("profile")} 
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
@@ -1513,7 +1773,7 @@
 
                     {/* Mobile Secondary Navigation */}
                     <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         <button
                           onClick={() => {
                             setView("database");
@@ -1526,6 +1786,19 @@
                           }}
                         >
                           {translations.database}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("recipes");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
+                            color: view === "recipes" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations.recipes}
                         </button>
                         <button
                           onClick={() => {
@@ -2033,6 +2306,29 @@
                   </div>
                 </div>
                 
+                {user && (
+                  <div className="bg-white rounded-lg p-4 border">
+                    <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.displayName}</h2>
+                    <p className="text-sm text-gray-600 mb-3">{translations.displayNameDesc}</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        placeholder="Enter your name"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      />
+                      <button
+                        onClick={() => saveDisplayName(displayName)}
+                        className="px-4 py-2 text-white rounded-lg text-sm font-medium"
+                        style={{ backgroundColor: '#525174' }}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
                 <div className="rounded-lg p-4 border" style={{ backgroundColor: '#A7ACD9' }}>
                   <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
                   <div className="flex flex-wrap gap-2">
@@ -2203,6 +2499,348 @@
               </div>
             )}
 
+            {view === "recipes" && (
+              <div className="max-w-4xl mx-auto space-y-4">
+                {/* Header with Create Recipe button */}
+                <div className="flex justify-between items-center">
+                  <h1 className="text-2xl font-bold text-gray-800">{translations.allRecipes}</h1>
+                  {user && (
+                    <button
+                      onClick={() => {
+                        if (!displayName) {
+                          setShowNameModal(true);
+                        } else {
+                          setShowRecipeForm(true);
+                          setEditingRecipe(null);
+                          setRecipeForm({
+                            title: '',
+                            description: '',
+                            instructions: '',
+                            ingredients: [],
+                            is_public: false
+                          });
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm font-medium"
+                      style={{ backgroundColor: '#525174' }}
+                    >
+                      <Plus className="w-4 h-4" /> {translations.createRecipe}
+                    </button>
+                  )}
+                </div>
+
+                {/* Recipe Form Modal */}
+                {showRecipeForm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+                    <div className="bg-white rounded-xl p-6 max-w-2xl w-full my-8">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-semibold text-xl">
+                          {editingRecipe ? translations.editRecipe : translations.createRecipe}
+                        </h3>
+                        <button 
+                          onClick={() => {
+                            setShowRecipeForm(false);
+                            setEditingRecipe(null);
+                          }}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="w-6 h-6" />
+                        </button>
+                      </div>
+
+                      <form onSubmit={saveRecipe} className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeTitle} *
+                          </label>
+                          <input
+                            type="text"
+                            value={recipeForm.title}
+                            onChange={(e) => setRecipeForm({...recipeForm, title: e.target.value})}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeDescription}
+                          </label>
+                          <textarea
+                            value={recipeForm.description}
+                            onChange={(e) => setRecipeForm({...recipeForm, description: e.target.value})}
+                            rows={3}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.ingredients} *
+                          </label>
+                          <div className="space-y-2">
+                            <div className="flex gap-2 relative">
+                              <input
+                                type="text"
+                                value={currentIngredient}
+                                onChange={(e) => handleIngredientInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addIngredient();
+                                  }
+                                }}
+                                placeholder={translations.ingredientName}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => addIngredient()}
+                                className="px-4 py-2 text-white rounded-lg"
+                                style={{ backgroundColor: '#525174' }}
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                              
+                              {/* Autocomplete suggestions */}
+                              {ingredientSuggestions.length > 0 && (
+                                <div className="absolute top-full left-0 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
+                                  {ingredientSuggestions.map((suggestion, idx) => (
+                                    <button
+                                      key={idx}
+                                      type="button"
+                                      onClick={() => {
+                                        addIngredient(suggestion.name);
+                                      }}
+                                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                                    >
+                                      {suggestion.name}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Ingredients list */}
+                            <div className="space-y-1">
+                              {recipeForm.ingredients.map((ingredient, idx) => (
+                                <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
+                                  <span className="text-sm flex items-center gap-2">
+                                    {ingredient.name}
+                                    {ingredient.inDatabase && (
+                                      <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
+                                        In DB
+                                      </span>
+                                    )}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeIngredient(idx)}
+                                    className="text-red-500 hover:text-red-700"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeInstructions} *
+                          </label>
+                          <textarea
+                            value={recipeForm.instructions}
+                            onChange={(e) => setRecipeForm({...recipeForm, instructions: e.target.value})}
+                            required
+                            rows={6}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                          />
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="is_public"
+                            checked={recipeForm.is_public}
+                            onChange={(e) => setRecipeForm({...recipeForm, is_public: e.target.checked})}
+                            className="w-4 h-4"
+                          />
+                          <label htmlFor="is_public" className="text-sm text-gray-700">
+                            {translations.makePublic}
+                          </label>
+                        </div>
+
+                        <div className="flex gap-3 pt-4">
+                          <button
+                            type="submit"
+                            className="flex-1 py-3 text-white rounded-lg font-medium"
+                            style={{ backgroundColor: '#525174' }}
+                          >
+                            {translations.saveRecipe}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowRecipeForm(false);
+                              setEditingRecipe(null);
+                            }}
+                            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                          >
+                            {translations.cancel}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {/* Display Name Modal */}
+                {showNameModal && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl p-6 max-w-md w-full">
+                      <h3 className="font-semibold text-lg mb-3">{translations.setNameFirst}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{translations.displayNameDesc}</p>
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        placeholder="Enter your name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                      />
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            if (displayName.trim()) {
+                              saveDisplayName(displayName);
+                            }
+                          }}
+                          className="flex-1 py-2 text-white rounded-lg font-medium"
+                          style={{ backgroundColor: '#525174' }}
+                        >
+                          Save & Continue
+                        </button>
+                        <button
+                          onClick={() => setShowNameModal(false)}
+                          className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                        >
+                          {translations.cancel}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Recipes List */}
+                <div className="space-y-4">
+                  {recipes.length === 0 ? (
+                    <div className="bg-white rounded-lg p-8 text-center border">
+                      <BookOpen className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+                      <p className="text-gray-500">{translations.noRecipes}</p>
+                      {user && (
+                        <p className="text-sm text-gray-400 mt-2">{translations.createFirstRecipe}</p>
+                      )}
+                    </div>
+                  ) : (
+                    recipes.map(recipe => (
+                      <div key={recipe.id} className="bg-white rounded-lg p-5 border">
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold text-lg text-gray-800">{recipe.title}</h3>
+                              {recipe.is_public ? (
+                                <span className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                                  <Globe className="w-3 h-3" /> {translations.public}
+                                </span>
+                              ) : (
+                                <span className="flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                  <Lock className="w-3 h-3" /> {translations.private}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-500">{translations.by} {recipe.author_name}</p>
+                          </div>
+                          {user && user.id === recipe.user_id && (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => startEditRecipe(recipe)}
+                                className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => deleteRecipe(recipe.id)}
+                                className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        {recipe.description && (
+                          <p className="text-gray-600 mb-3">{recipe.description}</p>
+                        )}
+
+                        <div className="mb-3">
+                          <h4 className="font-medium text-gray-800 mb-2">{translations.ingredients}:</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => (
+                              <span
+                                key={idx}
+                                className={`px-3 py-1 rounded-full text-sm ${
+                                  ingredient.inDatabase
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-gray-100 text-gray-700'
+                                }`}
+                              >
+                                {ingredient.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Show ingredient cards for ingredients in database */}
+                        {recipe.ingredients && recipe.ingredients.some(ing => ing.inDatabase) && (
+                          <div className="mb-3">
+                            <h4 className="font-medium text-gray-800 mb-2">{translations.ingredientsInDatabase}:</h4>
+                            <div className="space-y-2">
+                              {recipe.ingredients
+                                .filter(ing => ing.inDatabase)
+                                .map((ingredient, idx) => {
+                                  const food = foodDatabase.find(f => f.id === ingredient.foodId);
+                                  if (!food) return null;
+                                  
+                                  return (
+                                    <div key={idx} className="bg-gray-50 rounded-lg p-3 border">
+                                      <div className="flex justify-between items-center">
+                                        <div>
+                                          <p className="font-medium text-gray-800">{food.name}</p>
+                                          <p className="text-sm text-gray-500">{food.category}</p>
+                                        </div>
+                                        <span className={`px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap ${getScoreColor(food.score)}`}>
+                                          {getScoreLabel(food.level)}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          </div>
+                        )}
+
+                        <div>
+                          <h4 className="font-medium text-gray-800 mb-2">{translations.recipeInstructions}:</h4>
+                          <p className="text-gray-700 whitespace-pre-wrap">{recipe.instructions}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+
             {view === "info" && (
               <div className="max-w-2xl mx-auto space-y-4">
                 <div className="bg-white rounded-lg p-5 border">
@@ -2257,31 +2895,31 @@
                   {showDetailedInfo && (
                     <div className="mt-4 space-y-4 text-gray-600 text-sm leading-relaxed">
                       <p>
-                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ã‚Â¹</sup></a>
+                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â¹</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Most Likely to Cause Problems</h3>
                       <p>
-                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>Ã‚Â²</sup></a> Common triggers include:
+                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â²</sup></a> Common triggers include:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Aged cheeses</li>
                         <li>Fermented sausages</li>
                         <li>Sauerkraut</li>
                         <li>Alcohol (especially red wine and champagne)</li>
-                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a></li>
+                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â³</sup></a></li>
                       </ul>
                       <p className="mt-2">
-                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a>
+                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â³</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If foodÃ¢â‚¬â€especially fish, meat, or leftoversÃ¢â‚¬â€is stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âespecially fish, meat, or leftoversÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âis stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0Ã¢â‚¬â€œ4Ã‚Â°C stays safe.</li>
-                        <li>Temperatures above 10Ã‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ã‚Â³</sup></a></li>
+                        <li>Fresh fish kept at 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“4Ãƒâ€šÃ‚Â°C stays safe.</li>
+                        <li>Temperatures above 10Ãƒâ€šÃ‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â³</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -2289,7 +2927,7 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Histamine-Releasing Foods</h3>
                       <p>
-                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ã‚Â¹</sup></a> Common examples:
+                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>Ãƒâ€šÃ‚Â¹</sup></a> Common examples:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Citrus fruits</li>
@@ -2299,12 +2937,12 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additivesÃ¢â‚¬â€including benzoates and sulfitesÃ¢â‚¬â€may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ´</sup></a>
+                        Certain additivesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âincluding benzoates and sulfitesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âmay also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>ÃƒÂ¢Ã‚ÂÃ‚Â´</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
                       <p>
-                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂµ</sup></a> Often well-tolerated:
+                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>ÃƒÂ¢Ã‚ÂÃ‚Âµ</sup></a> Often well-tolerated:
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
                         <li>Freshly cooked meat and poultry</li>
@@ -2320,13 +2958,13 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Storage and Preparation Guidelines</h3>
                       <p>
-                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ¶</sup></a> Core rules:
+                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>ÃƒÂ¢Ã‚ÂÃ‚Â¶</sup></a> Core rules:
                       </p>
                       <ol className="list-decimal list-inside ml-4 space-y-1">
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple timesÃ¢â‚¬â€cooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âcooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -2334,7 +2972,7 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Individual Thresholds Matter</h3>
                       <p>
-                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>Ã¢ÂÂ·</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
+                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>ÃƒÂ¢Ã‚ÂÃ‚Â·</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
                       </p>
                       <p className="mt-2">
                         The practical approach:
@@ -2349,13 +2987,13 @@
                       <div className="mt-6 pt-4 border-t border-gray-200">
                         <h3 className="font-semibold text-gray-800 text-base mb-3">Sources</h3>
                         <ul className="space-y-2 text-xs">
-                          <li id="ref1" className="scroll-mt-4">Ã‚Â¹ Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
-                          <li id="ref2" className="scroll-mt-4">Ã‚Â² Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
-                          <li id="ref3" className="scroll-mt-4">Ã‚Â³ Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">Ã¢ÂÂ´ WÃƒÂ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
-                          <li id="ref5" className="scroll-mt-4">Ã¢ÂÂµ Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">Ã¢ÂÂ¶ KÃƒÂ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
-                          <li id="ref7" className="scroll-mt-4">Ã¢ÂÂ· Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
+                          <li id="ref1" className="scroll-mt-4">Ãƒâ€šÃ‚Â¹ Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
+                          <li id="ref2" className="scroll-mt-4">Ãƒâ€šÃ‚Â² Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
+                          <li id="ref3" className="scroll-mt-4">Ãƒâ€šÃ‚Â³ Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
+                          <li id="ref4" className="scroll-mt-4">ÃƒÂ¢Ã‚ÂÃ‚Â´ WÃƒÆ’Ã‚Â¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref5" className="scroll-mt-4">ÃƒÂ¢Ã‚ÂÃ‚Âµ Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
+                          <li id="ref6" className="scroll-mt-4">ÃƒÂ¢Ã‚ÂÃ‚Â¶ KÃƒÆ’Ã‚Â¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref7" className="scroll-mt-4">ÃƒÂ¢Ã‚ÂÃ‚Â· Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
                     </div>
@@ -2426,8 +3064,8 @@
               </div>
             )}
 
-            {/* Floating filter icon button - only visible on mobile, hidden on 'data' and 'info' tabs*/}
-            {window.innerWidth <= 768 && view !== "data" && view !== "info" && (
+            {/* Floating filter icon button - only visible on mobile, hidden on 'recipes', 'profile', and 'info' tabs*/}
+            {window.innerWidth <= 768 && view !== "recipes" && view !== "profile" && view !== "info" && (
               <button
                 onClick={() => {
                   setMobileSidebarOpen(true);
