@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
   <title>HistaBase - Histamine Food Tracker</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -304,10 +302,10 @@
     const LogIn = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>;
 
     // Database URLs
+    const DATABASE_URL_EN = 'https://gist.githubusercontent.com/lgqbc/58c82d7d2c3440c824a98b92927e597d/raw/FoodDatabaseExtended.json';
+    const DATABASE_URL_DE = 'https://gist.githubusercontent.com/lgqbc/9536daa095a866617edb1c14df15608d/raw/b3569c67237078d792fbb7da9a9ee208c613d873/foodDatabase_german.json';
     const DATABASE_URL_EN = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase.json';
     const DATABASE_URL_DE = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase_german.json';
-
-    const allSources = ["SIGHI", "FDA", "USDA", "CFCD"];
     const sourceLinks = { 
       "SIGHI": "https://www.histaminintoleranz.ch/en/", 
       "FDA": "https://www.fda.gov/", 
@@ -380,15 +378,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit",
-        aboutP1: "HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤higkeit des KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶st, kann fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼hren.",
+        aboutTitle: "Über Histaminunverträglichkeit",
+        aboutP1: "Histaminunverträglichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der Fähigkeit des Körpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslöst, kann für eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persönliches Reaktionstagebuch zu führen.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼tzen",
+        supportTitle: "HistaBase unterstützen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -400,7 +398,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
+        diet: "Ernährung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -411,24 +409,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
+        defaultDiet: "Standardernährung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle deinen Standard-ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrungsfilter fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r die Datenbank",
+        chooseDietFilter: "Wähle deinen Standard-Ernährungsfilter für die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸en",
+        inModeration: "In Maßen",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤gst, ohne Symptome",
+        aboutYourRatings: "Über deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut verträgst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶sen",
+        avoidDesc: "Lebensmittel, die Symptome auslösen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -437,9 +435,10 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "Wähle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
+
     };
     
     const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
@@ -573,9 +572,43 @@
           try {
             setLoading(true);
             const url = language === "en" ? DATABASE_URL_EN : DATABASE_URL_DE;
+            const cacheKey = `foodDb_${language}`;
+            const cacheTimeKey = `foodDb_${language}_time`;
+            const cacheMaxAge = 3600000; // 1 hour in milliseconds
+            
+            // Try to load from cache first
+            const cachedData = localStorage.getItem(cacheKey);
+            const cacheTime = localStorage.getItem(cacheTimeKey);
+            const now = Date.now();
+            
+            if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMaxAge) {
+              // Use cached data
+              console.log('[DB] Loading from cache');
+              setFoodDatabase(JSON.parse(cachedData));
+              setLoading(false);
+              return;
+            }
+            
+            // Fetch fresh data
+            console.log('[DB] Fetching from network');
             const response = await fetch(url);
-            if (!response.ok) throw new Error('Failed to load database');
+            if (!response.ok) {
+              // If fetch fails and we have cached data, use it even if expired
+              if (cachedData) {
+                console.log('[DB] Network failed, using cached data');
+                setFoodDatabase(JSON.parse(cachedData));
+                setLoading(false);
+                return;
+              }
+              throw new Error('Failed to load database');
+            }
+            
             const data = await response.json();
+            
+            // Save to cache
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            localStorage.setItem(cacheTimeKey, now.toString());
+            
             setFoodDatabase(data);
             setLoading(false);
           } catch (err) {
@@ -585,6 +618,7 @@
         }
         loadDatabase();
       }, [language]);
+
 
       // Check authentication state on mount  
       useEffect(() => {
@@ -2625,15 +2659,15 @@
       },
       de: {
         // Info section
-        aboutTitle: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit",
-        aboutP1: "HistaminunvertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤glichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der FÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤higkeit des KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶rpers besteht, dieses abzubauen.",
-        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶st, kann fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r eine andere in Ordnung sein.",
-        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶nliches Reaktionstagebuch zu fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼hren.",
+        aboutTitle: "Über Histaminunverträglichkeit",
+        aboutP1: "Histaminunverträglichkeit tritt auf, wenn ein Ungleichgewicht zwischen der Histaminaufnahme und der Fähigkeit des Körpers besteht, dieses abzubauen.",
+        aboutP2: "Jeder ist anders! Was bei einer Person Symptome auslöst, kann für eine andere in Ordnung sein.",
+        aboutP3: "HistaBase kombiniert Forschung und Benutzerberichte, um dir zu helfen, nachzuverfolgen, welche Lebensmittel deine Histaminspiegel beeinflussen, und ein persönliches Reaktionstagebuch zu führen.",
         sourcesTitle: "Unsere Quellen",
         contactTitle: "Kontakt",
         contactText: "Fragen?",
         contactEmail: "hello@histabase.com",
-        supportTitle: "HistaBase unterstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼tzen",
+        supportTitle: "HistaBase unterstützen",
         supportText: "Hilf uns, diese kostenlose Ressource zu pflegen.",
         donateButton: "Spenden",
         
@@ -2645,7 +2679,7 @@
         // Sidebar/Filters
         filters: "Filter",
         language: "Sprache",
-        diet: "ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
+        diet: "Ernährung",
         categories: "Kategorien",
         sources: "Quellen",
         allFoods: "Alle Lebensmittel",
@@ -2656,24 +2690,24 @@
         account: "Konto",
         loggedInAs: "Angemeldet als:",
         yourConditions: "Deine Bedingungen",
-        defaultDiet: "StandardernÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrung",
+        defaultDiet: "Standardernährung",
         defaultLanguage: "Standardsprache",
-        chooseDietFilter: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle deinen Standard-ErnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hrungsfilter fÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼r die Datenbank",
+        chooseDietFilter: "Wähle deinen Standard-Ernährungsfilter für die Datenbank",
         
         // Ratings section
         yourRatings: "Deine Bewertungen",
         downloadPDF: "PDF herunterladen",
         whatICanEat: "Was ich essen kann",
-        inModeration: "In MaÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¸en",
+        inModeration: "In Maßen",
         whatIShouldAvoid: "Was ich vermeiden sollte",
         iCanEat: "Was ich essen kann",
         noneYet: "Noch keine",
         
         // About ratings
-        aboutYourRatings: "ÃƒÆ’Ã†â€™Ãƒâ€¦Ã¢â‚¬Å“ber deine Bewertungen",
-        canEatDesc: "Lebensmittel, die du gut vertrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤gst, ohne Symptome",
+        aboutYourRatings: "Über deine Bewertungen",
+        canEatDesc: "Lebensmittel, die du gut verträgst, ohne Symptome",
         moderationDesc: "Lebensmittel, die in kleinen Mengen oder gelegentlich in Ordnung sind",
-        avoidDesc: "Lebensmittel, die Symptome auslÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¶sen",
+        avoidDesc: "Lebensmittel, die Symptome auslösen",
         allVotesAnonymous: "Alle Abstimmungen sind anonym und helfen beim Aufbau von Community-Erkenntnissen.",
         
         // PDF titles
@@ -2682,9 +2716,10 @@
         
         // Modal
         setConditionsFirst: "Richte zuerst deine Bedingungen ein",
-        selectCondition: "WÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤hle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
+        selectCondition: "Wähle mindestens eine Bedingung aus, um Lebensmittel zu bewerten.",
         goToProfile: "Zum Profil gehen"
       }
+
     };
     
     const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
@@ -2818,9 +2853,43 @@
           try {
             setLoading(true);
             const url = language === "en" ? DATABASE_URL_EN : DATABASE_URL_DE;
+            const cacheKey = `foodDb_${language}`;
+            const cacheTimeKey = `foodDb_${language}_time`;
+            const cacheMaxAge = 3600000; // 1 hour in milliseconds
+            
+            // Try to load from cache first
+            const cachedData = localStorage.getItem(cacheKey);
+            const cacheTime = localStorage.getItem(cacheTimeKey);
+            const now = Date.now();
+            
+            if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMaxAge) {
+              // Use cached data
+              console.log('[DB] Loading from cache');
+              setFoodDatabase(JSON.parse(cachedData));
+              setLoading(false);
+              return;
+            }
+            
+            // Fetch fresh data
+            console.log('[DB] Fetching from network');
             const response = await fetch(url);
-            if (!response.ok) throw new Error('Failed to load database');
+            if (!response.ok) {
+              // If fetch fails and we have cached data, use it even if expired
+              if (cachedData) {
+                console.log('[DB] Network failed, using cached data');
+                setFoodDatabase(JSON.parse(cachedData));
+                setLoading(false);
+                return;
+              }
+              throw new Error('Failed to load database');
+            }
+            
             const data = await response.json();
+            
+            // Save to cache
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            localStorage.setItem(cacheTimeKey, now.toString());
+            
             setFoodDatabase(data);
             setLoading(false);
           } catch (err) {
@@ -2830,6 +2899,7 @@
         }
         loadDatabase();
       }, [language]);
+
 
       // Check authentication state on mount  
       useEffect(() => {
