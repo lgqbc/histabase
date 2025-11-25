@@ -1983,6 +1983,7 @@
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
                   <Search className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.database}
+                  <br className="block sm:hidden" />
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
@@ -1990,6 +1991,7 @@
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
                 >
                   <User className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.profile}
+                  <br className="block sm:hidden" />
                 </button>
                 <button 
                   onClick={() => setView("recipes")} 
@@ -1997,6 +1999,7 @@
                   style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
                 >
                   <BookOpen className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.recipes}
+                  <br className="block sm:hidden" />
                 </button>
                 <button 
                   onClick={() => setView("info")} 
@@ -2004,6 +2007,7 @@
                   style={view === "info" ? { backgroundColor: '#525174' } : {}}
                 >
                   <Info className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.info}
+                  <br className="block sm:hidden" />
                 </button>
               </div>
             </div>
