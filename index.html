@@ -242,7 +242,7 @@
       .food-card-second-row .vote-button {
         width: 28px !important;
         height: 28px !important;
-        font-size: 0.875rem !important;
+        font-size: 1.75rem !important;
       }
 
       /* Make badges smaller and tighter */
@@ -1896,7 +1896,7 @@
                     <div className="flex gap-1 w-[96px]" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => submitRating(food.id, "tolerate")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-3xl transition-colors ${
                           myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
@@ -1907,7 +1907,7 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "moderation")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-3xl transition-colors ${
                           myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
@@ -1918,7 +1918,7 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "avoid")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-3xl transition-colors ${
                           myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
