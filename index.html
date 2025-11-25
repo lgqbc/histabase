@@ -1979,33 +1979,37 @@
               <div className="flex gap-2 mb-8 max-w-2xl mx-auto">
                 <button 
                   onClick={() => setView("database")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Search className="w-7 h-7 sm:w-4 sm:h-4 inline mr-1" />{translations.database}
+                  <Search className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
+                  <span className="text-xs sm:text-sm">{translations.database}</span>
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <User className="w-7 h-7 sm:w-4 sm:h-4 inline mr-1" />{translations.profile}
+                  <User className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
+                  <span className="text-xs sm:text-sm">{translations.profile}</span>
 
                 </button>
                 <button 
                   onClick={() => setView("recipes")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <BookOpen className="w-7 h-7 sm:w-4 sm:h-4 inline mr-1" />{translations.recipes}
+                  <BookOpen className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
+                  <span className="text-xs sm:text-sm">{translations.recipes}</span>
 
                 </button>
                 <button 
                   onClick={() => setView("info")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "info" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Info className="w-7 h-7 sm:w-4 sm:h-4 inline mr-1" />{translations.info}
+                  <Info className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
+                  <span className="text-xs sm:text-sm">{translations.info}</span>
 
                 </button>
               </div>
@@ -3055,7 +3059,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        âœ“ Save
+                                        Ã¢Å“â€œ Save
                                       </button>
                                       <button
                                         type="button"
@@ -3065,7 +3069,7 @@
                                         }}
                                         className="text-gray-500 hover:text-gray-700 text-xs"
                                       >
-                                        âœ— Cancel
+                                        Ã¢Å“â€” Cancel
                                       </button>
                                     </div>
                                   ) : (
@@ -3585,11 +3589,11 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodâ€”especially fish, meat, or leftoversâ€”is stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0–4°C stays safe.</li>
-                        <li>Temperatures above 10°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                        <li>Fresh fish kept at 0â€“4Â°C stays safe.</li>
+                        <li>Temperatures above 10Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -3607,7 +3611,7 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                        Certain additivesâ€”including benzoates and sulfitesâ€”may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
@@ -3634,7 +3638,7 @@
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesâ€”cooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -3660,9 +3664,9 @@
                           <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
                           <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
                           <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">4. Wöhrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref4" className="scroll-mt-4">4. WÃ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
                           <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">6. Küfner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref6" className="scroll-mt-4">6. KÃ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
                           <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
