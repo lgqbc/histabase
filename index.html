@@ -233,11 +233,13 @@
 
     /* Recipe ingredient card width limits */
     .recipe-ingredient-card {
+      width: fit-content;
       max-width: 70%;
     }
 
     @media (max-width: 768px) {
       .recipe-ingredient-card {
+        width: 100%;
         max-width: 100%;
       }
     }
@@ -314,11 +316,13 @@
 
     /* Recipe ingredient card width limits */
     .recipe-ingredient-card {
+      width: fit-content;
       max-width: 70%;
     }
 
     @media (max-width: 768px) {
       .recipe-ingredient-card {
+        width: 100%;
         max-width: 100%;
       }
     }
@@ -533,11 +537,15 @@
       const modPct = total > 0 ? (props.moderate / total) * 100 : 0;
       const intPct = total > 0 ? (props.intolerable / total) * 100 : 0;
       
+      // Calculate percentage with moderate counting as 0.5
+      const score = props.tolerable + (props.moderate * 0.5);
+      const scorePct = total > 0 ? Math.round((score / total) * 100) : 0;
+      
       return (
         <div className={props.isTotal ? "mb-3 pb-3 border-b border-gray-200" : "mb-1"}>
           <div className="flex justify-between text-sm mb-1">
             <span className={props.isTotal ? "font-semibold text-gray-800" : "text-gray-600"}>{props.label}</span>
-            <span className="text-gray-400">{total > 0 ? Math.round(tolPct) + "%" : "No data"} % {total}</span>
+            <span className="text-gray-400">{total > 0 ? scorePct + "%" : "No data"} % {total}</span>
           </div>
           <div className="flex h-5 rounded-full overflow-hidden bg-gray-200">
             {props.tolerable > 0 && <div style={{ width: tolPct + "%", backgroundColor: '#00A676' }} />}
@@ -615,6 +623,9 @@
         return sid;
       });
       const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+      const [showOnlyMyRecipes, setShowOnlyMyRecipes] = useState(false);
+      const [editingIngredientIdx, setEditingIngredientIdx] = useState(null);
+      const [editingAmount, setEditingAmount] = useState("");
       
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
@@ -945,6 +956,11 @@
       function getDisplayRecipes() {
         let sorted = getSortedRecipes();
         
+        // Filter to only user's recipes if enabled
+        if (showOnlyMyRecipes && user) {
+          sorted = sorted.filter(r => r.user_id === user.id);
+        }
+        
         // Filter to only favorites if enabled
         if (showOnlyFavorites) {
           sorted = sorted.filter(r => userFavorites.has(r.id));
@@ -1229,13 +1245,15 @@
         const ratings = communityRatings[foodId];
         if (!ratings || ratings.length === 0) return null;
         
-        let tolerable = 0;
+        let score = 0;
         ratings.forEach(r => {
-          if (r.rating === "tolerate") tolerable++;
+          if (r.rating === "tolerate") score += 1;
+          else if (r.rating === "moderation") score += 0.5;
+          // avoid adds 0
         });
         
-        // Simple percentage: tolerable / total (same as bar graph)
-        const percentage = (tolerable / ratings.length) * 100;
+        // Calculate percentage: tolerate=yes, moderate=0.5, avoid=no
+        const percentage = (score / ratings.length) * 100;
         return Math.round(percentage);
       }
 
@@ -2758,9 +2776,31 @@
               <div className="max-w-4xl mx-auto space-y-4">
                 {/* Header with Create Recipe button */}
                 <div className="flex justify-between items-center">
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-800">{translations.allRecipes}</h1>
-                    <p className="text-sm text-gray-500 mt-1">Look at other people's recipes or share your own!</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowOnlyMyRecipes(false)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        !showOnlyMyRecipes 
+                          ? 'text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                      style={!showOnlyMyRecipes ? { backgroundColor: '#525174' } : {}}
+                    >
+                      All User Recipes
+                    </button>
+                    {user && (
+                      <button
+                        onClick={() => setShowOnlyMyRecipes(true)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                          showOnlyMyRecipes 
+                            ? 'text-white' 
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                        style={showOnlyMyRecipes ? { backgroundColor: '#525174' } : {}}
+                      >
+                        Your Recipes
+                      </button>
+                    )}
                   </div>
                   {user && (
                     <button
@@ -2926,22 +2966,82 @@
                             <div className="space-y-1">
                               {recipeForm.ingredients.map((ingredient, idx) => (
                                 <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
-                                  <span className="text-sm flex items-center gap-2">
-                                    {ingredient.amount && <span className="font-semibold text-gray-700">{ingredient.amount}</span>}
-                                    {ingredient.name}
-                                    {ingredient.inDatabase && (
-                                      <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
-                                        In DB
+                                  {editingIngredientIdx === idx ? (
+                                    <div className="flex items-center gap-2 flex-1">
+                                      <input
+                                        type="text"
+                                        value={editingAmount}
+                                        onChange={(e) => setEditingAmount(e.target.value)}
+                                        placeholder="Amount"
+                                        className="w-32 px-2 py-1 border border-gray-300 rounded text-sm"
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') {
+                                            const updated = [...recipeForm.ingredients];
+                                            updated[idx] = { ...updated[idx], amount: editingAmount };
+                                            setRecipeForm({...recipeForm, ingredients: updated});
+                                            setEditingIngredientIdx(null);
+                                            setEditingAmount("");
+                                          }
+                                        }}
+                                      />
+                                      <span className="text-sm">{ingredient.name}</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const updated = [...recipeForm.ingredients];
+                                          updated[idx] = { ...updated[idx], amount: editingAmount };
+                                          setRecipeForm({...recipeForm, ingredients: updated});
+                                          setEditingIngredientIdx(null);
+                                          setEditingAmount("");
+                                        }}
+                                        className="text-green-600 hover:text-green-700 text-xs"
+                                      >
+                                        ✓ Save
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setEditingIngredientIdx(null);
+                                          setEditingAmount("");
+                                        }}
+                                        className="text-gray-500 hover:text-gray-700 text-xs"
+                                      >
+                                        ✗ Cancel
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <span className="text-sm flex items-center gap-2">
+                                        {ingredient.amount && <span className="font-semibold text-gray-700">{ingredient.amount}</span>}
+                                        {ingredient.name}
+                                        {ingredient.inDatabase && (
+                                          <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
+                                            In DB
+                                          </span>
+                                        )}
                                       </span>
-                                    )}
-                                  </span>
-                                  <button
-                                    type="button"
-                                    onClick={() => removeIngredient(idx)}
-                                    className="text-red-500 hover:text-red-700"
-                                  >
-                                    <X className="w-4 h-4" />
-                                  </button>
+                                      <div className="flex items-center gap-2">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditingIngredientIdx(idx);
+                                            setEditingAmount(ingredient.amount || "");
+                                          }}
+                                          className="text-blue-500 hover:text-blue-700"
+                                          title="Edit amount"
+                                        >
+                                          <Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() => removeIngredient(idx)}
+                                          className="text-red-500 hover:text-red-700"
+                                        >
+                                          <X className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
                               ))}
                             </div>
@@ -3117,7 +3217,7 @@
                                 title={userFavorites.has(recipe.id) ? "Remove from favorites" : "Add to favorites"}
                               >
                                 <Star 
-                                  className="w-5 h-5" 
+                                  className="w-4 h-4" 
                                   fill={userFavorites.has(recipe.id) ? '#FBAF00' : 'none'}
                                 />
                               </button>
