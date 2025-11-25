@@ -614,6 +614,7 @@
         }
         return sid;
       });
+      const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
       
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
@@ -940,17 +941,13 @@
         }
       }
 
-      // Sort with favorites on top
+      // Filter recipes
       function getDisplayRecipes() {
-        const sorted = getSortedRecipes();
+        let sorted = getSortedRecipes();
         
-        // Separate favorited and non-favorited
-        const favorited = sorted.filter(r => userFavorites.has(r.id));
-        const notFavorited = sorted.filter(r => !userFavorites.has(r.id));
-        
-        // If sorting by favorites or recent, put user's favorites on top
-        if (recipeSortBy === 'favorites' || recipeSortBy === 'recent') {
-          return [...favorited, ...notFavorited];
+        // Filter to only favorites if enabled
+        if (showOnlyFavorites) {
+          sorted = sorted.filter(r => userFavorites.has(r.id));
         }
         
         return sorted;
@@ -988,8 +985,18 @@
             .eq('id', user.id);
 
           if (error) throw error;
+          
+          // Also update author_name in all user's recipes
+          await supabase
+            .from('recipes')
+            .update({ author_name: name })
+            .eq('user_id', user.id);
+          
           setDisplayName(name);
           setShowNameModal(false);
+          
+          // Reload recipes to show updated names
+          await loadRecipes();
           
           // If we just saved name from the recipe creation flow, open the recipe form
           if (view === 'recipes') {
@@ -2781,8 +2788,17 @@
                 </div>
 
 
-                {/* Sorting dropdown */}
-                <div className="flex justify-end">
+                {/* Sorting and Filter Options */}
+                <div className="flex justify-end gap-3 items-center">
+                  <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showOnlyFavorites}
+                      onChange={(e) => setShowOnlyFavorites(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span>Only show favorites</span>
+                  </label>
                   <select
                     value={recipeSortBy}
                     onChange={(e) => setRecipeSortBy(e.target.value)}
@@ -3035,7 +3051,7 @@
                       )}
                     </div>
                   ) : (
-                    recipes.map(recipe => {
+                    getDisplayRecipes().map(recipe => {
                       const isRecipeExpanded = expandedRecipe.includes(recipe.id);
                       
                       return (
@@ -3120,10 +3136,10 @@
                           {/* Recipe Details - Only When Expanded */}
                           {isRecipeExpanded && (
                             <div className="px-5 pb-5 pt-4" style={{ backgroundColor: '#fdf8fa' }}>
-                              {/* View counter and created date - subtle in top right */}
-                              <div className="flex justify-end gap-4 mb-4 text-xs text-gray-400">
-                                <span>{recipeViews[recipe.id] || 0} views</span>
+                              {/* Date on left, views and stars on right */}
+                              <div className="flex justify-between mb-4 text-xs text-gray-400">
                                 <span>{new Date(recipe.created_at).toLocaleDateString()}</span>
+                                <span>{recipeViews[recipe.id] || 0} views | {recipeFavorites[recipe.id] || 0} stars</span>
                               </div>
                               
                               {/* All Ingredients as Cards */}
@@ -3153,7 +3169,7 @@
                                             </span>
                                             <div className="bg-white rounded-lg border border-gray-100 flex-1 recipe-ingredient-card">
                                           <div 
-                                            className="px-3 py-2 cursor-pointer flex items-center gap-2 text-sm" 
+                                            className="px-2 py-1 cursor-pointer flex items-center gap-1.5 text-xs" 
                                             onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : food.id); }}
                                           >
                                             <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -3169,49 +3185,11 @@
                                                 </span>
                                               )}
                                             </div>
-                                            <div className="flex items-center gap-2 ml-auto flex-shrink-0">
-                                              {!isExp && (
-                                                <div className="flex gap-0.5" onClick={(e) => e.stopPropagation()}>
-                                                  <button
-                                                    onClick={() => submitRating(food.id, "tolerate")}
-                                                    className={`vote-button w-6 h-6 flex items-center justify-center text-sm transition-colors ${
-                                                      myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
-                                                    }`}
-                                                    style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
-                                                    onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
-                                                    onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                                                  >
-                                                    {'\u25B2'}
-                                                  </button>
-                                                  <button
-                                                    onClick={() => submitRating(food.id, "moderation")}
-                                                    className={`vote-button w-6 h-6 flex items-center justify-center text-sm transition-colors ${
-                                                      myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
-                                                    }`}
-                                                    style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
-                                                    onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
-                                                    onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                                                  >
-                                                    {'\u25CF'}
-                                                  </button>
-                                                  <button
-                                                    onClick={() => submitRating(food.id, "avoid")}
-                                                    className={`vote-button w-6 h-6 flex items-center justify-center text-sm transition-colors ${
-                                                      myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
-                                                    }`}
-                                                    style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
-                                                    onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
-                                                    onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
-                                                  >
-                                                    {'\u25BC'}
-                                                  </button>
-                                                </div>
-                                              )}
-                                              {isExp && <div className="w-[60px]"></div>}
-                                              <span className="px-2 py-0.5 rounded-full text-xs font-semibold min-w-[45px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
+                                            <div className="flex items-center gap-1.5 ml-auto flex-shrink-0">
+                                              <span className="px-1.5 py-0.5 rounded-full text-xs font-semibold min-w-[40px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
                                                 {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
                                               </span>
-                                              <span className={`px-2 py-0.5 rounded-full text-white text-xs font-medium whitespace-nowrap min-w-[60px] text-center ${getScoreColor(food.score)}`}>
+                                              <span className={`px-1.5 py-0.5 rounded-full text-white text-xs font-medium whitespace-nowrap min-w-[55px] text-center ${getScoreColor(food.score)}`}>
                                                 {getScoreLabel(food.level)}
                                               </span>
                                               {isExp ? <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />}
