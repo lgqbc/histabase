@@ -2821,8 +2821,9 @@
                   Look at other people's recipes or share your own!
                 </h2>
                 
-                {/* Header with Create Recipe button */}
-                <div className="flex justify-between items-center">
+                {/* Header with filters and Create Recipe button */}
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                  {/* Left side: Recipe view toggle buttons */}
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowOnlyMyRecipes(false)}
@@ -2849,53 +2850,57 @@
                       </button>
                     )}
                   </div>
-                  {user && (
-                    <button
-                      onClick={() => {
-                        if (!displayName) {
-                          setShowNameModal(true);
-                        } else {
-                          setShowRecipeForm(true);
-                          setEditingRecipe(null);
-                          setRecipeForm({
-                            title: '',
-                            description: '',
-                            instructions: '',
-                            ingredients: [],
-                            is_public: false
-                          });
-                        }
-                      }}
-                      className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm font-medium"
-                      style={{ backgroundColor: '#525174' }}
-                    >
-                      <Plus className="w-4 h-4" /> {translations.createRecipe}
-                    </button>
-                  )}
-                </div>
 
+                  {/* Center/Right side: Filters and Create button */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    {/* Favorites checkbox and sorting */}
+                    <div className="flex gap-3 items-center">
+                      <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={showOnlyFavorites}
+                          onChange={(e) => setShowOnlyFavorites(e.target.checked)}
+                          className="rounded"
+                        />
+                        <span>Only show favorites</span>
+                      </label>
+                      <select
+                        value={recipeSortBy}
+                        onChange={(e) => setRecipeSortBy(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      >
+                        <option value="recent">Most Recent</option>
+                        <option value="alphabetical">Alphabetically</option>
+                        <option value="views">Most Viewed</option>
+                        <option value="favorites">Most Favorited</option>
+                      </select>
+                    </div>
 
-                {/* Sorting and Filter Options */}
-                <div className="flex justify-end gap-3 items-center">
-                  <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={showOnlyFavorites}
-                      onChange={(e) => setShowOnlyFavorites(e.target.checked)}
-                      className="rounded"
-                    />
-                    <span>Only show favorites</span>
-                  </label>
-                  <select
-                    value={recipeSortBy}
-                    onChange={(e) => setRecipeSortBy(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                  >
-                    <option value="recent">Most Recent</option>
-                    <option value="alphabetical">Alphabetically</option>
-                    <option value="views">Most Viewed</option>
-                    <option value="favorites">Most Favorited</option>
-                  </select>
+                    {/* Create Recipe button */}
+                    {user && (
+                      <button
+                        onClick={() => {
+                          if (!displayName) {
+                            setShowNameModal(true);
+                          } else {
+                            setShowRecipeForm(true);
+                            setEditingRecipe(null);
+                            setRecipeForm({
+                              title: '',
+                              description: '',
+                              instructions: '',
+                              ingredients: [],
+                              is_public: false
+                            });
+                          }
+                        }}
+                        className="flex items-center justify-center gap-2 px-4 py-2 text-white rounded-lg text-sm font-medium whitespace-nowrap"
+                        style={{ backgroundColor: '#525174' }}
+                      >
+                        <Plus className="w-4 h-4" /> {translations.createRecipe}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Recipe Form Modal */}
