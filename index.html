@@ -1977,36 +1977,50 @@
                 </div>
               </div>
               <div className="flex gap-2 mb-8 max-w-2xl mx-auto">
-                <button 
-                  onClick={() => setView("database")} 
+                <button
+                  onClick={() => setView("database")}
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Search className="w-4 h-4 inline mr-1" />{translations.database}
+                  <span className="flex flex-col items-center sm:flex-row sm:justify-center sm:gap-1">
+                    <Search className="w-4 h-4 mb-1 sm:mb-0" />
+                    {translations.database}
+                  </span>
                 </button>
-                <button 
-                  onClick={() => setView("profile")} 
+              
+                <button
+                  onClick={() => setView("profile")}
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <User className="w-4 h-4 inline mr-1" />{translations.profile}
+                  <span className="flex flex-col items-center sm:flex-row sm:justify-center sm:gap-1">
+                    <User className="w-4 h-4 mb-1 sm:mb-0" />
+                    {translations.profile}
+                  </span>
                 </button>
-                <button 
-                  onClick={() => setView("recipes")} 
+              
+                <button
+                  onClick={() => setView("recipes")}
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <BookOpen className="w-4 h-4 inline mr-1" />{translations.recipes}
+                  <span className="flex flex-col items-center sm:flex-row sm:justify-center sm:gap-1">
+                    <BookOpen className="w-4 h-4 mb-1 sm:mb-0" />
+                    {translations.recipes}
+                  </span>
                 </button>
-                <button 
-                  onClick={() => setView("info")} 
+              
+                <button
+                  onClick={() => setView("info")}
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "info" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Info className="w-4 h-4 inline mr-1" />{translations.info}
+                  <span className="flex flex-col items-center sm:flex-row sm:justify-center sm:gap-1">
+                    <Info className="w-4 h-4 mb-1 sm:mb-0" />
+                    {translations.info}
+                  </span>
                 </button>
               </div>
-            </div>
 
             {view === "database" && (
               <div className="flex gap-4 items-start">
