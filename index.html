@@ -412,7 +412,7 @@
       // Recipe translations
       createRecipe: "Create Recipe",
       myRecipes: "My Recipes",
-      allRecipes: "All User Recipes",
+      allRecipes: "All Recipes",
       recipeTitle: "Recipe Title",
       recipeDescription: "Description",
       recipeInstructions: "Instructions",
@@ -897,11 +897,18 @@
       // Start editing a recipe
       function startEditRecipe(recipe) {
         setEditingRecipe(recipe);
+        // Normalize ingredients to ensure amount field exists
+        const normalizedIngredients = (recipe.ingredients || []).map(ing => ({
+          name: ing.name,
+          amount: ing.amount || '',
+          inDatabase: ing.inDatabase,
+          foodId: ing.foodId || null
+        }));
         setRecipeForm({
           title: recipe.title,
           description: recipe.description,
           instructions: recipe.instructions,
-          ingredients: recipe.ingredients || [],
+          ingredients: normalizedIngredients,
           is_public: recipe.is_public
         });
         setShowRecipeForm(true);
@@ -2880,7 +2887,7 @@
                             )}
                             
                             {/* Expand/Collapse Arrow - Bottom Center */}
-                            <div className="absolute bottom-2 left-1/2 transform scale-[2]" style={{ left: '90%', color: 'rgba(82,42,116,0.1)' }}>
+                            <div className="absolute bottom-12 left-1/2 transform scale-[3]" style={{ left: '90%', color: 'rgba(82,42,116,0.1)' }}>
                               {isRecipeExpanded ? <ChevronUp className="w-11 h-11" /> : <ChevronDown className="w-11 h-11" />}
                             </div>
                           </div>
@@ -2894,7 +2901,10 @@
                                   {translations.ingredients}
                                 </h4>
                                 <div className="space-y-1">
-                                    {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => {
+                                    {recipe.ingredients && Array.isArray(recipe.ingredients) && recipe.ingredients.map((ingredient, idx) => {
+                                      // Safety check - ensure ingredient has basic structure
+                                      if (!ingredient || !ingredient.name) return null;
+                                      
                                       // If ingredient is in database, show full interactive card
                                       if (ingredient.inDatabase) {
                                         const food = foodDatabase.find(f => f.id === ingredient.foodId);
