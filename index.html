@@ -1907,14 +1907,14 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "moderation")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-3xl transition-colors ${
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
                           myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
                         }`}
                         style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
                         onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
                       >
-                        {'\u25CF'}
+                        {'\u2B24'}
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "avoid")}
