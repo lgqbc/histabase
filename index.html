@@ -2824,11 +2824,11 @@
                       const isRecipeExpanded = expandedRecipe.includes(recipe.id);
                       
                       return (
-                        <div key={recipe.id} className="bg-white rounded-lg border" style={{ borderColor: '#A7ACD9', borderWidth: '2px' }}>
+                        <div key={recipe.id} className="bg-white rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: isRecipeExpanded ? '#A7ACD9' : '#e5e7eb' }}>
                           {/* Recipe Header - Always Visible */}
                           <div 
-                            className="p-5 cursor-pointer relative"
-                            style={{ background: 'linear-gradient(to bottom, #f6e3fa 0%, #ffffff 100%)' }}
+                            className="p-5 cursor-pointer relative rounded-t-xl"
+                            style={{ backgroundColor: isRecipeExpanded ? '#faf9fc' : '#ffffff' }}
                             onClick={() => {
                               if (isRecipeExpanded) {
                                 setExpandedRecipe(expandedRecipe.filter(id => id !== recipe.id));
@@ -2840,7 +2840,7 @@
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <h3 className="font-semibold text-lg text-gray-800">{recipe.title}</h3>
+                                  <h3 className="font-semibold text-lg" style={{ color: isRecipeExpanded ? '#525174' : '#1f2937' }}>{recipe.title}</h3>
                                   {user && user.id === recipe.user_id && (
                                     <>
                                       {recipe.is_public ? (
@@ -2887,26 +2887,30 @@
 
                           {/* Recipe Details - Only When Expanded */}
                           {isRecipeExpanded && (
-                            <div className="px-5 pb-5 border-t pt-4" style={{ borderColor: '#A7ACD9', backgroundColor: '#fefefe' }}>
+                            <div className="px-5 pb-5 pt-4" style={{ backgroundColor: '#fdf8fa' }}>
                               {/* All Ingredients as Cards */}
-                              <div className="mb-4">
-                                <h4 className="font-semibold text-lg mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: '#f6e3fa', color: '#525174' }}>
-                                  {translations.ingredients}:
+                              <div className="mb-6">
+                                <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
+                                  {translations.ingredients}
                                 </h4>
                                 <div className="space-y-1">
-                                  {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => {
-                                    // If ingredient is in database, show full interactive card
-                                    if (ingredient.inDatabase) {
-                                      const food = foodDatabase.find(f => f.id === ingredient.foodId);
-                                      if (!food) return null;
-                                      
-                                      const isExp = expanded === food.id;
-                                      const stats = getCommunityStats(food.id);
-                                      const myRating = myRatings[food.id];
-                                      const userScorePercentage = getUserScorePercentage(food.id);
-                                      
-                                      return (
-                                        <div key={idx} className="bg-white rounded-lg border border-gray-100">
+                                    {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => {
+                                      // If ingredient is in database, show full interactive card
+                                      if (ingredient.inDatabase) {
+                                        const food = foodDatabase.find(f => f.id === ingredient.foodId);
+                                        if (!food) return null;
+                                        
+                                        const isExp = expanded === food.id;
+                                        const stats = getCommunityStats(food.id);
+                                        const myRating = myRatings[food.id];
+                                        const userScorePercentage = getUserScorePercentage(food.id);
+                                        
+                                        return (
+                                          <div key={idx} className="flex items-start gap-2">
+                                            <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
+                                              {ingredient.amount || ''}
+                                            </span>
+                                            <div className="bg-white rounded-lg border border-gray-100 flex-1">
                                           <div 
                                             className="px-3 py-2 cursor-pointer flex items-center gap-2 text-sm" 
                                             onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : food.id); }}
@@ -2916,7 +2920,6 @@
                                                 {getScoreIcon(food.level)}
                                               </div>
                                               <span className="font-medium text-gray-800 truncate text-sm">
-                                                {ingredient.amount && <span className="font-bold text-gray-900">{ingredient.amount} </span>}
                                                 {food.name}
                                               </span>
                                               {myRating && (
@@ -3065,18 +3068,23 @@
                                             </div>
                                           )}
                                         </div>
+                                        </div>
                                       );
                                     } else {
                                       // If ingredient is NOT in database, show simple card with a unique symbol
                                       return (
-                                        <div key={idx} className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2">
-                                          <div className="flex-shrink-0 text-xs">
-                                            <span className="text-lg" style={{ color: '#9CA3AF' }}>◈</span>
-                                          </div>
-                                          <span className="font-medium text-gray-700 text-sm">
-                                            {ingredient.amount && <span className="font-bold text-gray-900">{ingredient.amount} </span>}
-                                            {ingredient.name}
+                                        <div key={idx} className="flex items-start gap-2">
+                                          <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
+                                            {ingredient.amount || ''}
                                           </span>
+                                          <div className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2 flex-1">
+                                            <div className="flex-shrink-0 text-xs">
+                                              <span className="text-lg" style={{ color: '#9CA3AF' }}>◈</span>
+                                            </div>
+                                            <span className="font-medium text-gray-700 text-sm">
+                                              {ingredient.name}
+                                            </span>
+                                          </div>
                                         </div>
                                       );
                                     }
@@ -3086,10 +3094,10 @@
 
                               {/* Instructions */}
                               <div>
-                                <h4 className="font-semibold text-lg mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: '#A7ACD9', color: '#525174' }}>
-                                  {translations.recipeInstructions}:
+                                <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
+                                  {translations.recipeInstructions}
                                 </h4>
-                                <p className="text-gray-700 whitespace-pre-wrap px-3">{recipe.instructions}</p>
+                                <p className="text-gray-700 whitespace-pre-wrap leading-relaxed px-1">{recipe.instructions}</p>
                               </div>
                             </div>
                           )}
