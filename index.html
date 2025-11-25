@@ -1,103 +1,3789 @@
-Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.¹
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>HistaBase - Histamine Food Tracker</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-256x256.png">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <style>
+    /* Custom checkbox styling */
+    input[type="checkbox"] {
+      accent-color: #525174;
+    }
+    input[type="checkbox"]:checked {
+      background-color: #525174;
+      border-color: #525174;
+    }
+    input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(82, 81, 116, 0.2);
+    }
 
-Foods Most Likely to Cause Problems
+    /* Mobile overlay sidebar */
+    @media (max-width: 768px) {
+      .mobile-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        background: white;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      }
+      
+      .mobile-sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .mobile-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+        display: none;
+      }
+      
+      .mobile-backdrop.open {
+        display: block;
+      }
 
-The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.²
-Common triggers include:
+      .desktop-sidebar {
+        display: none;
+      }
 
-Aged cheeses
+      .main-content {
+        max-width: 100%;
+        padding: 0 1rem;
+      }
 
-Fermented sausages
+      /* Better mobile spacing */
+      .mobile-header {
+        padding: 1rem;
+      }
 
-Sauerkraut
+      /* Adjust food cards for mobile */
+      .food-card-mobile {
+        font-size: 0.9rem;
+      }
 
-Alcohol (especially red wine and champagne)
+      /* Fix food card layout for mobile - stack vertically */
+      .food-card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
 
-Leftover fish or seafood, or any fish that isn’t extremely fresh³
+      .food-card-top {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+      }
 
-Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.³
+      .food-card-name-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+      }
 
-Why Freshness Matters
+      .food-card-badges-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+      }
 
-Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
+      .food-card-name {
+        font-size: 0.95rem !important;
+        flex: 1;
+        min-width: 0;
+      }
 
-Fresh fish kept at 0–4°C stays safe.
+      .food-card-badge {
+        font-size: 0.75rem !important;
+        padding: 0.25rem 0.5rem !important;
+        white-space: nowrap;
+      }
 
-Temperatures above 10°C lead to rapid histamine formation.³
-This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
+      /* On mobile, reorganize the card layout */
+      .food-card-inner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+      }
 
-Histamine-Releasing Foods
+      .food-card-first-row {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 0.5rem;
+      }
 
-Some foods don’t contain much histamine but can cause the body to release its own.¹
-Common examples:
+      .food-card-second-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
 
-Citrus fruits
+      /* Make badges smaller */
+      .food-card-second-row span {
+        font-size: 0.7rem !important;
+        padding: 0.25rem 0.5rem !important;
+        min-width: auto !important;
+      }
 
-Strawberries
+      /* Stack login button on mobile */
+      .mobile-auth-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+      }
 
-Tomatoes
+      /* On mobile, hide only the first empty flex spacer, not the one with the button */
+      .mobile-auth-buttons > .flex-1:first-child {
+        display: none;
+      }
 
-Spinach
+      /* Remove margin and center the login button container on mobile */
+      .mobile-auth-buttons > div:last-child {
+        margin-left: 0 !important;
+        justify-content: center;
+      }
 
-Chocolate
+      /* Hide column headers on mobile since layout is stacked */
+      .column-headers-row {
+        display: none;
+      }
+    }
+      /* Floating show filters button */
+      
+      
+      /* Floating filter menu icon button */
+      .floating-filter-icon {
+        position: fixed;
+        top: 1rem;
+        left: 20px;
+        z-index: 500;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 2px solid rgba(82, 81, 116, 0.2);
+        background-color: transparent;
+        cursor: pointer;
+        transition: opacity 0.3s ease, border-color 0.3s ease;
+      }
+      
+      .floating-filter-icon:hover {
+        border-color: rgba(82, 81, 116, 0.4);
+      }
 
-Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.⁴
+    /* Desktop only - keep sidebar visible */
+    @media (min-width: 769px) {
+      .mobile-sidebar {
+        display: none;
+      }
+      
+      .desktop-sidebar {
+        display: block;
+      }
 
-Foods Usually Better Tolerated
+      .mobile-backdrop {
+        display: none !important;
+      }
 
-For most people with HIT, the safest base diet is fresh and unprocessed.⁵
-Often well-tolerated:
+      /* Show column headers on desktop */
+      .column-headers-row {
+        display: block;
+      }
+      
+      /* Center the food cards section on desktop */
+      .main-content {
+        max-width: 1000px !important;
+        margin-right: auto !important;
+      }
+    }
 
-Freshly cooked meat and poultry
+    /* Recipe ingredient card width limits */
+    .recipe-ingredient-card {
+      width: fit-content;
+      max-width: 40%;
+    }
 
-Most fresh vegetables (except known triggers like tomatoes, spinach, and eggplant)
+    @media (max-width: 768px) {
+      .recipe-ingredient-card {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    
+    /* Force word breaks to prevent overflow in long text without spaces */
+    .break-words {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .overflow-wrap-anywhere {
+      overflow-wrap: anywhere;
+    }
+  </style>
 
-Fresh dairy products
+  <style id="light-dark-theme">
+    /* SUBTLE OFF-WHITE THEME - Warm and inviting */
+    body {
+      background-color: #FAF9F7 !important;
+    }
+    
+    /* Main background areas - warm off-white */
+    .bg-gray-100,
+    .min-h-screen {
+      background-color: #faf6f5 !important;
+    }
+    
+    /* Cards - warm off-white */
+    .bg-white {
+      background-color: #FFFEFB !important;
+      border-color: #E8E6E3 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    
+    /* Keep original text colors */
+    
+    /* Borders - warm subtle */
+    .border-gray-100 {
+      border-color: #F0EEE9 !important;
+    }
+    
+    .border-gray-200 {
+      border-color: #E8E6E3 !important;
+    }
+    
+    /* Input fields - warm slight tint */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    select,
+    textarea {
+      background-color: #FDFCFA !important;
+      border-color: #E8E6E3 !important;
+    }
+    
+    /* Sidebar - warm slight tint */
+    .bg-gray-50 {
+      background-color: #faf8fc !important;
+    }
+    
+    /* Category dividers */
+    .bg-gray-200 {
+      background-color: #F0EEE9 !important;
+    }
+    
+    /* Subtle shadows */
+    button {
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    
+    /* Remove shadow from voting buttons */
+    .vote-button {
+      box-shadow: none !important;
+      border: none !important;
+    }
+    
+    /* Remove shadow from language buttons */
+    .language-button {
+      box-shadow: none !important;
+      border: none !important;
+    }
+    
 
-Grains (including gluten-containing grains)
+    /* Recipe ingredient card width limits */
+    .recipe-ingredient-card {
+      width: fit-content;
+      max-width: 40%;
+    }
 
-Fresh herbs
+    @media (max-width: 768px) {
+      .recipe-ingredient-card {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-Most cooking oils
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
 
-Tolerance varies, but these foods provide a reliable starting point.
+    // Initialize Supabase
+    const supabaseUrl = 'https://iwczofbamtrppolrytab.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3Y3pvZmJhbXRycHBvbHJ5dGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM4Mzk5MzEsImV4cCI6MjA3OTQxNTkzMX0.Fvp59JvXSg8mGZNn_fLokrdF6_Y7HfFvW2ZpuKCfYWI';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-Storage and Preparation Guidelines
+    // Lucide icons as inline SVG components
+    const Search = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
+    const User = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+    const Info = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>;
+    const AlertCircle = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
+    const CheckCircle = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+    const XCircle = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>;
+    const HelpCircle = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>;
+    const ChevronDown = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>;
+    const ChevronUp = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>;
+    const Users = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+    const Filter = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+    const ExternalLink = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>;
+    const Heart = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>;
+    const Mail = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+    const Download = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
+    const ArrowUpDown = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>;
+    const LogOut = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>;
+    const LogIn = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>;
+    const BookOpen = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+    const Plus = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>;
+    const X = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+    const Edit = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
+    const Star = ({ className, fill }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill || "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
 
-How you handle food is as important as what you eat.⁶
-Core rules:
+    const Trash2 = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
+    const Globe = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>;
+    const Lock = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
 
-Refrigerate immediately after cooking or purchasing.
+    // Database URLs
+    const DATABASE_URL_EN = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase.json';
+    const DATABASE_URL_DE = 'https://iwczofbamtrppolrytab.supabase.co/storage/v1/object/public/databases/foodDatabase_german.json';
 
-Freeze portions right away if not eating soon.
+    const allSources = ["SIGHI", "FDA", "USDA", "CFCD"];
+    const getSourceLinks = (lang) => ({
+      "SIGHI": lang === "de" 
+        ? "https://www.mastzellaktivierung.info/downloads/foodlist/11_FoodList_DE_alphabetisch_mitKat.pdf"
+        : "https://www.mastzellaktivierung.info/downloads/foodlist/SIGHI-FoodList_EN_Histamin_alphabetisch_inKategorien.pdf",
+      "FDA": "https://www.fda.gov/",
+      "USDA": "https://fdc.nal.usda.gov/",
+      "CFCD (No Histamine Data)": "https://www.nutridatabaze.cz/en/search-food-data/alphabetical-list/?letter="
+    });
+    
+    const translations = {
+      // All UI text - English only
+      aboutTitle: "About HistaBase",
+      aboutP1: "Combining research data and user reports, HistaBase aims to be a comprehensive Database of foods and ingedients.",
+      aboutP2: "Use HistaBase to help you track which foods affect your histamine levels and keep a personalized log based on your reactions and compare your ratings with others sharing your condition.",
+      aboutP3: "Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage.",
+      
+      detailedInfoTitle: "Understanding Histamine Intolerance",
+      detailedInfoButton: "Read More About Histamine Management",
+      detailedInfoHideButton: "Hide Details",
+      
+      sourcesTitle: "Our Sources",
+      contactTitle: "Contact",
+      contactText: "Questions?",
+      contactEmail: "hello@histabase.com",
+      supportTitle: "Support HistaBase",
+      supportText: "Help us maintain this free resource.",
+      donateButton: "Donate",
+      
+      database: "Database",
+      recipes: "Recipes",
+      profile: "Profile",
+      info: "Info",
+      
+      filters: "Filters",
+      language: "Language",
+      diet: "Diet",
+      categories: "Categories",
+      sources: "Sources",
+      allFoods: "All Foods",
+      vegetarian: "Vegetarian",
+      vegan: "Vegan",
+      
+      account: "Account",
+      loggedInAs: "Logged in as:",
+      yourConditions: "Your Conditions",
+      yourRatings: "Your Ratings",
+      downloadPDF: "Download PDF",
+      whatICanEat: "What I Can Eat",
+      inModeration: "In Moderation",
+      whatIShouldAvoid: "What I Should Avoid",
+      allMyRatings: "All My Ratings",
+      iCanEat: "I Can Eat",
+      canEatDesc: "Foods that you tolerate well and don't trigger symptoms.",
+      moderationDesc: "Foods that you can eat occasionally or in small amounts.",
+      avoidDesc: "Foods that consistently trigger symptoms and should be avoided.",
+      noneYet: "None yet",
+      defaultDiet: "Default Diet Preference",
+      chooseDietFilter: "Choose which foods to show by default:",
+      allVotesAnonymous: "All votes are anonymous and help the community.",
+      setConditionsFirst: "Set Your Conditions First",
+      selectCondition: "Please select at least one condition in your profile to start rating foods.",
+      goToProfile: "Go to Profile",
+      aboutYourRatings: "About Your Ratings",
+      
+      // Recipe translations
+      createRecipe: "Create Recipe",
+      myRecipes: "My Recipes",
+      allRecipes: "All User Recipes",
+      recipeTitle: "Recipe Title",
+      recipeDescription: "Description",
+      recipeInstructions: "Instructions",
+      ingredients: "Ingredients",
+      addIngredient: "Add Ingredient",
+      ingredientName: "Ingredient name",
+      makePublic: "Make this recipe public",
+      saveRecipe: "Save Recipe",
+      cancel: "Cancel",
+      editRecipe: "Edit Recipe",
+      deleteRecipe: "Delete Recipe",
+      deleteConfirm: "Are you sure you want to delete this recipe?",
+      by: "by",
+      public: "Public",
+      private: "Private",
+      noRecipes: "No recipes yet",
+      createFirstRecipe: "Create your first recipe to get started!",
+      setNameFirst: "Please set your display name in your profile before creating recipes.",
+      displayName: "Display Name",
+      displayNameDesc: "This name will be shown on your public recipes",
+      ingredientsInDatabase: "Ingredients in Database",
+      ingredientNotFound: "Not in database"
+    };
+    
+    const conditions = ["Histamine Intolerance", "MCAS", "DAO Deficiency", "IBS", "Chronic Urticaria", "Migraine", "Eczema", "Asthma"];
+    const categories = ["Beverages", "Condiments", "Fermented", "Fruits", "Grains", "Legumes", "Nuts & Seeds", "Oils & Fats", "Spices", "Sweets", "Vegetables", "Dairy", "Eggs", "Meat", "Seafood"];
 
-Consume leftovers within 24 hours.
+    // Flag icons for language selection
+    const FlagUS = ({ className }) => (
+      <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+        <clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+        <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+        <g clipPath="url(#s)">
+          <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+          <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#t)" stroke="#C8102E" strokeWidth="4"/>
+          <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
+          <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
+        </g>
+      </svg>
+    );
 
-Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.
+    const FlagDE = ({ className }) => (
+      <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+        <rect width="60" height="10" fill="#000"/>
+        <rect width="60" height="10" y="10" fill="#D00"/>
+        <rect width="60" height="10" y="20" fill="#FFCE00"/>
+      </svg>
+    );
 
-These steps help keep histamine levels low even in foods you normally tolerate.
+    // Fuzzy search helper - calculates similarity between two strings
+    function fuzzyMatch(str, query) {
+      str = str.toLowerCase();
+      query = query.toLowerCase();
+      
+      // Exact match
+      if (str.includes(query)) return 1;
+      
+      // Calculate Levenshtein distance for typo tolerance
+      const matrix = [];
+      for (let i = 0; i <= query.length; i++) {
+        matrix[i] = [i];
+      }
+      for (let j = 0; j <= str.length; j++) {
+        matrix[0][j] = j;
+      }
+      
+      for (let i = 1; i <= query.length; i++) {
+        for (let j = 1; j <= str.length; j++) {
+          if (query.charAt(i - 1) === str.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1, // substitution
+              matrix[i][j - 1] + 1,     // insertion
+              matrix[i - 1][j] + 1      // deletion
+            );
+          }
+        }
+      }
+      
+      const distance = matrix[query.length][str.length];
+      const maxLength = Math.max(str.length, query.length);
+      
+      // Return similarity score (0 to 1)
+      return 1 - (distance / maxLength);
+    }
 
-Individual Thresholds Matter
+    // Simple in-memory storage (removed - using Supabase now)
 
-There is no single “safe amount” of histamine.⁷ Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
+    function BarGraph(props) {
+      const total = props.tolerable + props.moderate + props.intolerable;
+      const tolPct = total > 0 ? (props.tolerable / total) * 100 : 0;
+      const modPct = total > 0 ? (props.moderate / total) * 100 : 0;
+      const intPct = total > 0 ? (props.intolerable / total) * 100 : 0;
+      
+      // Calculate percentage with moderate counting as 0.5
+      const score = props.tolerable + (props.moderate * 0.5);
+      const scorePct = total > 0 ? Math.round((score / total) * 100) : 0;
+      
+      return (
+        <div className={props.isTotal ? "mb-3 pb-3 border-b border-gray-200" : "mb-1"}>
+          <div className="flex justify-between text-sm mb-1">
+            <span className={props.isTotal ? "font-semibold text-gray-800" : "text-gray-600"}>{props.label}</span>
+            <span className="text-gray-400">{total > 0 ? scorePct + "%" : "No data"} % {total}</span>
+          </div>
+          <div className="flex h-5 rounded-full overflow-hidden bg-gray-200">
+            {props.tolerable > 0 && <div style={{ width: tolPct + "%", backgroundColor: '#00A676' }} />}
+            {props.moderate > 0 && <div style={{ width: modPct + "%", backgroundColor: '#FBAF00' }} />}
+            {props.intolerable > 0 && <div style={{ width: intPct + "%", backgroundColor: '#BB342F' }} />}
+          </div>
+        </div>
+      );
+    }
 
-The practical approach:
+    function HistaBase() {
+      const [foodDatabase, setFoodDatabase] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+      const [language, setLanguage] = useState("en");
+      const [defaultLanguage, setDefaultLanguage] = useState("en");
+      
+      const [search, setSearch] = useState("");
+      const [expanded, setExpanded] = useState(null);
+      const [view, setView] = useState("database");
+      const [userConditions, setUserConditions] = useState(["Histamine Intolerance"]);
+      const [communityRatings, setCommunityRatings] = useState({});
+      const [myRatings, setMyRatings] = useState({});
+      const [showModal, setShowModal] = useState(false);
+      const [selectedSources, setSelectedSources] = useState(allSources);
+      const [selectedCategories, setSelectedCategories] = useState(categories);
+      const [dietFilter, setDietFilter] = useState("all");
+      const [defaultDiet, setDefaultDiet] = useState("all");
+      const [sidebarOpen, setSidebarOpen] = useState(true);
+      const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+      const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+      const [sortBy, setSortBy] = useState("score");
+      const [sortDirection, setSortDirection] = useState("asc"); // "asc" or "desc" - start with asc so safe foods (0) are first
+      const [categorySort, setCategorySort] = useState(false); // separate category grouping toggle
+      const [isFilterButtonFloating, setIsFilterButtonFloating] = useState(false);
+      const filterButtonRef = React.useRef(null);
+      const [showDetailedInfo, setShowDetailedInfo] = useState(false); // for expandable detailed info section
 
-Identify your personal triggers.
+      // Authentication state
+      const [user, setUser] = useState(null);
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [authMode, setAuthMode] = useState("login"); // "login" or "signup"
+      const [authEmail, setAuthEmail] = useState("");
+      const [authPassword, setAuthPassword] = useState("");
+      const [authError, setAuthError] = useState("");
+      const [authLoading, setAuthLoading] = useState(false);
+      
+      // Recipe state
+      const [recipes, setRecipes] = useState([]);
+      const [showRecipeForm, setShowRecipeForm] = useState(false);
+      const [editingRecipe, setEditingRecipe] = useState(null);
+      const [recipeForm, setRecipeForm] = useState({
+        title: '',
+        description: '',
+        instructions: '',
+        ingredients: [],
+        is_public: false
+      });
+      const [currentIngredient, setCurrentIngredient] = useState('');
+      const [currentAmount, setCurrentAmount] = useState('');
+      const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
+      const [displayName, setDisplayName] = useState('');
+      const [showNameModal, setShowNameModal] = useState(false);
+      const [expandedRecipe, setExpandedRecipe] = useState([]);
+      const [recipeFavorites, setRecipeFavorites] = useState({});
+      const [recipeViews, setRecipeViews] = useState({});
+      const [recipeSortBy, setRecipeSortBy] = useState('recent');
+      const [userFavorites, setUserFavorites] = useState(new Set());
+      const [sessionId] = useState(() => {
+        let sid = localStorage.getItem('sessionId');
+        if (!sid) {
+          sid = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('sessionId', sid);
+        }
+        return sid;
+      });
+      const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+      const [showOnlyMyRecipes, setShowOnlyMyRecipes] = useState(false);
+      const [editingIngredientIdx, setEditingIngredientIdx] = useState(null);
+      const [editingAmount, setEditingAmount] = useState("");
+      
+      // Use ref to track if we're currently loading data
+      const isLoadingDataRef = useRef(false);
+      const hasLoadedInitialDataRef = useRef(false);
 
-Keep meals simple and fresh.
+      // Load food database from external URL
+      useEffect(() => {
+        async function loadDatabase() {
+          try {
+            setLoading(true);
+            const url = language === "en" ? DATABASE_URL_EN : DATABASE_URL_DE;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to load database');
+            const data = await response.json();
+            setFoodDatabase(data);
+            setLoading(false);
+          } catch (err) {
+            setError(err.message);
+            setLoading(false);
+          }
+        }
+        loadDatabase();
+      }, [language]);
 
-Add foods back slowly to test tolerance.
+      // Check authentication state on mount  
+      useEffect(() => {
+        let mounted = true;
+        let initialCheckDone = false;
+        
+        async function checkAuth() {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user && mounted) {
+            console.log('[MOUNT] Session found, loading user data...');
+            setUser(session.user);
+            await loadUserData(session.user.id);
+          } else {
+            // No user logged in - still load community ratings
+            console.log('[MOUNT] No session, loading community ratings only...');
+            await loadCommunityRatings();
+          }
+          initialCheckDone = true;
+          console.log('[MOUNT] Initial check complete');
+        }
+        checkAuth();
 
-Track symptoms and patterns.
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log('[AUTH] Event:', event, 'InitialCheckDone:', initialCheckDone);
+          
+          // Ignore events until initial check is done
+          if (!initialCheckDone) {
+            console.log('[AUTH] Ignoring event (initial check not done)');
+            return;
+          }
+          
+          if (event === 'SIGNED_IN' && session?.user && mounted) {
+            console.log('[AUTH] User signed in, loading data...');
+            setUser(session.user);
+            setShowAuthModal(false);
+            await loadUserData(session.user.id);
+          } else if (event === 'SIGNED_OUT' && mounted) {
+            console.log('[AUTH] User signed out, clearing data...');
+            setUser(null);
+            setUserConditions(["Histamine Intolerance"]);
+            setMyRatings({});
+            setDefaultDiet("all");
+            setDefaultLanguage("en");
+            setLanguage("en");
+            await loadCommunityRatings();
+          }
+        });
 
-Sources
-¹ Maintz & Novak (2007)
-² Jarisch (2014)
-³ Lehane & Olley (2000); Visciano et al. (2012)
-⁴ Wöhrl et al. (2004)
-⁵ Reese et al. (2017)
-⁶ Küfner et al. (2008)
-⁷ Kofler et al. (2011)
+        return () => {
+          mounted = false;
+          subscription.unsubscribe();
+        };
+      }, []);
 
-If you want, I can adapt this into a webpage section, a printable patient guide, or a simplified checklist.
+      // Load user data from Supabase
+      async function loadUserData(userId) {
+        console.log('[DATA] Starting to load data for user:', userId);
+        
+        try {
+          // Load user profile - no timeout, let Supabase handle it
+          console.log('[DATA] Querying profiles table...');
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', userId)
+            .single();
+
+          if (profileError) {
+            console.error('[DATA] Profile load error:', profileError);
+            // Don't fail completely, just use defaults
+          } else {
+            console.log('[DATA] Profile loaded successfully:', profile);
+          }
+
+          if (profile) {
+            setUserConditions(profile.conditions || ["Histamine Intolerance"]);
+            setDefaultDiet(profile.default_diet || "all");
+            setDietFilter(profile.default_diet || "all");
+            setDefaultLanguage(profile.default_language || "en");
+            setLanguage(profile.default_language || "en");
+          }
+
+          // Load user's ratings - no timeout
+          console.log('[DATA] Querying food_ratings table...');
+          const { data: ratings, error: ratingsError } = await supabase
+            .from('food_ratings')
+            .select('*')
+            .eq('user_id', userId);
+
+          if (ratingsError) {
+            console.error('[DATA] Ratings load error:', ratingsError);
+            // Don't fail completely, just use empty ratings
+          } else {
+            console.log('[DATA] Ratings fetched:', ratings?.length || 0, 'found');
+          }
+
+          const myRatingsObj = {};
+          if (ratings && ratings.length > 0) {
+            ratings.forEach(r => {
+              myRatingsObj[r.food_id] = {
+                rating: r.rating,
+                conditions: r.conditions || []
+              };
+            });
+            console.log(`[DATA] Loaded ${ratings.length} ratings into state`);
+          } else {
+            console.log('[DATA] No ratings to load');
+          }
+          setMyRatings(myRatingsObj);
+          console.log('[DATA] setMyRatings called');
+
+          // Load all community ratings
+          console.log('[DATA] Loading community ratings...');
+          await loadCommunityRatings();
+          console.log('[DATA] loadUserData complete!');
+        } catch (err) {
+          console.error('[DATA] CRITICAL ERROR in loadUserData:', err);
+          // Set defaults so UI isn't broken - don't clear existing state
+          if (Object.keys(myRatings).length === 0) {
+            setMyRatings({});
+          }
+        }
+      }
+
+      // Load community ratings from Supabase
+      async function loadCommunityRatings() {
+        try {
+          const { data: allRatings } = await supabase
+            .from('food_ratings')
+            .select('food_id, rating, conditions');
+
+          const communityObj = {};
+          if (allRatings) {
+            allRatings.forEach(r => {
+              if (!communityObj[r.food_id]) {
+                communityObj[r.food_id] = [];
+              }
+              communityObj[r.food_id].push({
+                rating: r.rating,
+                conditions: r.conditions || []
+              });
+            });
+          }
+          setCommunityRatings(communityObj);
+        } catch (err) {
+          console.error('Error loading community ratings:', err);
+        }
+      }
+
+      // Load recipes from Supabase
+      async function loadRecipes() {
+        try {
+          const { data: allRecipes, error } = await supabase
+            .from('recipes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          
+          // Load view counts for all recipes
+          const { data: viewCounts } = await supabase
+            .from('recipe_views')
+            .select('recipe_id');
+          
+          const viewsMap = {};
+          if (viewCounts) {
+            viewCounts.forEach(view => {
+              viewsMap[view.recipe_id] = (viewsMap[view.recipe_id] || 0) + 1;
+            });
+          }
+          setRecipeViews(viewsMap);
+          
+          // Load favorite counts for all recipes
+          const { data: favCounts } = await supabase
+            .from('recipe_favorites')
+            .select('recipe_id');
+          
+          const favsMap = {};
+          if (favCounts) {
+            favCounts.forEach(fav => {
+              favsMap[fav.recipe_id] = (favsMap[fav.recipe_id] || 0) + 1;
+            });
+          }
+          setRecipeFavorites(favsMap);
+          
+          // Load user's favorites if logged in
+          if (user) {
+            const { data: userFavs } = await supabase
+              .from('recipe_favorites')
+              .select('recipe_id')
+              .eq('user_id', user.id);
+            
+            if (userFavs) {
+              setUserFavorites(new Set(userFavs.map(f => f.recipe_id)));
+            }
+          }
+          
+          setRecipes(allRecipes || []);
+        } catch (err) {
+          console.error('Error loading recipes:', err);
+        }
+      }
+
+
+      // Track recipe view
+      async function trackRecipeView(recipeId) {
+        try {
+          await supabase
+            .from('recipe_views')
+            .insert({
+              recipe_id: recipeId,
+              user_id: user?.id || null,
+              session_id: sessionId
+            });
+          
+          // Update local view count
+          setRecipeViews(prev => ({
+            ...prev,
+            [recipeId]: (prev[recipeId] || 0) + 1
+          }));
+        } catch (err) {
+          // Ignore duplicate view errors (same session)
+          if (!err.message?.includes('duplicate')) {
+            console.error('Error tracking view:', err);
+          }
+        }
+      }
+
+      // Toggle recipe favorite
+      async function toggleFavorite(recipeId) {
+        if (!user) {
+          setShowAuthModal(true);
+          setAuthMode('login');
+          return;
+        }
+        
+        try {
+          const isFavorited = userFavorites.has(recipeId);
+          
+          if (isFavorited) {
+            // Remove favorite
+            await supabase
+              .from('recipe_favorites')
+              .delete()
+              .eq('recipe_id', recipeId)
+              .eq('user_id', user.id);
+            
+            setUserFavorites(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(recipeId);
+              return newSet;
+            });
+            
+            setRecipeFavorites(prev => ({
+              ...prev,
+              [recipeId]: Math.max(0, (prev[recipeId] || 0) - 1)
+            }));
+          } else {
+            // Add favorite
+            await supabase
+              .from('recipe_favorites')
+              .insert({
+                recipe_id: recipeId,
+                user_id: user.id
+              });
+            
+            setUserFavorites(prev => new Set([...prev, recipeId]));
+            
+            setRecipeFavorites(prev => ({
+              ...prev,
+              [recipeId]: (prev[recipeId] || 0) + 1
+            }));
+          }
+        } catch (err) {
+          console.error('Error toggling favorite:', err);
+        }
+      }
+
+      // Get sorted recipes
+      function getSortedRecipes() {
+        const recipesCopy = [...recipes];
+        
+        switch (recipeSortBy) {
+          case 'alphabetical':
+            return recipesCopy.sort((a, b) => a.title.localeCompare(b.title));
+          
+          case 'views':
+            return recipesCopy.sort((a, b) => 
+              (recipeViews[b.id] || 0) - (recipeViews[a.id] || 0)
+            );
+          
+          case 'favorites':
+            return recipesCopy.sort((a, b) => 
+              (recipeFavorites[b.id] || 0) - (recipeFavorites[a.id] || 0)
+            );
+          
+          case 'recent':
+          default:
+            return recipesCopy;
+        }
+      }
+
+      // Filter recipes
+      function getDisplayRecipes() {
+        let sorted = getSortedRecipes();
+        
+        // Filter to only user's recipes if enabled
+        if (showOnlyMyRecipes && user) {
+          sorted = sorted.filter(r => r.user_id === user.id);
+        }
+        
+        // Filter to only favorites if enabled
+        if (showOnlyFavorites) {
+          sorted = sorted.filter(r => userFavorites.has(r.id));
+        }
+        
+        return sorted;
+      }
+
+      // Load display name from profile
+      async function loadDisplayName(userId) {
+        try {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('display_name')
+            .eq('id', userId)
+            .single();
+
+          if (error && error.code !== 'PGRST116') {
+            console.error('Error loading display name:', error);
+          }
+          
+          if (profile?.display_name) {
+            setDisplayName(profile.display_name);
+          }
+        } catch (err) {
+          console.error('Error loading display name:', err);
+        }
+      }
+
+      // Save display name to profile
+      async function saveDisplayName(name) {
+        if (!user) return;
+        
+        try {
+          const { error } = await supabase
+            .from('profiles')
+            .update({ display_name: name })
+            .eq('id', user.id);
+
+          if (error) throw error;
+          
+          // Also update author_name in all user's recipes
+          await supabase
+            .from('recipes')
+            .update({ author_name: name })
+            .eq('user_id', user.id);
+          
+          setDisplayName(name);
+          setShowNameModal(false);
+          
+          // Reload recipes to show updated names
+          await loadRecipes();
+          
+          // If we just saved name from the recipe creation flow, open the recipe form
+          if (view === 'recipes') {
+            setShowRecipeForm(true);
+            setEditingRecipe(null);
+            setRecipeForm({
+              title: '',
+              description: '',
+              instructions: '',
+              ingredients: [],
+              is_public: false
+            });
+          }
+        } catch (err) {
+          console.error('Error saving display name:', err);
+          alert('Error saving display name. Please try again.');
+        }
+      }
+
+      // Create or update recipe
+      const saveRecipe = async (e) => {
+        e.preventDefault();
+        if (!user) return;
+        
+        if (!displayName) {
+          setShowNameModal(true);
+          return;
+        }
+
+        try {
+          const recipeData = {
+            user_id: user.id,
+            author_name: displayName,
+            title: recipeForm.title,
+            description: recipeForm.description,
+            instructions: recipeForm.instructions,
+            ingredients: recipeForm.ingredients,
+            is_public: recipeForm.is_public,
+            updated_at: new Date().toISOString()
+          };
+
+          if (editingRecipe) {
+            // Update existing recipe
+            const { error } = await supabase
+              .from('recipes')
+              .update(recipeData)
+              .eq('id', editingRecipe.id);
+
+            if (error) throw error;
+          } else {
+            // Create new recipe
+            recipeData.created_at = new Date().toISOString();
+            const { error } = await supabase
+              .from('recipes')
+              .insert([recipeData]);
+
+            if (error) throw error;
+          }
+
+          // Reset form and reload recipes
+          setRecipeForm({
+            title: '',
+            description: '',
+            instructions: '',
+            ingredients: [],
+            is_public: false
+          });
+          setEditingRecipe(null);
+          setShowRecipeForm(false);
+          await loadRecipes();
+        } catch (err) {
+          console.error('Error saving recipe:', err);
+          alert('Error saving recipe. Please try again.');
+        }
+      };
+
+      // Delete recipe
+      const deleteRecipe = async (recipeId) => {
+        if (!confirm(translations.deleteConfirm)) return;
+
+        try {
+          const { error } = await supabase
+            .from('recipes')
+            .delete()
+            .eq('id', recipeId);
+
+          if (error) throw error;
+          await loadRecipes();
+        } catch (err) {
+          console.error('Error deleting recipe:', err);
+          alert('Error deleting recipe. Please try again.');
+        }
+      };
+
+      // Start editing a recipe
+      const startEditRecipe = (recipe) => {
+        setEditingRecipe(recipe);
+        // Normalize ingredients to ensure amount field exists
+        const normalizedIngredients = (recipe.ingredients || []).map(ing => ({
+          name: ing.name,
+          amount: ing.amount || '',
+          inDatabase: ing.inDatabase,
+          foodId: ing.foodId || null
+        }));
+        setRecipeForm({
+          title: recipe.title,
+          description: recipe.description,
+          instructions: recipe.instructions,
+          ingredients: normalizedIngredients,
+          is_public: recipe.is_public
+        });
+        setShowRecipeForm(true);
+      };
+
+      // Handle ingredient input change with autocomplete
+      const handleIngredientInput = (value) => {
+        setCurrentIngredient(value);
+        
+        if (value.trim().length > 0) {
+          const suggestions = foodDatabase
+            .filter(food => food.name.toLowerCase().includes(value.toLowerCase()))
+            .slice(0, 10)
+            .map(food => ({ name: food.name, id: food.id }));
+          setIngredientSuggestions(suggestions);
+        } else {
+          setIngredientSuggestions([]);
+        }
+      };
+
+      // Add ingredient to recipe
+      const addIngredient = (ingredientName = currentIngredient) => {
+        if (!ingredientName.trim()) return;
+        
+        const matchingFood = foodDatabase.find(
+          food => food.name.toLowerCase() === ingredientName.toLowerCase()
+        );
+        
+        const ingredient = {
+          name: ingredientName.trim(),
+          amount: currentAmount.trim(),
+          inDatabase: !!matchingFood,
+          foodId: matchingFood?.id || null
+        };
+        
+        setRecipeForm({
+          ...recipeForm,
+          ingredients: [...recipeForm.ingredients, ingredient]
+        });
+        setCurrentIngredient('');
+        setCurrentAmount('');
+        setIngredientSuggestions([]);
+      };
+
+      // Remove ingredient from recipe
+      const removeIngredient = (index) => {
+        setRecipeForm({
+          ...recipeForm,
+          ingredients: recipeForm.ingredients.filter((_, i) => i !== index)
+        });
+      };
+
+      // Load recipes when view changes to recipes
+      useEffect(() => {
+        if (view === 'recipes') {
+          loadRecipes();
+        }
+      }, [view]);
+
+      // Load display name when user logs in
+      useEffect(() => {
+        if (user) {
+          loadDisplayName(user.id);
+        }
+      }, [user]);
+
+      // Load user data from storage
+      useEffect(() => {
+        async function load() {
+          // Removed localStorage - now using Supabase
+        }
+        load();
+      }, []);
+
+      // Save user data to Supabase
+      useEffect(() => {
+        async function save() {
+          if (!user) return;
+          
+          try {
+            // Update profile
+            await supabase
+              .from('profiles')
+              .upsert({
+                id: user.id,
+                conditions: userConditions,
+                default_diet: defaultDiet,
+                default_language: defaultLanguage
+              });
+          } catch (e) {
+            console.error('Error saving profile:', e);
+          }
+        }
+        save();
+      }, [userConditions, defaultDiet, defaultLanguage, user]);
+
+      // Handle floating filter button on mobile
+      useEffect(() => {
+        if (window.innerWidth > 768) return; // Only on mobile
+        
+        const handleScroll = () => {
+          if (!filterButtonRef.current) return;
+          
+          // Get the button's position relative to the viewport
+          const buttonRect = filterButtonRef.current.getBoundingClientRect();
+          
+          // Button should float if it's scrolled out of view (top of button goes above viewport)
+          const shouldFloat = buttonRect.top < 0;
+          setIsFilterButtonFloating(shouldFloat);
+        };
+        
+        window.addEventListener('scroll', handleScroll);
+        // Initial check
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+
+      // Calculate user score percentage for a food
+      function getUserScorePercentage(foodId) {
+        const ratings = communityRatings[foodId];
+        if (!ratings || ratings.length === 0) return null;
+        
+        let score = 0;
+        ratings.forEach(r => {
+          if (r.rating === "tolerate") score += 1;
+          else if (r.rating === "moderation") score += 0.5;
+          // avoid adds 0
+        });
+        
+        // Calculate percentage: tolerate=yes, moderate=0.5, avoid=no
+        const percentage = (score / ratings.length) * 100;
+        return Math.round(percentage);
+      }
+
+      function getFilteredFoods() {
+        const filtered = foodDatabase.filter(f => {
+          if (!f.sources.some(s => selectedSources.includes(s))) return false;
+          
+          // Check if category is disabled due to diet filter
+          const isNonVegetarian = dietFilter === "vegetarian" && (f.category === "Meat" || f.category === "Seafood");
+          const isNonVegan = dietFilter === "vegan" && (f.category === "Meat" || f.category === "Seafood" || f.category === "Dairy" || f.category === "Eggs");
+          if (isNonVegetarian || isNonVegan) return false;
+          
+          if (!selectedCategories.includes(f.category)) return false;
+          if (dietFilter === "vegetarian" && !f.veg) return false;
+          if (dietFilter === "vegan" && !f.vegan) return false;
+          
+          if (search.trim()) {
+            const q = search.toLowerCase();
+            
+            // Try exact/substring match first
+            const nameMatch = f.name.toLowerCase().includes(q);
+            const categoryMatch = f.category.toLowerCase().includes(q);
+            const descMatch = f.description.toLowerCase().includes(q);
+            
+            if (nameMatch || categoryMatch || descMatch) return true;
+            
+            // Use fuzzy matching for typo tolerance (similarity > 0.6)
+            const nameSimilarity = fuzzyMatch(f.name, q);
+            const categorySimilarity = fuzzyMatch(f.category, q);
+            const descSimilarity = fuzzyMatch(f.description, q);
+            
+            const threshold = 0.4; // Lower = more forgiving for typos
+            if (nameSimilarity > threshold || categorySimilarity > threshold || descSimilarity > threshold) {
+              return true;
+            }
+            
+            return false;
+          }
+          
+          return true;
+        });
+
+        // Apply sorting
+        const sorted = filtered.sort((a, b) => {
+          // Category grouping (if enabled, categories are grouped first)
+          if (categorySort) {
+            if (a.category !== b.category) {
+              return a.category.localeCompare(b.category);
+            }
+            // Within same category, use the selected sorting
+          }
+          
+          let comparison = 0;
+          
+          if (sortBy === "name") {
+            comparison = a.name.localeCompare(b.name);
+          } else if (sortBy === "userscore") {
+            const aUserScore = getUserScorePercentage(a.id);
+            const bUserScore = getUserScorePercentage(b.id);
+            
+            // Both have user scores - sort by user score
+            if (aUserScore !== null && bUserScore !== null) {
+              comparison = bUserScore - aUserScore;
+            } else if (aUserScore !== null) {
+              comparison = -1;
+            } else if (bUserScore !== null) {
+              comparison = 1;
+            } else {
+              // Neither has user score - fall back to official score
+              if (a.score === b.score) comparison = 0;
+              else if (a.score === -1) comparison = 1;
+              else if (b.score === -1) comparison = -1;
+              else comparison = a.score - b.score;
+            }
+          } else if (sortBy === "score") {
+            // Database score sorting
+            if (a.score === b.score) comparison = 0;
+            else if (a.score === -1) comparison = 1;
+            else if (b.score === -1) comparison = -1;
+            else comparison = a.score - b.score;
+          }
+          
+          // Apply sort direction
+          return sortDirection === "asc" ? comparison : -comparison;
+        });
+        
+        return sorted;
+      }
+
+      function handleColumnSort(column) {
+        if (sortBy === column) {
+          // Toggle direction
+          setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+          // New column, set to descending by default (except name which is ascending)
+          setSortBy(column);
+          setSortDirection(column === "name" ? "asc" : "desc");
+        }
+      }
+
+      function getScoreColor(score) {
+        if (score === -1) return "bg-gray-400";
+        if (score === 0) return "bg-[#00A676]";
+        if (score <= 2) return "bg-[#FBAF00]";
+        return "bg-[#BB342F]";
+      }
+
+      function getScoreLabel(level) {
+        if (level === "safe") return "Safe";
+        if (level === "moderate") return "Moderate";
+        if (level === "high") return "Avoid";
+        return "No Data";
+      }
+
+      function getScoreIcon(level) {
+        if (level === "safe") return <CheckCircle className="w-5 h-5" style={{ color: '#00A676' }} />;
+        if (level === "moderate") return <AlertCircle className="w-5 h-5" style={{ color: '#FBAF00' }} />;
+        if (level === "unknown") return <HelpCircle className="w-5 h-5 text-gray-400" />;
+        return <XCircle className="w-5 h-5" style={{ color: '#BB342F' }} />;
+      }
+
+      function getUserScoreColor(percentage) {
+        if (percentage >= 80) return "text-green-500";
+        if (percentage >= 30) return "text-yellow-500";
+        return "text-red-500";
+      }
+
+      function getCommunityStats(foodId) {
+        const ratings = communityRatings[foodId];
+        if (!ratings || ratings.length === 0) return null;
+        
+        const byCondition = {};
+        let totalTol = 0, totalMod = 0, totalInt = 0;
+        
+        ratings.forEach(r => {
+          if (r.rating === "tolerate") totalTol++;
+          else if (r.rating === "moderation") totalMod++;
+          else totalInt++;
+          
+          if (r.conditions) {
+            r.conditions.forEach(c => {
+              if (!byCondition[c]) byCondition[c] = { tolerable: 0, moderate: 0, intolerable: 0 };
+              if (r.rating === "tolerate") byCondition[c].tolerable++;
+              else if (r.rating === "moderation") byCondition[c].moderate++;
+              else byCondition[c].intolerable++;
+            });
+          }
+        });
+        
+        return { byCondition, total: { tolerable: totalTol, moderate: totalMod, intolerable: totalInt } };
+      }
+
+      async function submitRating(foodId, rating) {
+        if (!user) {
+          setShowAuthModal(true);
+          return;
+        }
+
+        if (userConditions.length === 0) { 
+          setShowModal(true); 
+          return; 
+        }
+        
+        const existing = myRatings[foodId];
+        
+        // Toggle off if clicking same rating
+        if (existing && existing.rating === rating) {
+          try {
+            // Delete from database
+            await supabase
+              .from('food_ratings')
+              .delete()
+              .eq('user_id', user.id)
+              .eq('food_id', foodId);
+
+            // Update local state
+            const newMyRatings = {...myRatings};
+            delete newMyRatings[foodId];
+            setMyRatings(newMyRatings);
+
+            // Reload community ratings
+            await loadCommunityRatings();
+          } catch (err) {
+            console.error('Error deleting rating:', err);
+          }
+          return;
+        }
+        
+        // Update rating
+        try {
+          // Delete old rating if exists
+          if (existing) {
+            await supabase
+              .from('food_ratings')
+              .delete()
+              .eq('user_id', user.id)
+              .eq('food_id', foodId);
+          }
+
+          // Insert new rating
+          await supabase
+            .from('food_ratings')
+            .insert({
+              user_id: user.id,
+              food_id: foodId,
+              rating: rating,
+              conditions: userConditions
+            });
+
+          // Update local state
+          setMyRatings({
+            ...myRatings,
+            [foodId]: { 
+              rating, 
+              conditions: [...userConditions] 
+            }
+          });
+
+          // Reload community ratings
+          await loadCommunityRatings();
+        } catch (err) {
+          console.error('Error saving rating:', err);
+        }
+      }
+
+      function generatePDF(filterType) {
+        const ratedFoods = Object.entries(myRatings)
+          .map(([key, rating]) => {
+            const food = foodDatabase.find(f => f.id === parseInt(key));
+            return food ? { food, rating } : null;
+          })
+          .filter(item => {
+            if (!item) return false;
+            if (filterType === "tolerate" && item.rating.rating !== "tolerate") return false;
+            if (filterType === "moderation" && item.rating.rating !== "moderation") return false;
+            if (filterType === "avoid" && item.rating.rating !== "avoid") return false;
+            return true;
+          })
+          .sort((a, b) => {
+            if (a.food.category < b.food.category) return -1;
+            if (a.food.category > b.food.category) return 1;
+            return a.food.name.localeCompare(b.food.name);
+          });
+
+        const title = filterType === "all" ? "All My Ratings" : 
+                    filterType === "tolerate" ? "What I Can Eat" :
+                    filterType === "moderation" ? "In Moderation" : "What I Should Avoid";
+
+        // Organize foods by rating type and category for 3-column layout
+        const organizeByRatingAndCategory = (foods, ratingType) => {
+          const filtered = foods.filter(item => item.rating.rating === ratingType);
+          const byCategory = {};
+          
+          filtered.forEach(item => {
+            if (!byCategory[item.food.category]) {
+              byCategory[item.food.category] = [];
+            }
+            byCategory[item.food.category].push(item.food.name);
+          });
+          
+          return byCategory;
+        };
+
+        const tolerateByCategory = organizeByRatingAndCategory(ratedFoods, "tolerate");
+        const moderationByCategory = organizeByRatingAndCategory(ratedFoods, "moderation");
+        const avoidByCategory = organizeByRatingAndCategory(ratedFoods, "avoid");
+
+        // Build content for a column
+        const buildColumnContent = (byCategory, color, symbol) => {
+          const content = [];
+          Object.keys(byCategory).sort().forEach(category => {
+            content.push({
+              text: category.toUpperCase(),
+              fontSize: 10,
+              bold: true,
+              color: '#666666',
+              margin: [0, 8, 0, 4]
+            });
+            byCategory[category].forEach(foodName => {
+              content.push({
+                text: `  ${foodName}`,
+                fontSize: 9,
+                color: color,
+                margin: [0, 2, 0, 2]
+              });
+            });
+          });
+          return content.length > 0 ? content : [{ text: 'None yet', fontSize: 9, color: '#999999', italics: true }];
+        };
+
+        // Define PDF document structure
+        const docDefinition = {
+          pageSize: 'A4',
+          pageMargins: [40, 60, 40, 60],
+          content: [
+            // Header
+            {
+              text: 'HistaBase',
+              fontSize: 28,
+              bold: true,
+              color: '#525174',
+              alignment: 'center',
+              margin: [0, 0, 0, 5]
+            },
+            {
+              text: title.toUpperCase(),
+              fontSize: 16,
+              color: '#525174',
+              alignment: 'center',
+              margin: [0, 0, 0, 20]
+            },
+            {
+              text: `Generated: ${new Date().toLocaleDateString()}`,
+              fontSize: 10,
+              color: '#666666',
+              alignment: 'center',
+              margin: [0, 0, 0, 5]
+            },
+            ...(userConditions.length > 0 ? [{
+              text: `My Conditions: ${userConditions.join(", ")}`,
+              fontSize: 10,
+              color: '#666666',
+              alignment: 'center',
+              margin: [0, 0, 0, 20]
+            }] : [{ text: '', margin: [0, 0, 0, 20] }]),
+            
+            // Separator line
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0, y1: 0,
+                  x2: 515, y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#E5E7EB'
+                }
+              ],
+              margin: [0, 0, 0, 20]
+            },
+
+            // Conditional layout based on filterType
+            ...(filterType === "all" ? [
+              // 3-column layout for "all"
+              {
+                columns: [
+                  {
+                    width: '*',
+                    stack: [
+                      {
+                        text: 'I CAN EAT',
+                        fontSize: 12,
+                        bold: true,
+                        color: '#00A676',
+                        margin: [0, 0, 0, 10]
+                      },
+                      ...buildColumnContent(tolerateByCategory, '#00A676', '')
+                    ]
+                  },
+                  {
+                    width: '*',
+                    stack: [
+                      {
+                        text: 'IN MODERATION',
+                        fontSize: 12,
+                        bold: true,
+                        color: '#FBAF00',
+                        margin: [0, 0, 0, 10]
+                      },
+                      ...buildColumnContent(moderationByCategory, '#FBAF00', '')
+                    ]
+                  },
+                  {
+                    width: '*',
+                    stack: [
+                      {
+                        text: 'I SHOULD AVOID',
+                        fontSize: 12,
+                        bold: true,
+                        color: '#BB342F',
+                        margin: [0, 0, 0, 10]
+                      },
+                      ...buildColumnContent(avoidByCategory, '#BB342F', '')
+                    ]
+                  }
+                ],
+                columnGap: 20
+              }
+            ] : [
+              // Single column centered layout for specific filters
+              {
+                stack: buildColumnContent(
+                  filterType === "tolerate" ? tolerateByCategory : 
+                  filterType === "moderation" ? moderationByCategory : 
+                  avoidByCategory,
+                  filterType === "tolerate" ? '#00A676' : 
+                  filterType === "moderation" ? '#FBAF00' : 
+                  '#BB342F',
+                  ''
+                ),
+                alignment: 'center'
+              }
+            ])
+          ],
+          footer: function(currentPage, pageCount) {
+            return {
+              text: `Page ${currentPage} of ${pageCount}`,
+              alignment: 'center',
+              fontSize: 9,
+              color: '#999999',
+              margin: [0, 20, 0, 0]
+            };
+          },
+          defaultStyle: {
+            font: 'Roboto'
+          }
+        };
+
+        pdfMake.createPdf(docDefinition).download(`histabase-${filterType}.pdf`);
+        setShowDownloadMenu(false);
+      }
+
+      async function handleAuth(e) {
+        e.preventDefault();
+        setAuthError("");
+        setAuthLoading(true);
+
+
+        try {
+          if (authMode === "login") {
+            const { data, error } = await supabase.auth.signInWithPassword({
+              email: authEmail,
+              password: authPassword
+            });
+            if (error) throw error;
+          } else {
+            const { data, error } = await supabase.auth.signUp({
+              email: authEmail,
+              password: authPassword
+            });
+            if (error) throw error;
+            setAuthError("Account created! You can now login.");
+          }
+          setShowAuthModal(false);
+          setAuthEmail("");
+          setAuthPassword("");
+        } catch (err) {
+          console.error('Auth error:', err);
+          setAuthError(err.message);
+        } finally {
+          setAuthLoading(false);
+        }
+      }
+
+      async function handleLogout() {
+        console.log('[LOGOUT] Starting...');
+        await supabase.auth.signOut();
+        setUser(null);
+        setUserConditions(["Histamine Intolerance"]);
+        setMyRatings({});
+        setDefaultDiet("all");
+        setDietFilter("all");
+        await loadCommunityRatings();
+      }
+
+      if (loading) {
+        return (
+          <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: '#525174' }}></div>
+              <p className="text-gray-600">Loading HistaBase...</p>
+            </div>
+          </div>
+        );
+      }
+
+      if (error) {
+        return (
+          <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white rounded-lg p-8 max-w-md border border-red-200">
+              <div className="flex items-center gap-3 mb-4">
+                <XCircle className="w-8 h-8 text-red-500" />
+                <h2 className="text-xl font-semibold text-gray-800">Failed to Load Database</h2>
+              </div>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <p className="text-sm text-gray-500">Make sure the DATABASE_URL is correct and accessible.</p>
+            </div>
+          </div>
+        );
+      }
+
+      const filteredFoods = getFilteredFoods();
+      const tolerateList = Object.entries(myRatings).filter(([_, v]) => v.rating === "tolerate");
+      const moderationList = Object.entries(myRatings).filter(([_, v]) => v.rating === "moderation");
+      const avoidList = Object.entries(myRatings).filter(([_, v]) => v.rating === "avoid");
+
+      function FoodCard({ food, showCategoryDivider, categoryName }) {
+        const isExp = expanded === food.id;
+        const stats = getCommunityStats(food.id);
+        const myRating = myRatings[food.id];
+        const userScorePercentage = getUserScorePercentage(food.id);
+        
+        return (
+          <>
+            {showCategoryDivider && (
+              <div className="bg-gray-200 px-4 py-2 font-semibold text-gray-700 text-sm sticky top-0 z-10">
+                {categoryName}
+              </div>
+            )}
+            <div className="bg-white rounded-lg border border-gray-100 mb-2">
+              <div 
+                className="px-4 py-3 cursor-pointer food-card-inner flex items-center gap-3" 
+                onClick={() => setExpanded(isExp ? null : food.id)}
+              >
+                <div className="food-card-first-row flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex-shrink-0">
+                    {getScoreIcon(food.level)}
+                  </div>
+                  <span className="font-medium text-gray-800 text-base truncate">{food.name}</span>
+                  {myRating && (
+                    <span className="text-base flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
+                      {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
+                    </span>
+                  )}
+                </div>
+                <div className="food-card-second-row flex items-center gap-3 ml-auto flex-shrink-0">
+                  {!isExp && (
+                    <div className="flex gap-1 w-[96px]" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => submitRating(food.id, "tolerate")}
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25B2'}
+                      </button>
+                      <button
+                        onClick={() => submitRating(food.id, "moderation")}
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                          myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25CF'}
+                      </button>
+                      <button
+                        onClick={() => submitRating(food.id, "avoid")}
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
+                          myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
+                        }`}
+                        style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
+                        onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
+                        onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
+                      >
+                        {'\u25BC'}
+                      </button>
+                    </div>
+                  )}
+                  {isExp && <div className="w-[96px]"></div>}
+                  <span className="px-3 py-1 rounded-full text-sm font-semibold min-w-[60px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
+                    {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap min-w-[80px] text-center ${getScoreColor(food.score)}`}>
+                    {getScoreLabel(food.level)}
+                  </span>
+                  {isExp ? <ChevronUp className="w-5 h-5 text-gray-400 flex-shrink-0" /> : <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />}
+                </div>
+              </div>
+              {isExp && (
+                <div className="px-4 pb-4 border-t border-gray-100 pt-3">
+                  <p className="text-gray-500 text-sm mb-2">{food.category}</p>
+                  <p className="text-gray-600 text-base mb-3">{food.description}</p>
+                  <div className="bg-gray-50 rounded p-3 mb-3" style={{ backgroundColor: '#BFDBFE80' }}>
+                    <p className="text-sm font-medium text-gray-700 mb-2">
+                      Database Score: {food.score === -1 ? <span className="text-gray-400">N/A</span> : 
+                        <span style={{ color: food.score === 0 ? '#00A676' : food.score <= 2 ? '#FBAF00' : '#BB342F' }}>
+                          {food.score}/3
+                        </span>
+                      }
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {food.sources.map((s, i) => {
+                        const sourceName = s === "CFCD" ? "CFCD (No Histamine Data)" : s;
+                        const sourceUrl = getSourceLinks(language)[sourceName];
+                        
+                        return sourceUrl ? (
+                          <a 
+                            key={i}
+                            href={sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors cursor-pointer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {sourceName}
+                          </a>
+                        ) : (
+                          <span key={i} className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                            {sourceName}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {stats && (
+                    <div className="rounded p-3 mb-3" style={{ backgroundColor: '#8B7FC350' }}>
+                      <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-1">
+                        <Users className="w-4 h-4" /> Community Reports
+                      </p>
+                      <BarGraph 
+                        tolerable={stats.total.tolerable} 
+                        moderate={stats.total.moderate}
+                        intolerable={stats.total.intolerable} 
+                        label="Total" 
+                        isTotal={true} 
+                      />
+                      {Object.keys(stats.byCondition).map(c => (
+                        <BarGraph 
+                          key={c} 
+                          tolerable={stats.byCondition[c].tolerable} 
+                          moderate={stats.byCondition[c].moderate}
+                          intolerable={stats.byCondition[c].intolerable} 
+                          label={c} 
+                          isTotal={false} 
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); submitRating(food.id, "tolerate"); }}
+                      className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
+                        myRating && myRating.rating === "tolerate" ? "text-white" : "text-gray-700 hover:bg-green-200"
+                      }`}
+                      style={myRating && myRating.rating === "tolerate" ? { backgroundColor: '#00A676' } : { backgroundColor: '#00A67633' }}
+                    >
+                      {'\u25B2'} I tolerate
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); submitRating(food.id, "moderation"); }}
+                      className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
+                        myRating && myRating.rating === "moderation" ? "text-white" : "text-gray-700 hover:bg-yellow-200"
+                      }`}
+                      style={myRating && myRating.rating === "moderation" ? { backgroundColor: '#FBAF00' } : { backgroundColor: '#FBAF0033' }}
+                    >
+                      {'\u25CF'} In moderation
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); submitRating(food.id, "avoid"); }}
+                      className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
+                        myRating && myRating.rating === "avoid" ? "text-white" : "text-gray-700 hover:bg-red-200"
+                      }`}
+                      style={myRating && myRating.rating === "avoid" ? { backgroundColor: '#BB342F' } : { backgroundColor: '#BB342F33' }}
+                    >
+                      {'\u25BC'} I react
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        );
+      }
+
+      return (
+        <div className="min-h-screen" style={{ backgroundColor: '#FAF9F7' }}>
+          <div className="flex-1 mx-auto px-4 py-6" style={{ maxWidth: '852px' }}>
+            <div className="mx-auto">
+              <div className="text-center mb-6 mobile-header">
+                <div className="flex items-center mb-2 mobile-auth-buttons">
+                  <div className="flex-1"></div>
+                  <div className="text-center">
+                    <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#525174' }}>HistaBase</h1>
+                    <p className="text-gray-400 text-xs md:text-sm">The histamine food database</p>
+                  </div>
+                  <div className="flex-1 flex items-center gap-2 ml-6">
+                    {user ? (
+                      <>
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
+                          style={{ backgroundColor: '#A7ACD9' }}
+                        >
+                          <LogOut className="w-3 h-3 md:w-4 md:h-4" /> Logout
+                        </button>
+                      <button
+                        onClick={() => setView("profile")} 
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
+                        style={{ backgroundColor: '#f4d7f7' }}
+                      >
+                        {displayName || user.email.split('@')[0]}
+                      </button>
+
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => setShowAuthModal(true)}
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
+                        style={{ backgroundColor: '#A7ACD9' }}
+                      >
+                        <LogIn className="w-3 h-3 md:w-4 md:h-4" /> Login
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 mb-8 max-w-2xl mx-auto">
+                <button 
+                  onClick={() => setView("database")} 
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
+                  style={view === "database" ? { backgroundColor: '#525174' } : {}}
+                >
+                  <Search className="w-4 h-4 inline mr-1" />{translations.database}
+                </button>
+                <button 
+                  onClick={() => setView("profile")} 
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
+                  style={view === "profile" ? { backgroundColor: '#525174' } : {}}
+                >
+                  <User className="w-4 h-4 inline mr-1" />{translations.profile}
+                </button>
+                <button 
+                  onClick={() => setView("recipes")} 
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
+                  style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
+                >
+                  <BookOpen className="w-4 h-4 inline mr-1" />{translations.recipes}
+                </button>
+                <button 
+                  onClick={() => setView("info")} 
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
+                  style={view === "info" ? { backgroundColor: '#525174' } : {}}
+                >
+                  <Info className="w-4 h-4 inline mr-1" />{translations.info}
+                </button>
+              </div>
+            </div>
+
+            {view === "database" && (
+              <div className="flex gap-4 items-start">
+                {/* Mobile backdrop */}
+                <div 
+                  className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
+                  onClick={() => setMobileSidebarOpen(false)}
+                ></div>
+
+                {/* Mobile Sidebar (overlay) */}
+                <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
+                  <div className="p-4">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="font-semibold text-gray-700"></h3>
+                      <button 
+                        onClick={() => setMobileSidebarOpen(false)}
+                        className="text-gray-400 hover:text-gray-600 text-2xl"
+                      >
+                        &times;
+                      </button>
+                    </div>
+
+                    {/* Mobile Secondary Navigation */}
+                    <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => {
+                            setView("database");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
+                            color: view === "database" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations.database}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("profile");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
+                            color: view === "profile" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations.profile}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("recipes");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
+                            color: view === "recipes" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations.recipes}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setView("info");
+                            setMobileSidebarOpen(false);
+                          }}
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          style={{ 
+                            backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
+                            color: view === "info" ? 'white' : '#525174'
+                          }}
+                        >
+                          {translations.info}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">DATABSE LANGUAGE</p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setLanguage('en')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => setLanguage('de')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
+                      <button 
+                        onClick={() => setDietFilter("all")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.allFoods}
+                      </button>
+                      <button 
+                        onClick={() => setDietFilter("vegetarian")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.vegetarian}
+                      </button>
+                      <button 
+                        onClick={() => setDietFilter("vegan")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.vegan}
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.categories.toUpperCase()}</p>
+                      
+                      {/* Group by Category toggle for mobile */}
+                      <label className="flex items-center gap-2 text-gray-700 cursor-pointer py-2 mb-2 font-medium text-sm border-b border-gray-200 pb-3">
+                        <input
+                          type="checkbox"
+                          checked={categorySort}
+                          onChange={(e) => setCategorySort(e.target.checked)}
+                          className="w-4 h-4"
+                        />
+                        Group by Category
+                      </label>
+                      
+                      <div className="mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="font-semibold text-gray-500 text-sm">{translations.categories.toUpperCase()}</p>
+                          <button
+                            onClick={() => {
+                              if (selectedCategories.length === categories.length) {
+                                setSelectedCategories([]);
+                              } else {
+                                setSelectedCategories([...categories]);
+                              }
+                            }}
+                            className="text-xs px-2 py-1 rounded transition-colors"
+                            style={{ 
+                              color: '#525174',
+                              backgroundColor: '#52517410'
+                            }}
+                            onMouseEnter={(e) => e.target.style.backgroundColor = '#52517420'}
+                            onMouseLeave={(e) => e.target.style.backgroundColor = '#52517410'}
+                          >
+                            {selectedCategories.length === categories.length ? 'Deselect All' : 'Select All'}
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        {categories.map(c => {
+                          // Determine if category should be disabled based on diet filter
+                          const isNonVegetarian = dietFilter === "vegetarian" && (c === "Meat" || c === "Seafood");
+                          const isNonVegan = dietFilter === "vegan" && (c === "Meat" || c === "Seafood" || c === "Dairy" || c === "Eggs");
+                          const isDisabled = isNonVegetarian || isNonVegan;
+                          
+                          return (
+                            <label 
+                              key={c} 
+                              className={`flex items-center gap-2 py-1 text-sm ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 cursor-pointer'}`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(c)}
+                                onChange={() => {
+                                  if (!isDisabled) {
+                                    setSelectedCategories(
+                                      selectedCategories.includes(c)
+                                        ? selectedCategories.filter(cat => cat !== c)
+                                        : [...selectedCategories, c]
+                                    );
+                                  }
+                                }}
+                                className="w-4 h-4"
+                                disabled={isDisabled}
+                                style={isDisabled ? { opacity: 0.3 } : {}}
+                              />
+                              {c}
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.sources.toUpperCase()}</p>
+                      {allSources.map(s => (
+                        <label key={s} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={selectedSources.includes(s)}
+                            onChange={() => {
+                              setSelectedSources(
+                                selectedSources.includes(s)
+                                  ? selectedSources.filter(src => src !== s)
+                                  : [...selectedSources, s]
+                              );
+                            }}
+                            className="w-4 h-4"
+                          />
+                          {s === "CFCD" ? "CFCD (No Histamine Data)" : s}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desktop Sidebar (always visible on desktop) */}
+                {sidebarOpen && (
+                  <div className="desktop-sidebar w-56 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
+                    <div className="mb-4">
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setLanguage('en')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => setLanguage('de')}
+                          className={`language-button p-2 rounded transition-opacity ${language === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
+                      <button 
+                        onClick={() => setDietFilter("all")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.allFoods}
+                      </button>
+                      <button 
+                        onClick={() => setDietFilter("vegetarian")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.vegetarian}
+                      </button>
+                      <button 
+                        onClick={() => setDietFilter("vegan")} 
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
+                      >
+                        {translations.vegan}
+                      </button>
+                    </div>
+
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="font-semibold text-gray-500 text-sm">{translations.categories.toUpperCase()}</p>
+                        <button
+                          onClick={() => {
+                            if (selectedCategories.length === categories.length) {
+                              setSelectedCategories([]);
+                            } else {
+                              setSelectedCategories([...categories]);
+                            }
+                          }}
+                          className="text-xs px-2 py-1 rounded transition-colors"
+                          style={{ 
+                            color: '#525174',
+                            backgroundColor: '#52517410'
+                          }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = '#52517420'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = '#52517410'}
+                        >
+                          {selectedCategories.length === categories.length ? 'Deselect All' : 'Select All'}
+                        </button>
+                      </div>
+                      <div>
+                        {categories.map(c => {
+                          // Determine if category should be disabled based on diet filter
+                          const isNonVegetarian = dietFilter === "vegetarian" && (c === "Meat" || c === "Seafood");
+                          const isNonVegan = dietFilter === "vegan" && (c === "Meat" || c === "Seafood" || c === "Dairy" || c === "Eggs");
+                          const isDisabled = isNonVegetarian || isNonVegan;
+                          
+                          return (
+                            <label 
+                              key={c} 
+                              className={`flex items-center gap-2 py-1 text-sm ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 cursor-pointer'}`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(c)}
+                                onChange={() => {
+                                  if (!isDisabled) {
+                                    setSelectedCategories(
+                                      selectedCategories.includes(c)
+                                        ? selectedCategories.filter(cat => cat !== c)
+                                        : [...selectedCategories, c]
+                                    );
+                                  }
+                                }}
+                                className="w-4 h-4"
+                                disabled={isDisabled}
+                                style={isDisabled ? { opacity: 0.3 } : {}}
+                              />
+                              {c}
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.sources.toUpperCase()}</p>
+                      {allSources.map(s => (
+                        <label key={s} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={selectedSources.includes(s)}
+                            onChange={() => {
+                              setSelectedSources(
+                                selectedSources.includes(s)
+                                  ? selectedSources.filter(src => src !== s)
+                                  : [...selectedSources, s]
+                              );
+                            }}
+                            className="w-4 h-4"
+                          />
+                          {s === "CFCD" ? "CFCD (No Histamine Data)" : s}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex-1 main-content">
+                  <div className="relative mb-4">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Search foods..."
+                      className="w-full pl-12 pr-12 py-3 rounded-lg border border-gray-200 text-base outline-none"
+                    />
+                    {search && (
+                      <button
+                        onClick={() => setSearch("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Clear search"
+                      >
+                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="m15 9-6 6"/>
+                          <path d="m9 9 6 6"/>
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-3">
+                      <button 
+                        ref={filterButtonRef}
+                        onClick={() => {
+                          // Desktop: toggle sidebar visibility
+                          setSidebarOpen(!sidebarOpen);
+                          // Mobile: open overlay
+                          if (window.innerWidth <= 768) {
+                            setMobileSidebarOpen(true);
+                          }
+                        }}
+                        className="text-sm flex items-center gap-1"
+                        style={{ color: '#525174' }}
+                      >
+                        <Filter className="w-4 h-4" /> {sidebarOpen && window.innerWidth > 768 ? "Hide" : "Show"} Filters
+                      </button>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm text-gray-400">{filteredFoods.length} foods</span>
+                        
+                        {/* Mobile-only sorting dropdown */}
+                        <div className="md:hidden flex items-center gap-2">
+                          <select
+                            value={sortBy}
+                            onChange={(e) => {
+                              const newSortBy = e.target.value;
+                              setSortBy(newSortBy);
+                              // Set appropriate default direction for the new sort
+                              if (newSortBy === "name") {
+                                setSortDirection("asc");
+                              } else {
+                                setSortDirection("desc");
+                              }
+                            }}
+                            className="text-xs border border-gray-200 rounded px-2 py-1 outline-none"
+                            style={{ focusBorderColor: '#525174' }}
+                          >
+                            <option value="score">Database Score</option>
+                            <option value="userscore">Community Score</option>
+                            <option value="name">Name</option>
+                          </select>
+                          <button
+                            onClick={() => setSortDirection(sortDirection === "asc" ? "desc" : "asc")}
+                            className="text-gray-600 hover:text-gray-900 p-1"
+                            title={sortDirection === "asc" ? "Ascending" : "Descending"}
+                          >
+                            {sortDirection === "asc" ? (<svg width="16" height="16" viewBox="0 0 12 12" fill="currentColor"><polygon points="6,3 3,9 9,9" /></svg>) : (<svg width="16" height="16" viewBox="0 0 12 12" fill="currentColor"><polygon points="6,9 3,3 9,3" /></svg>)}
+                          </button>
+                        </div>
+                        
+                        <label className="hidden md:flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={categorySort}
+                            onChange={(e) => setCategorySort(e.target.checked)}
+                            className="w-4 h-4"
+                          />
+                          Group by Category
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Column Headers */}
+                  <div className="column-headers-row border-b border-gray-200 mb-2">
+                    <div className="px-4 py-2 flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <div className="flex-shrink-0 w-5"></div>
+                        <button
+                          onClick={() => handleColumnSort("name")}
+                          className="font-semibold text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1 transition-colors"
+                        >
+                          Name
+                          {sortBy === "name" && (
+                            <span className="text-xs">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
+                            </span>
+                          )}
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-3 ml-auto flex-shrink-0">
+                        <div className="w-[96px]"></div>
+                        <button
+                          onClick={() => handleColumnSort("userscore")}
+                          className="font-semibold text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1 min-w-[60px] text-center transition-colors"
+                        >
+                          Community
+                          {sortBy === "userscore" && (
+                            <span className="text-xs">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
+                            </span>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleColumnSort("score")}
+                          className="font-semibold text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1 min-w-[80px] text-center transition-colors"
+                        >
+                          Database
+                          {sortBy === "score" && (
+                            <span className="text-xs">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: "inline-block", verticalAlign: "middle" }}><polygon points={sortDirection === "asc" ? "6,3 3,9 9,9" : "6,9 3,3 9,3"} /></svg>
+                            </span>
+                          )}
+                        </button>
+                        <div className="w-5"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    {filteredFoods.map((food, index) => {
+                      const showCategoryDivider = categorySort && (index === 0 || filteredFoods[index - 1].category !== food.category);
+                      return (
+                        <FoodCard 
+                          key={food.id} 
+                          food={food} 
+                          showCategoryDivider={showCategoryDivider}
+                          categoryName={food.category}
+                        />
+                      );
+                    })}
+                    {filteredFoods.length === 0 && (
+                      <p className="text-center text-gray-400 text-base py-12">No foods match filters</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {view === "profile" && (
+              <div className="max-w-2xl mx-auto space-y-4">
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#f6e3fa' }}>
+                  {user && (
+                    <>
+                      <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
+                      <p className="text-sm text-gray-600 mb-4">
+                        {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
+                      </p>
+                      
+                      {/* Display Name */}
+                      <div className="mb-4">
+                        <h3 className="font-semibold text-gray-800 text-sm mb-2">{translations.displayName}</h3>
+                        <p className="text-sm text-gray-600 mb-2">{translations.displayNameDesc}</p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            placeholder="Enter your name"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                          />
+                          <button
+                            onClick={() => saveDisplayName(displayName)}
+                            className="px-4 py-2 text-white rounded-lg text-sm font-medium"
+                            style={{ backgroundColor: '#525174' }}
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-sm mb-2">Default Language</h3>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setDefaultLanguage('en');
+                            setLanguage('en');
+                          }}
+                          className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'en' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="English"
+                        >
+                          <FlagUS className="w-8 h-5" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultLanguage('de');
+                            setLanguage('de');
+                          }}
+                          className={`language-button p-2 rounded transition-opacity ${defaultLanguage === 'de' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                          title="Deutsch"
+                        >
+                          <FlagDE className="w-8 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-sm mb-2">{translations.defaultDiet}</h3>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("all");
+                            setDietFilter("all");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "all" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "all" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          {translations.allFoods}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("vegetarian");
+                            setDietFilter("vegetarian");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "vegetarian" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "vegetarian" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          {translations.vegetarian}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDefaultDiet("vegan");
+                            setDietFilter("vegan");
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            defaultDiet === "vegan" ? "text-white" : "bg-gray-100 text-gray-600"
+                          }`}
+                          style={defaultDiet === "vegan" ? { backgroundColor: '#525174' } : {}}
+                        >
+                          Vegan
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#A7ACD9' }}>
+                  <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {conditions.map(c => (
+                      <button
+                        key={c}
+                        onClick={() => {
+                          setUserConditions(
+                            userConditions.includes(c)
+                              ? userConditions.filter(cond => cond !== c)
+                              : [...userConditions, c]
+                          );
+                        }}
+                        className={`px-3 py-1 rounded-full text-sm ${
+                          userConditions.includes(c) ? "text-white" : "bg-gray-100 text-gray-600"
+                        }`}
+                        style={userConditions.includes(c) ? { backgroundColor: '#525174' } : {}}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="font-semibold text-gray-800 text-base">
+                      {translations.yourRatings} ({tolerateList.length + moderationList.length + avoidList.length})
+                    </h2>
+                    <div className="relative">
+                      <button 
+                        onClick={() => setShowDownloadMenu(!showDownloadMenu)} 
+                        className="flex items-center gap-1 px-3 py-1.5 text-white rounded-lg text-sm font-medium"
+                        style={{ backgroundColor: '#525174' }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#3f3e5c'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = '#525174'}
+                      >
+                        <Download className="w-4 h-4" /> {translations.downloadPDF}
+                      </button>
+                      {showDownloadMenu && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10">
+                          <button 
+                            onClick={() => generatePDF("tolerate")} 
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg"
+                          >
+                            {translations.whatICanEat}
+                          </button>
+                          <button 
+                            onClick={() => generatePDF("moderation")} 
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            {translations.inModeration}
+                          </button>
+                          <button 
+                            onClick={() => generatePDF("avoid")} 
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            {translations.whatIShouldAvoid}
+                          </button>
+                          <button 
+                            onClick={() => generatePDF("all")} 
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg border-t"
+                          >
+                            {translations.allMyRatings}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#00A676' }}>{translations.iCanEat} ({tolerateList.length})</p>
+                      <div className="space-y-2">
+                        {tolerateList.map(([key, rating]) => {
+                          const food = foodDatabase.find(f => f.id === parseInt(key));
+                          return (
+                            <div
+                              key={key}
+                              onClick={() => submitRating(parseInt(key), "tolerate")}
+                              className="px-3 py-2 rounded text-sm flex items-center gap-2 cursor-pointer"
+                              style={{ backgroundColor: '#00A67633' }}
+                              onMouseEnter={(e) => e.target.style.backgroundColor = '#00A67666'}
+                              onMouseLeave={(e) => e.target.style.backgroundColor = '#00A67633'}
+                            >
+                              <span style={{ color: '#00A676' }}>{'\u25B2'}</span>
+                              <span className="text-gray-700">{food ? food.name : "Unknown"}</span>
+                            </div>
+                          );
+                        })}
+                        {tolerateList.length === 0 && <p className="text-sm text-gray-400">{translations.noneYet}</p>}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#FBAF00' }}>{translations.inModeration} ({moderationList.length})</p>
+                      <div className="space-y-2">
+                        {moderationList.map(([key, rating]) => {
+                          const food = foodDatabase.find(f => f.id === parseInt(key));
+                          return (
+                            <div
+                              key={key}
+                              onClick={() => submitRating(parseInt(key), "moderation")}
+                              className="px-3 py-2 rounded text-sm flex items-center gap-2 cursor-pointer"
+                              style={{ backgroundColor: '#FBAF0033' }}
+                              onMouseEnter={(e) => e.target.style.backgroundColor = '#FBAF0066'}
+                              onMouseLeave={(e) => e.target.style.backgroundColor = '#FBAF0033'}
+                            >
+                              <span style={{ color: '#FBAF00' }}>{'\u25CF'}</span>
+                              <span className="text-gray-700">{food ? food.name : "Unknown"}</span>
+                            </div>
+                          );
+                        })}
+                        {moderationList.length === 0 && <p className="text-sm text-gray-400">{translations.noneYet}</p>}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium mb-3" style={{ color: '#BB342F' }}>{translations.whatIShouldAvoid} ({avoidList.length})</p>
+                      <div className="space-y-2">
+                        {avoidList.map(([key, rating]) => {
+                          const food = foodDatabase.find(f => f.id === parseInt(key));
+                          return (
+                            <div
+                              key={key}
+                              onClick={() => submitRating(parseInt(key), "avoid")}
+                              className="px-3 py-2 rounded text-sm flex items-center gap-2 cursor-pointer"
+                              style={{ backgroundColor: '#BB342F33' }}
+                              onMouseEnter={(e) => e.target.style.backgroundColor = '#BB342F66'}
+                              onMouseLeave={(e) => e.target.style.backgroundColor = '#BB342F33'}
+                            >
+                              <span style={{ color: '#BB342F' }}>{'\u25BC'}</span>
+                              <span className="text-gray-700">{food ? food.name : "Unknown"}</span>
+                            </div>
+                          );
+                        })}
+                        {avoidList.length === 0 && <p className="text-sm text-gray-400">None yet</p>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#faf8fc', borderColor: '#D8B4FE' }}>
+                  <h3 className="font-semibold text-gray-800 text-base mb-2">{translations.aboutYourRatings}</h3>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-start gap-2">
+                      <span className="font-bold" style={{ color: '#00A676' }}>{'\u25B2'}</span>
+                      <div>
+                        <strong>{translations.iCanEat}:</strong> {translations.canEatDesc}
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="font-bold" style={{ color: '#FBAF00' }}>{'\u25CF'}</span>
+                      <div>
+                        <strong>{translations.inModeration}:</strong> {translations.moderationDesc}
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="font-bold" style={{ color: '#BB342F' }}>{'\u25BC'}</span>
+                      <div>
+                        <strong>{translations.whatIShouldAvoid}:</strong> {translations.avoidDesc}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t text-xs text-gray-600" style={{ borderColor: '#D8B4FE' }}>
+                    {translations.allVotesAnonymous}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {view === "recipes" && (
+              <div className="max-w-4xl mx-auto space-y-4">
+                {/* Header with Create Recipe button */}
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowOnlyMyRecipes(false)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        !showOnlyMyRecipes 
+                          ? 'text-white' 
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                      style={!showOnlyMyRecipes ? { backgroundColor: '#525174' } : {}}
+                    >
+                      All User Recipes
+                    </button>
+                    {user && (
+                      <button
+                        onClick={() => setShowOnlyMyRecipes(true)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                          showOnlyMyRecipes 
+                            ? 'text-white' 
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                        style={showOnlyMyRecipes ? { backgroundColor: '#525174' } : {}}
+                      >
+                        Your Recipes
+                      </button>
+                    )}
+                  </div>
+                  {user && (
+                    <button
+                      onClick={() => {
+                        if (!displayName) {
+                          setShowNameModal(true);
+                        } else {
+                          setShowRecipeForm(true);
+                          setEditingRecipe(null);
+                          setRecipeForm({
+                            title: '',
+                            description: '',
+                            instructions: '',
+                            ingredients: [],
+                            is_public: false
+                          });
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 text-white rounded-lg text-sm font-medium"
+                      style={{ backgroundColor: '#525174' }}
+                    >
+                      <Plus className="w-4 h-4" /> {translations.createRecipe}
+                    </button>
+                  )}
+                </div>
+
+
+                {/* Sorting and Filter Options */}
+                <div className="flex justify-end gap-3 items-center">
+                  <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showOnlyFavorites}
+                      onChange={(e) => setShowOnlyFavorites(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span>Only show favorites</span>
+                  </label>
+                  <select
+                    value={recipeSortBy}
+                    onChange={(e) => setRecipeSortBy(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  >
+                    <option value="recent">Most Recent</option>
+                    <option value="alphabetical">Alphabetically</option>
+                    <option value="views">Most Viewed</option>
+                    <option value="favorites">Most Favorited</option>
+                  </select>
+                </div>
+
+                {/* Recipe Form Modal */}
+                {showRecipeForm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+                    <div className="bg-white rounded-xl p-6 max-w-2xl w-full my-8">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="font-semibold text-xl">
+                          {editingRecipe ? translations.editRecipe : translations.createRecipe}
+                        </h3>
+                        <button 
+                          onClick={() => {
+                            setShowRecipeForm(false);
+                            setEditingRecipe(null);
+                          }}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="w-6 h-6" />
+                        </button>
+                      </div>
+
+                      <form onSubmit={saveRecipe} className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeTitle} *
+                          </label>
+                          <input
+                            type="text"
+                            value={recipeForm.title}
+                            onChange={(e) => setRecipeForm({...recipeForm, title: e.target.value})}
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeDescription}
+                          </label>
+                          <textarea
+                            value={recipeForm.description}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 100) {
+                                setRecipeForm({...recipeForm, description: e.target.value});
+                              }
+                            }}
+                            rows={3}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            maxLength={100}
+                          />
+                          <p className="text-xs text-gray-500 mt-1">{recipeForm.description.length}/100 characters</p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.ingredients} *
+                          </label>
+                          <div className="space-y-2">
+                            <div className="flex gap-2 relative">
+                              <input
+                                type="text"
+                                value={currentAmount}
+                                onChange={(e) => setCurrentAmount(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addIngredient();
+                                  }
+                                }}
+                                placeholder="Amount (e.g. 200g, 1 cup)"
+                                className="w-40 px-4 py-2 border border-gray-300 rounded-lg"
+                              />
+                              <input
+                                type="text"
+                                value={currentIngredient}
+                                onChange={(e) => handleIngredientInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addIngredient();
+                                  }
+                                }}
+                                placeholder={translations.ingredientName}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => addIngredient()}
+                                className="px-4 py-2 text-white rounded-lg"
+                                style={{ backgroundColor: '#525174' }}
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                              
+                              {/* Autocomplete suggestions */}
+                              {ingredientSuggestions.length > 0 && (
+                                <div className="absolute top-full left-40 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
+                                  {ingredientSuggestions.map((suggestion, idx) => (
+                                    <button
+                                      key={idx}
+                                      type="button"
+                                      onClick={() => {
+                                        addIngredient(suggestion.name);
+                                      }}
+                                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                                    >
+                                      {suggestion.name}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Ingredients list */}
+                            <div className="space-y-1">
+                              {recipeForm.ingredients.map((ingredient, idx) => (
+                                <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
+                                  {editingIngredientIdx === idx ? (
+                                    <div className="flex items-center gap-2 flex-1">
+                                      <input
+                                        type="text"
+                                        value={editingAmount}
+                                        onChange={(e) => setEditingAmount(e.target.value)}
+                                        placeholder="Amount"
+                                        className="w-32 px-2 py-1 border border-gray-300 rounded text-sm"
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') {
+                                            const updated = [...recipeForm.ingredients];
+                                            updated[idx] = { ...updated[idx], amount: editingAmount };
+                                            setRecipeForm({...recipeForm, ingredients: updated});
+                                            setEditingIngredientIdx(null);
+                                            setEditingAmount("");
+                                          }
+                                        }}
+                                      />
+                                      <span className="text-sm">{ingredient.name}</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const updated = [...recipeForm.ingredients];
+                                          updated[idx] = { ...updated[idx], amount: editingAmount };
+                                          setRecipeForm({...recipeForm, ingredients: updated});
+                                          setEditingIngredientIdx(null);
+                                          setEditingAmount("");
+                                        }}
+                                        className="text-green-600 hover:text-green-700 text-xs"
+                                      >
+                                        âœ“ Save
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setEditingIngredientIdx(null);
+                                          setEditingAmount("");
+                                        }}
+                                        className="text-gray-500 hover:text-gray-700 text-xs"
+                                      >
+                                        âœ— Cancel
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <span className="text-sm flex items-center gap-2">
+                                        {ingredient.amount && <span className="font-semibold text-gray-700">{ingredient.amount}</span>}
+                                        {ingredient.name}
+                                        {ingredient.inDatabase && (
+                                          <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
+                                            In DB
+                                          </span>
+                                        )}
+                                      </span>
+                                      <div className="flex items-center gap-2">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditingIngredientIdx(idx);
+                                            setEditingAmount(ingredient.amount || "");
+                                          }}
+                                          className="text-blue-500 hover:text-blue-700"
+                                          title="Edit amount"
+                                        >
+                                          <Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() => removeIngredient(idx)}
+                                          className="text-red-500 hover:text-red-700"
+                                        >
+                                          <X className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {translations.recipeInstructions} *
+                          </label>
+                          <textarea
+                            value={recipeForm.instructions}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 3000) {
+                                setRecipeForm({...recipeForm, instructions: e.target.value});
+                              }
+                            }}
+                            required
+                            rows={6}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            maxLength={3000}
+                          />
+                          <p className="text-xs text-gray-500 mt-1">{recipeForm.instructions.length}/3000 characters</p>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="is_public"
+                            checked={recipeForm.is_public}
+                            onChange={(e) => setRecipeForm({...recipeForm, is_public: e.target.checked})}
+                            className="w-4 h-4"
+                          />
+                          <label htmlFor="is_public" className="text-sm text-gray-700">
+                            {translations.makePublic}
+                          </label>
+                        </div>
+
+                        <div className="flex gap-3 pt-4">
+                          <button
+                            type="submit"
+                            className="flex-1 py-3 text-white rounded-lg font-medium"
+                            style={{ backgroundColor: '#525174' }}
+                          >
+                            {translations.saveRecipe}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowRecipeForm(false);
+                              setEditingRecipe(null);
+                            }}
+                            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                          >
+                            {translations.cancel}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {/* Display Name Modal */}
+                {showNameModal && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl p-6 max-w-md w-full">
+                      <h3 className="font-semibold text-lg mb-3">{translations.setNameFirst}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{translations.displayNameDesc}</p>
+                      <input
+                        type="text"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        placeholder="Enter your name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+                      />
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            if (displayName.trim()) {
+                              saveDisplayName(displayName);
+                            }
+                          }}
+                          className="flex-1 py-2 text-white rounded-lg font-medium"
+                          style={{ backgroundColor: '#525174' }}
+                        >
+                          Save & Continue
+                        </button>
+                        <button
+                          onClick={() => setShowNameModal(false)}
+                          className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                        >
+                          {translations.cancel}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Recipes List */}
+                <div className="space-y-4">
+                  {recipes.length === 0 ? (
+                    <div className="bg-white rounded-lg p-8 text-center border">
+                      <BookOpen className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+                      <p className="text-gray-500">{translations.noRecipes}</p>
+                      {user && (
+                        <p className="text-sm text-gray-400 mt-2">{translations.createFirstRecipe}</p>
+                      )}
+                    </div>
+                  ) : (
+                    getDisplayRecipes().map(recipe => {
+                      const isRecipeExpanded = expandedRecipe.includes(recipe.id);
+                      
+                      return (
+                        <div key={recipe.id} className="bg-white rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: isRecipeExpanded ? '#A7ACD9' : '#e5e7eb' }}>
+                          {/* Recipe Header - Always Visible */}
+                          <div 
+                            className="p-5 cursor-pointer relative rounded-t-xl"
+                            style={{ backgroundColor: isRecipeExpanded ? '#faf9fc' : '#ffffff' }}
+                            onClick={() => {
+                              if (isRecipeExpanded) {
+                                setExpandedRecipe(expandedRecipe.filter(id => id !== recipe.id));
+                              } else {
+                                setExpandedRecipe([...expandedRecipe, recipe.id]);
+                                trackRecipeView(recipe.id);
+                              }
+                            }}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h3 className="font-semibold text-lg" style={{ color: isRecipeExpanded ? '#525174' : '#1f2937' }}>{recipe.title}</h3>
+                                  {user && user.id === recipe.user_id && (
+                                    <>
+                                      {recipe.is_public ? (
+                                        <span className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                                          <Globe className="w-3 h-3" /> {translations.public}
+                                        </span>
+                                      ) : (
+                                        <span className="flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                          <Lock className="w-3 h-3" /> {translations.private}
+                                        </span>
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-500">{translations.by} {recipe.author_name}</p>
+                              </div>
+                              {user && user.id === recipe.user_id && (
+                                <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                                  <button
+                                    onClick={() => startEditRecipe(recipe)}
+                                    className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => deleteRecipe(recipe.id)}
+                                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              )}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleFavorite(recipe.id);
+                                }}
+                                className="p-2 transition-colors"
+                                style={{ 
+                                  color: userFavorites.has(recipe.id) ? '#FBAF00' : '#D1D5DB',
+                                }}
+                                title={userFavorites.has(recipe.id) ? "Remove from favorites" : "Add to favorites"}
+                              >
+                                <Star 
+                                  className="w-4 h-4" 
+                                  fill={userFavorites.has(recipe.id) ? '#FBAF00' : 'none'}
+                                />
+                              </button>
+                            </div>
+
+                            {recipe.description && (
+                              <p className="text-gray-600 break-words overflow-wrap-anywhere">{recipe.description}</p>
+                            )}
+                            
+                            {/* Expand/Collapse Arrow - Bottom Center */}
+                            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 scale-[1]" style={{ left: '50%', color: 'rgba(82,42,116,0.1)' }}>
+                              {isRecipeExpanded ? <ChevronUp className="w-8 h-8" /> : <ChevronDown className="w-8 h-8" />}
+                            </div>
+                          </div>
+
+                          {/* Recipe Details - Only When Expanded */}
+                          {isRecipeExpanded && (
+                            <div className="px-5 pb-5 pt-4" style={{ backgroundColor: '#fdf8fa' }}>
+                              {/* Date on left, views and stars on right */}
+                              <div className="flex justify-between mb-4 text-xs text-gray-400">
+                                <span>{new Date(recipe.created_at).toLocaleDateString()}</span>
+                                <span>{recipeViews[recipe.id] || 0} views | {recipeFavorites[recipe.id] || 0} stars</span>
+                              </div>
+                              
+                              {/* All Ingredients as Cards */}
+                              <div className="mb-6">
+                                <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
+                                  {translations.ingredients}
+                                </h4>
+                                <div className="space-y-1">
+                                    {recipe.ingredients && Array.isArray(recipe.ingredients) && recipe.ingredients.map((ingredient, idx) => {
+                                      // Safety check - ensure ingredient has basic structure
+                                      if (!ingredient || !ingredient.name) return null;
+                                      
+                                      // If ingredient is in database, show full interactive card
+                                      if (ingredient.inDatabase) {
+                                        const food = foodDatabase.find(f => f.id === ingredient.foodId);
+                                        if (!food) return null;
+                                        
+                                        const isExp = expanded === food.id;
+                                        const stats = getCommunityStats(food.id);
+                                        const myRating = myRatings[food.id];
+                                        const userScorePercentage = getUserScorePercentage(food.id);
+                                        
+                                        return (
+                                          <div key={idx} className="flex items-start gap-2">
+                                            <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right hidden md:block">
+                                              {ingredient.amount || ''}
+                                            </span>
+                                            <div className="bg-white rounded-lg border border-gray-100 flex-1 recipe-ingredient-card md:ml-0">
+                                          <div 
+                                            className="px-2 py-1 cursor-pointer flex items-center gap-1.5 text-xs" 
+                                            onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : food.id); }}
+                                          >
+                                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                                              <div className="flex-shrink-0 text-xs hidden md:block">
+                                                {getScoreIcon(food.level)}
+                                              </div>
+                                              <span className="font-semibold text-sm text-gray-600 flex-shrink-0 md:hidden min-w-[3rem]">
+                                                {ingredient.amount || ''}
+                                              </span>
+                                              <span className="font-medium text-gray-800 truncate text-sm">
+                                                {food.name}
+                                              </span>
+                                              {myRating && (
+                                                <span className="text-sm flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
+                                                  {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
+                                                </span>
+                                              )}
+                                            </div>
+                                            <div className="flex items-center gap-1.5 ml-auto flex-shrink-0">
+                                              <span className="px-1.5 py-0.5 rounded-full text-xs font-semibold min-w-[40px] text-center text-white" style={{ backgroundColor: '#A7ACD9' }}>
+                                                {userScorePercentage !== null ? `${userScorePercentage}%` : '--'}
+                                              </span>
+                                              <span className={`px-1.5 py-0.5 rounded-full text-white text-xs font-medium whitespace-nowrap min-w-[55px] text-center ${getScoreColor(food.score)}`}>
+                                                {getScoreLabel(food.level)}
+                                              </span>
+                                              {isExp ? <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />}
+                                            </div>
+                                          </div>
+                                          {isExp && (
+                                            <div className="px-3 pb-3 border-t border-gray-100 pt-2">
+                                              <p className="text-gray-500 text-xs mb-1">{food.category}</p>
+                                              <p className="text-gray-600 text-sm mb-2">{food.description}</p>
+                                              <div className="bg-gray-50 rounded p-2 mb-2" style={{ backgroundColor: '#BFDBFE80' }}>
+                                                <p className="text-xs font-medium text-gray-700 mb-1">
+                                                  Database Score: {food.score === -1 ? <span className="text-gray-400">N/A</span> : 
+                                                    <span style={{ color: food.score === 0 ? '#00A676' : food.score <= 2 ? '#FBAF00' : '#BB342F' }}>
+                                                      {food.score}/3
+                                                    </span>
+                                                  }
+                                                </p>
+                                                <div className="flex flex-wrap gap-1">
+                                                  {food.sources.map((s, i) => {
+                                                    const sourceName = s === "CFCD" ? "CFCD (No Histamine Data)" : s;
+                                                    const sourceUrl = getSourceLinks(language)[sourceName];
+                                                    
+                                                    return sourceUrl ? (
+                                                      <a 
+                                                        key={i}
+                                                        href={sourceUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded hover:bg-blue-200 transition-colors cursor-pointer"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                      >
+                                                        {sourceName}
+                                                      </a>
+                                                    ) : (
+                                                      <span key={i} className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
+                                                        {sourceName}
+                                                      </span>
+                                                    );
+                                                  })}
+                                                </div>
+                                              </div>
+                                              {stats && (
+                                                <div className="rounded p-2 mb-2" style={{ backgroundColor: '#8B7FC350' }}>
+                                                  <p className="text-xs font-medium text-gray-700 mb-2 flex items-center gap-1">
+                                                    <Users className="w-3 h-3" /> Community Reports
+                                                  </p>
+                                                  <BarGraph 
+                                                    tolerable={stats.total.tolerable} 
+                                                    moderate={stats.total.moderate}
+                                                    intolerable={stats.total.intolerable} 
+                                                    label="Total" 
+                                                    isTotal={true} 
+                                                  />
+                                                  {Object.keys(stats.byCondition).map(c => (
+                                                    <BarGraph 
+                                                      key={c} 
+                                                      tolerable={stats.byCondition[c].tolerable} 
+                                                      moderate={stats.byCondition[c].moderate}
+                                                      intolerable={stats.byCondition[c].intolerable} 
+                                                      label={c} 
+                                                      isTotal={false} 
+                                                    />
+                                                  ))}
+                                                </div>
+                                              )}
+                                              <div className="flex gap-1">
+                                                <button
+                                                  onClick={(e) => { e.stopPropagation(); submitRating(food.id, "tolerate"); }}
+                                                  className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
+                                                    myRating && myRating.rating === "tolerate" ? "text-white" : "text-gray-700 hover:bg-green-200"
+                                                  }`}
+                                                  style={myRating && myRating.rating === "tolerate" ? { backgroundColor: '#00A676' } : { backgroundColor: '#00A67633' }}
+                                                >
+                                                  {'\u25B2'} Tolerate
+                                                </button>
+                                                <button
+                                                  onClick={(e) => { e.stopPropagation(); submitRating(food.id, "moderation"); }}
+                                                  className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
+                                                    myRating && myRating.rating === "moderation" ? "text-white" : "text-gray-700 hover:bg-yellow-200"
+                                                  }`}
+                                                  style={myRating && myRating.rating === "moderation" ? { backgroundColor: '#FBAF00' } : { backgroundColor: '#FBAF0033' }}
+                                                >
+                                                  {'\u25CF'} Moderate
+                                                </button>
+                                                <button
+                                                  onClick={(e) => { e.stopPropagation(); submitRating(food.id, "avoid"); }}
+                                                  className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
+                                                    myRating && myRating.rating === "avoid" ? "text-white" : "text-gray-700 hover:bg-red-200"
+                                                  }`}
+                                                  style={myRating && myRating.rating === "avoid" ? { backgroundColor: '#BB342F' } : { backgroundColor: '#BB342F33' }}
+                                                >
+                                                  {'\u25BC'} Avoid
+                                                </button>
+                                              </div>
+                                            </div>
+                                          )}
+                                        </div>
+                                        </div>
+                                      );
+                                    } else {
+                                      // If ingredient is NOT in database, show simple card with a unique symbol
+                                      return (
+                                        <div key={idx} className="flex items-start gap-2">
+                                          <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right hidden md:block">
+                                            {ingredient.amount || ''}
+                                          </span>
+                                          <div className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2 flex-1 recipe-ingredient-card md:ml-0">
+                                            <div className="flex-shrink-0 text-xs hidden md:block">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                            </div>
+                                            <span className="font-semibold text-sm text-gray-600 flex-shrink-0 md:hidden min-w-[3rem]">
+                                              {ingredient.amount || ''}
+                                            </span>
+                                            <span className="font-medium text-gray-700 text-sm">
+                                              {ingredient.name}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </div>
+                              </div>
+
+                              {/* Instructions */}
+                              <div>
+                                <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
+                                  {translations.recipeInstructions}
+                                </h4>
+                                <p className="text-gray-700 whitespace-pre-wrap leading-relaxed px-1 break-words overflow-wrap-anywhere">{recipe.instructions}</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {view === "info" && (
+              <div className="max-w-4xl mx-auto space-y-4">
+                {/* About and Donate side-by-side */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-lg p-5 border md:col-span-2">
+                    <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
+                    <p className="text-base text-gray-600 mb-4">
+                      {translations.aboutP1}
+                    </p>
+                    <p className="text-base text-gray-600 mb-4">
+                      {translations.aboutP2}
+                    </p>
+                    <p className="text-base text-gray-600">
+                      {translations.aboutP3}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border border-pink-100 flex flex-col items-center justify-center text-center">
+                    <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-pink-500" /> {translations.supportTitle}
+                    </h2>
+                    <p className="text-base text-gray-600 mb-3">{translations.supportText}</p>
+                    <a 
+                      href="https://www.paypal.com/donate/?hosted_button_id=NYTSTRHQFJEE8"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-pink-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-pink-600"
+                    >
+                      {translations.donateButton}
+                    </a>
+                  </div>
+                </div>
+
+                {/* Expandable Detailed Info Section */}
+                <div className="bg-white rounded-lg p-5 border">
+                  <button
+                    onClick={() => setShowDetailedInfo(!showDetailedInfo)}
+                    className="w-full text-left group"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h2 className="font-semibold text-gray-800 text-lg">
+                        {translations.detailedInfoTitle}
+                      </h2>
+                      <span className="text-gray-400 group-hover:text-gray-600 transition-colors text-xl">
+                      {showDetailedInfo ? (
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" className="text-gray-400 group-hover:text-gray-600 transition-colors">
+                          <line x1="5" y1="10" x2="15" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" className="text-gray-400 group-hover:text-gray-600 transition-colors">
+                          <line x1="10" y1="5" x2="10" y2="15" strokeWidth="2" strokeLinecap="round"/>
+                          <line x1="5" y1="10" x2="15" y2="10" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                      )}
+                      </span>
+                    </div>
+                    
+                    {!showDetailedInfo && (
+                      <div className="relative">
+                        <div className="text-gray-600 text-sm leading-relaxed" style={{ maxHeight: '4.5rem', overflow: 'hidden' }}>
+                          <p>
+                            Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.
+                          </p>
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                      </div>
+                    )}
+                  </button>
+                  
+                  {showDetailedInfo && (
+                    <div className="mt-4 space-y-4 text-gray-600 text-sm leading-relaxed">
+                      <p>
+                        Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.<a href="#ref1" className="text-blue-600 hover:underline"><sup>1</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Most Likely to Cause Problems</h3>
+                      <p>
+                        The highest histamine levels are found in aged, fermented, and processed foods. These items naturally accumulate histamine over time, so avoiding them is often the most effective first step.<a href="#ref2" className="text-blue-600 hover:underline"><sup>2</sup></a> Common triggers include:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Aged cheeses</li>
+                        <li>Fermented sausages</li>
+                        <li>Sauerkraut</li>
+                        <li>Alcohol (especially red wine and champagne)</li>
+                        <li>Leftover fish or seafood, or any fish that isn't extremely fresh<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                      </ul>
+                      <p className="mt-2">
+                        Fish is especially sensitive: once it warms above safe temperatures, bacteria convert histidine to histamine very quickly.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
+                      <p>
+                        Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Fresh fish kept at 0–4°C stays safe.</li>
+                        <li>Temperatures above 10°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                      </ul>
+                      <p className="mt-2">
+                        This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Histamine-Releasing Foods</h3>
+                      <p>
+                        Some foods don't contain much histamine but can cause the body to release its own.<a href="#ref1" className="text-blue-600 hover:underline"><sup>1</sup></a> Common examples:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Citrus fruits</li>
+                        <li>Strawberries</li>
+                        <li>Tomatoes</li>
+                        <li>Spinach</li>
+                        <li>Chocolate</li>
+                      </ul>
+                      <p className="mt-2">
+                        Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
+                      <p>
+                        For most people with HIT, the safest base diet is fresh and unprocessed.<a href="#ref5" className="text-blue-600 hover:underline"><sup>5</sup></a> Often well-tolerated:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Freshly cooked meat and poultry</li>
+                        <li>Most fresh vegetables (except known triggers like tomatoes, spinach, and eggplant)</li>
+                        <li>Fresh dairy products</li>
+                        <li>Grains (including gluten-containing grains)</li>
+                        <li>Fresh herbs</li>
+                        <li>Most cooking oils</li>
+                      </ul>
+                      <p className="mt-2">
+                        Tolerance varies, but these foods provide a reliable starting point.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Storage and Preparation Guidelines</h3>
+                      <p>
+                        How you handle food is as important as what you eat.<a href="#ref6" className="text-blue-600 hover:underline"><sup>6</sup></a> Core rules:
+                      </p>
+                      <ol className="list-decimal list-inside ml-4 space-y-1">
+                        <li>Refrigerate immediately after cooking or purchasing.</li>
+                        <li>Freeze portions right away if not eating soon.</li>
+                        <li>Consume leftovers within 24 hours.</li>
+                        <li>Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.</li>
+                      </ol>
+                      <p className="mt-2">
+                        These steps help keep histamine levels low even in foods you normally tolerate.
+                      </p>
+                      
+                      <h3 className="font-semibold text-gray-800 text-base mt-4">Individual Thresholds Matter</h3>
+                      <p>
+                        There is no single "safe amount" of histamine.<a href="#ref7" className="text-blue-600 hover:underline"><sup>7</sup></a> Your tolerance changes depending on stress levels, hormones, alcohol intake, gut health, and medications. People with lower DAO activity react to smaller amounts, while others may tolerate more.
+                      </p>
+                      <p className="mt-2">
+                        The practical approach:
+                      </p>
+                      <ul className="list-disc list-inside ml-4 space-y-1">
+                        <li>Identify your personal triggers.</li>
+                        <li>Keep meals simple and fresh.</li>
+                        <li>Add foods back slowly to test tolerance.</li>
+                        <li>Track symptoms and patterns.</li>
+                      </ul>
+                      
+                      <div className="mt-6 pt-4 border-t border-gray-200">
+                        <h3 className="font-semibold text-gray-800 text-base mb-3">Sources</h3>
+                        <ul className="space-y-2 text-xs">
+                          <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
+                          <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
+                          <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
+                          <li id="ref4" className="scroll-mt-4">4. Wöhrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
+                          <li id="ref6" className="scroll-mt-4">6. Küfner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-lg p-5 border">
+                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.sourcesTitle}</h2>
+                  <div className="space-y-2">
+                    {Object.keys(getSourceLinks(language)).map(name => (
+                      <a
+                        key={name}
+                        href={getSourceLinks(language)[name]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm hover:underline"
+                        style={{ color: '#525174' }}
+                      >
+                        <ExternalLink className="w-4 h-4" /> {name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-5 border">
+                  <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
+                    <Mail className="w-5 h-5" /> {translations.contactTitle}
+                  </h2>
+                  <p className="text-base text-gray-600">
+                    {translations.contactText} <span style={{ color: '#525174' }}>{translations.contactEmail}</span>
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {showModal && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                <div className="bg-white rounded-xl p-5 max-w-sm w-full">
+                  <h3 className="font-semibold text-lg mb-3">{translations.setConditionsFirst}</h3>
+                  <p className="text-base text-gray-600 mb-4">
+                    {translations.selectCondition}
+                  </p>
+                  <button 
+                    onClick={() => { setShowModal(false); setView("profile"); }} 
+                    className="w-full py-3 text-white rounded-lg text-base font-medium"
+                    style={{ backgroundColor: '#525174' }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#3f3e5c'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#525174'}
+                  >
+                    {translations.goToProfile}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Floating filter icon button - only visible on mobile, hidden on 'recipes', 'profile', and 'info' tabs*/}
+            {window.innerWidth <= 768 && view !== "recipes" && view !== "profile" && view !== "info" && (
+              <button
+                onClick={() => {
+                  setMobileSidebarOpen(true);
+                }}
+                className="floating-filter-icon"
+                style={{
+                background: 'none',
+                border: 'none',
+                boxShadow: 'none',
+                 filter: 'none',
+                 borderRadius: 0,
+                  outline: 'none'
+                 }}
+                title="Show Filters"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#525174' }}>
+                  <line x1="4" y1="6" x2="20" y2="6" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="4" y1="12" x2="20" y2="12" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="4" y1="18" x2="20" y2="18" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
+            )}
+
+            {showAuthModal && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+                <div className="bg-white rounded-xl p-6 max-w-md w-full my-8 max-h-[90vh] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-semibold text-xl">
+                      {authMode === "login" ? "Login" : "Sign Up"}
+                    </h3>
+                    <button 
+                      onClick={() => {
+                        setShowAuthModal(false);
+                        setAuthError("");
+                        setAuthEmail("");
+                        setAuthPassword("");
+                      }}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                  
+                  <form onSubmit={handleAuth} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        value={authEmail}
+                        onChange={(e) => setAuthEmail(e.target.value)}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                        style={{ focusRingColor: '#525174' }}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        value={authPassword}
+                        onChange={(e) => setAuthPassword(e.target.value)}
+                        required
+                        minLength={6}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+                        style={{ focusRingColor: '#525174' }}
+                      />
+                    </div>
+
+                    {authError && (
+                      <p className={`text-sm ${authError.includes('Check your email') ? 'text-green-600' : 'text-red-600'}`}>
+                        {authError}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={authLoading}
+                      className="w-full py-3 text-white rounded-lg text-base font-medium disabled:opacity-50"
+                      style={{ backgroundColor: '#525174' }}
+                    >
+                      {authLoading ? "Loading..." : authMode === "login" ? "Login" : "Sign Up"}
+                    </button>
+
+                    <p className="text-center text-sm text-gray-600">
+                      {authMode === "login" ? "Don't have an account? " : "Already have an account? "}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAuthMode(authMode === "login" ? "signup" : "login");
+                          setAuthError("");
+                        }}
+                        className="font-medium"
+                        style={{ color: '#525174' }}
+                      >
+                        {authMode === "login" ? "Sign Up" : "Login"}
+                      </button>
+                    </p>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<HistaBase />, document.getElementById('root'));
+  </script>
+</body>
+</html>
