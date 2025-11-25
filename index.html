@@ -243,6 +243,16 @@
         max-width: 100%;
       }
     }
+    
+    /* Force word breaks to prevent overflow in long text without spaces */
+    .break-words {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .overflow-wrap-anywhere {
+      overflow-wrap: anywhere;
+    }
   </style>
 
   <style id="light-dark-theme">
@@ -3224,7 +3234,7 @@
                             </div>
 
                             {recipe.description && (
-                              <p className="text-gray-600">{recipe.description}</p>
+                              <p className="text-gray-600 break-words overflow-wrap-anywhere">{recipe.description}</p>
                             )}
                             
                             {/* Expand/Collapse Arrow - Bottom Center */}
@@ -3422,7 +3432,7 @@
                                 <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
                                   {translations.recipeInstructions}
                                 </h4>
-                                <p className="text-gray-700 whitespace-pre-wrap leading-relaxed px-1">{recipe.instructions}</p>
+                                <p className="text-gray-700 whitespace-pre-wrap leading-relaxed px-1 break-words overflow-wrap-anywhere">{recipe.instructions}</p>
                               </div>
                             </div>
                           )}
