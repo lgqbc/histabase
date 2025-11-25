@@ -3431,8 +3431,8 @@
             {view === "info" && (
               <div className="max-w-4xl mx-auto space-y-4">
                 {/* About and Donate side-by-side */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white rounded-lg p-5 border">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-base text-gray-600 mb-4">
                       {translations.aboutP1}
@@ -3445,7 +3445,7 @@
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border border-pink-100">
+                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border border-pink-100 flex flex-col items-center justify-center text-center">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
                       <Heart className="w-5 h-5 text-pink-500" /> {translations.supportTitle}
                     </h2>
