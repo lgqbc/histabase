@@ -2178,19 +2178,19 @@
 
                     {/* Mobile Secondary Navigation */}
                     <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-2">
                         <button
                           onClick={() => {
                             setView("database");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-3 px-2 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
                           style={{ 
                             backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
                             color: view === "database" ? 'white' : '#525174'
                           }}
                         >
-                          <Search className="w-6 h-6" />
+                          <Search className="w-4 h-4" />
                           <span>{translations.database}</span>
                         </button>
                         <button
@@ -2198,13 +2198,13 @@
                             setView("profile");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-3 px-2 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
                           style={{ 
                             backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
                             color: view === "profile" ? 'white' : '#525174'
                           }}
                         >
-                          <User className="w-6 h-6" />
+                          <User className="w-4 h-4" />
                           <span>{translations.profile}</span>
                         </button>
                         <button
@@ -2212,13 +2212,13 @@
                             setView("recipes");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-3 px-2 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
                           style={{ 
                             backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
                             color: view === "recipes" ? 'white' : '#525174'
                           }}
                         >
-                          <BookOpen className="w-6 h-6" />
+                          <BookOpen className="w-4 h-4" />
                           <span>{translations.recipes}</span>
                         </button>
                         <button
@@ -2226,13 +2226,13 @@
                             setView("info");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-3 px-2 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
+                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors flex items-center gap-2"
                           style={{ 
                             backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
                             color: view === "info" ? 'white' : '#525174'
                           }}
                         >
-                          <Info className="w-6 h-6" />
+                          <Info className="w-4 h-4" />
                           <span>{translations.info}</span>
                         </button>
                       </div>
