@@ -1897,7 +1897,7 @@
                       <button
                         onClick={() => submitRating(food.id, "tolerate")}
                         className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
-                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
+                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
@@ -1908,7 +1908,7 @@
                       <button
                         onClick={() => submitRating(food.id, "moderation")}
                         className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
-                          myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
+                          myRating && myRating.rating === "moderation" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
@@ -1919,7 +1919,7 @@
                       <button
                         onClick={() => submitRating(food.id, "avoid")}
                         className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
-                          myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
+                          myRating && myRating.rating === "avoid" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
