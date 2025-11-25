@@ -230,6 +230,17 @@
         margin-right: auto !important;
       }
     }
+
+    /* Recipe ingredient card width limits */
+    .recipe-ingredient-card {
+      max-width: 70%;
+    }
+
+    @media (max-width: 768px) {
+      .recipe-ingredient-card {
+        max-width: 100%;
+      }
+    }
   </style>
 
   <style id="light-dark-theme">
@@ -300,6 +311,17 @@
       border: none !important;
     }
     
+
+    /* Recipe ingredient card width limits */
+    .recipe-ingredient-card {
+      max-width: 70%;
+    }
+
+    @media (max-width: 768px) {
+      .recipe-ingredient-card {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -336,6 +358,8 @@
     const Plus = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>;
     const X = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
     const Edit = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
+    const Star = ({ className, fill }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={fill || "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+
     const Trash2 = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>;
     const Globe = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>;
     const Lock = ({ className }) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
@@ -578,6 +602,18 @@
       const [displayName, setDisplayName] = useState('');
       const [showNameModal, setShowNameModal] = useState(false);
       const [expandedRecipe, setExpandedRecipe] = useState([]);
+      const [recipeFavorites, setRecipeFavorites] = useState({});
+      const [recipeViews, setRecipeViews] = useState({});
+      const [recipeSortBy, setRecipeSortBy] = useState('recent');
+      const [userFavorites, setUserFavorites] = useState(new Set());
+      const [sessionId] = useState(() => {
+        let sid = localStorage.getItem('sessionId');
+        if (!sid) {
+          sid = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('sessionId', sid);
+        }
+        return sid;
+      });
       
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
@@ -760,10 +796,164 @@
             .order('created_at', { ascending: false });
 
           if (error) throw error;
+          
+          // Load view counts for all recipes
+          const { data: viewCounts } = await supabase
+            .from('recipe_views')
+            .select('recipe_id');
+          
+          const viewsMap = {};
+          if (viewCounts) {
+            viewCounts.forEach(view => {
+              viewsMap[view.recipe_id] = (viewsMap[view.recipe_id] || 0) + 1;
+            });
+          }
+          setRecipeViews(viewsMap);
+          
+          // Load favorite counts for all recipes
+          const { data: favCounts } = await supabase
+            .from('recipe_favorites')
+            .select('recipe_id');
+          
+          const favsMap = {};
+          if (favCounts) {
+            favCounts.forEach(fav => {
+              favsMap[fav.recipe_id] = (favsMap[fav.recipe_id] || 0) + 1;
+            });
+          }
+          setRecipeFavorites(favsMap);
+          
+          // Load user's favorites if logged in
+          if (user) {
+            const { data: userFavs } = await supabase
+              .from('recipe_favorites')
+              .select('recipe_id')
+              .eq('user_id', user.id);
+            
+            if (userFavs) {
+              setUserFavorites(new Set(userFavs.map(f => f.recipe_id)));
+            }
+          }
+          
           setRecipes(allRecipes || []);
         } catch (err) {
           console.error('Error loading recipes:', err);
         }
+      }
+
+
+      // Track recipe view
+      async function trackRecipeView(recipeId) {
+        try {
+          await supabase
+            .from('recipe_views')
+            .insert({
+              recipe_id: recipeId,
+              user_id: user?.id || null,
+              session_id: sessionId
+            });
+          
+          // Update local view count
+          setRecipeViews(prev => ({
+            ...prev,
+            [recipeId]: (prev[recipeId] || 0) + 1
+          }));
+        } catch (err) {
+          // Ignore duplicate view errors (same session)
+          if (!err.message?.includes('duplicate')) {
+            console.error('Error tracking view:', err);
+          }
+        }
+      }
+
+      // Toggle recipe favorite
+      async function toggleFavorite(recipeId) {
+        if (!user) {
+          setShowAuthModal(true);
+          setAuthMode('login');
+          return;
+        }
+        
+        try {
+          const isFavorited = userFavorites.has(recipeId);
+          
+          if (isFavorited) {
+            // Remove favorite
+            await supabase
+              .from('recipe_favorites')
+              .delete()
+              .eq('recipe_id', recipeId)
+              .eq('user_id', user.id);
+            
+            setUserFavorites(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(recipeId);
+              return newSet;
+            });
+            
+            setRecipeFavorites(prev => ({
+              ...prev,
+              [recipeId]: Math.max(0, (prev[recipeId] || 0) - 1)
+            }));
+          } else {
+            // Add favorite
+            await supabase
+              .from('recipe_favorites')
+              .insert({
+                recipe_id: recipeId,
+                user_id: user.id
+              });
+            
+            setUserFavorites(prev => new Set([...prev, recipeId]));
+            
+            setRecipeFavorites(prev => ({
+              ...prev,
+              [recipeId]: (prev[recipeId] || 0) + 1
+            }));
+          }
+        } catch (err) {
+          console.error('Error toggling favorite:', err);
+        }
+      }
+
+      // Get sorted recipes
+      function getSortedRecipes() {
+        const recipesCopy = [...recipes];
+        
+        switch (recipeSortBy) {
+          case 'alphabetical':
+            return recipesCopy.sort((a, b) => a.title.localeCompare(b.title));
+          
+          case 'views':
+            return recipesCopy.sort((a, b) => 
+              (recipeViews[b.id] || 0) - (recipeViews[a.id] || 0)
+            );
+          
+          case 'favorites':
+            return recipesCopy.sort((a, b) => 
+              (recipeFavorites[b.id] || 0) - (recipeFavorites[a.id] || 0)
+            );
+          
+          case 'recent':
+          default:
+            return recipesCopy;
+        }
+      }
+
+      // Sort with favorites on top
+      function getDisplayRecipes() {
+        const sorted = getSortedRecipes();
+        
+        // Separate favorited and non-favorited
+        const favorited = sorted.filter(r => userFavorites.has(r.id));
+        const notFavorited = sorted.filter(r => !userFavorites.has(r.id));
+        
+        // If sorting by favorites or recent, put user's favorites on top
+        if (recipeSortBy === 'favorites' || recipeSortBy === 'recent') {
+          return [...favorited, ...notFavorited];
+        }
+        
+        return sorted;
       }
 
       // Load display name from profile
@@ -2561,7 +2751,10 @@
               <div className="max-w-4xl mx-auto space-y-4">
                 {/* Header with Create Recipe button */}
                 <div className="flex justify-between items-center">
-                  <h1 className="text-2xl font-bold text-gray-800">{translations.allRecipes}</h1>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-800">{translations.allRecipes}</h1>
+                    <p className="text-sm text-gray-500 mt-1">Look at other people's recipes or share your own!</p>
+                  </div>
                   {user && (
                     <button
                       onClick={() => {
@@ -2585,6 +2778,21 @@
                       <Plus className="w-4 h-4" /> {translations.createRecipe}
                     </button>
                   )}
+                </div>
+
+
+                {/* Sorting dropdown */}
+                <div className="flex justify-end">
+                  <select
+                    value={recipeSortBy}
+                    onChange={(e) => setRecipeSortBy(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  >
+                    <option value="recent">Most Recent</option>
+                    <option value="alphabetical">Alphabetically</option>
+                    <option value="views">Most Viewed</option>
+                    <option value="favorites">Most Favorited</option>
+                  </select>
                 </div>
 
                 {/* Recipe Form Modal */}
@@ -2880,6 +3088,22 @@
                                   </button>
                                 </div>
                               )}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleFavorite(recipe.id);
+                                }}
+                                className="p-2 transition-colors"
+                                style={{ 
+                                  color: userFavorites.has(recipe.id) ? '#FBAF00' : '#D1D5DB',
+                                }}
+                                title={userFavorites.has(recipe.id) ? "Remove from favorites" : "Add to favorites"}
+                              >
+                                <Star 
+                                  className="w-5 h-5" 
+                                  fill={userFavorites.has(recipe.id) ? '#FBAF00' : 'none'}
+                                />
+                              </button>
                             </div>
 
                             {recipe.description && (
@@ -2895,6 +3119,16 @@
                           {/* Recipe Details - Only When Expanded */}
                           {isRecipeExpanded && (
                             <div className="px-5 pb-5 pt-4" style={{ backgroundColor: '#fdf8fa' }}>
+                              {React.useEffect(() => {
+                                trackRecipeView(recipe.id);
+                              }, [])}
+                              
+                              {/* View counter and created date - subtle in top right */}
+                              <div className="flex justify-end gap-4 mb-4 text-xs text-gray-400">
+                                <span>{recipeViews[recipe.id] || 0} views</span>
+                                <span>{new Date(recipe.created_at).toLocaleDateString()}</span>
+                              </div>
+                              
                               {/* All Ingredients as Cards */}
                               <div className="mb-6">
                                 <h4 className="font-semibold text-base mb-3 px-1" style={{ color: '#525174' }}>
@@ -2920,7 +3154,7 @@
                                             <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
                                               {ingredient.amount || ''}
                                             </span>
-                                            <div className="bg-white rounded-lg border border-gray-100 flex-1">
+                                            <div className="bg-white rounded-lg border border-gray-100 flex-1 recipe-ingredient-card">
                                           <div 
                                             className="px-3 py-2 cursor-pointer flex items-center gap-2 text-sm" 
                                             onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : food.id); }}
@@ -3087,7 +3321,7 @@
                                           <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
                                             {ingredient.amount || ''}
                                           </span>
-                                          <div className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2 flex-1">
+                                          <div className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2 flex-1 recipe-ingredient-card">
                                             <div className="flex-shrink-0 text-xs">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                             </div>
