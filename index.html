@@ -1982,8 +1982,9 @@
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <Search className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.database}
-                  <br className="block sm:hidden" />
+                  <span ClassName=flex flex-col items-center sm:flex-row sm:items-center sm:gap-1">
+                  <Search className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" /><span>{translations.database}</span>
+                  </span>
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
