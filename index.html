@@ -2031,58 +2031,62 @@
 
                     {/* Mobile Secondary Navigation */}
                     <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-3">
                         <button
                           onClick={() => {
                             setView("database");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          className="py-4 px-3 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
                           style={{ 
                             backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
                             color: view === "database" ? 'white' : '#525174'
                           }}
                         >
-                          {translations.database}
+                          <Search className="w-6 h-6" />
+                          <span>{translations.database}</span>
                         </button>
                         <button
                           onClick={() => {
                             setView("profile");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          className="py-4 px-3 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
                           style={{ 
                             backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
                             color: view === "profile" ? 'white' : '#525174'
                           }}
                         >
-                          {translations.profile}
+                          <User className="w-6 h-6" />
+                          <span>{translations.profile}</span>
                         </button>
                         <button
                           onClick={() => {
                             setView("recipes");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          className="py-4 px-3 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
                           style={{ 
                             backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
                             color: view === "recipes" ? 'white' : '#525174'
                           }}
                         >
-                          {translations.recipes}
+                          <BookOpen className="w-6 h-6" />
+                          <span>{translations.recipes}</span>
                         </button>
                         <button
                           onClick={() => {
                             setView("info");
                             setMobileSidebarOpen(false);
                           }}
-                          className="py-2 px-3 rounded-lg font-medium text-sm transition-colors"
+                          className="py-4 px-3 rounded-lg font-medium text-sm transition-colors flex flex-col items-center gap-2"
                           style={{ 
                             backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
                             color: view === "info" ? 'white' : '#525174'
                           }}
                         >
-                          {translations.info}
+                          <Info className="w-6 h-6" />
+                          <span>{translations.info}</span>
                         </button>
                       </div>
                     </div>
