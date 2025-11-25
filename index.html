@@ -573,10 +573,11 @@
         is_public: false
       });
       const [currentIngredient, setCurrentIngredient] = useState('');
+      const [currentAmount, setCurrentAmount] = useState('');
       const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
       const [displayName, setDisplayName] = useState('');
       const [showNameModal, setShowNameModal] = useState(false);
-      const [expandedRecipe, setExpandedRecipe] = useState(null);
+      const [expandedRecipe, setExpandedRecipe] = useState([]);
       
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
@@ -635,6 +636,7 @@
           if (event === 'SIGNED_IN' && session?.user && mounted) {
             console.log('[AUTH] User signed in, loading data...');
             setUser(session.user);
+            setShowAuthModal(false);
             await loadUserData(session.user.id);
           } else if (event === 'SIGNED_OUT' && mounted) {
             console.log('[AUTH] User signed out, clearing data...');
@@ -930,6 +932,7 @@
         
         const ingredient = {
           name: ingredientName.trim(),
+          amount: currentAmount.trim(),
           inDatabase: !!matchingFood,
           foodId: matchingFood?.id || null
         };
@@ -939,6 +942,7 @@
           ingredients: [...recipeForm.ingredients, ingredient]
         });
         setCurrentIngredient('');
+        setCurrentAmount('');
         setIngredientSuggestions([]);
       }
 
@@ -2615,10 +2619,16 @@
                           </label>
                           <textarea
                             value={recipeForm.description}
-                            onChange={(e) => setRecipeForm({...recipeForm, description: e.target.value})}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 100) {
+                                setRecipeForm({...recipeForm, description: e.target.value});
+                              }
+                            }}
                             rows={3}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            maxLength={100}
                           />
+                          <p className="text-xs text-gray-500 mt-1">{recipeForm.description.length}/100 characters</p>
                         </div>
 
                         <div>
@@ -2627,6 +2637,19 @@
                           </label>
                           <div className="space-y-2">
                             <div className="flex gap-2 relative">
+                              <input
+                                type="text"
+                                value={currentAmount}
+                                onChange={(e) => setCurrentAmount(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addIngredient();
+                                  }
+                                }}
+                                placeholder="Amount (e.g. 200g, 1 cup)"
+                                className="w-40 px-4 py-2 border border-gray-300 rounded-lg"
+                              />
                               <input
                                 type="text"
                                 value={currentIngredient}
@@ -2651,7 +2674,7 @@
                               
                               {/* Autocomplete suggestions */}
                               {ingredientSuggestions.length > 0 && (
-                                <div className="absolute top-full left-0 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
+                                <div className="absolute top-full left-40 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
                                   {ingredientSuggestions.map((suggestion, idx) => (
                                     <button
                                       key={idx}
@@ -2673,6 +2696,7 @@
                               {recipeForm.ingredients.map((ingredient, idx) => (
                                 <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
                                   <span className="text-sm flex items-center gap-2">
+                                    {ingredient.amount && <span className="font-semibold text-gray-700">{ingredient.amount}</span>}
                                     {ingredient.name}
                                     {ingredient.inDatabase && (
                                       <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
@@ -2699,11 +2723,17 @@
                           </label>
                           <textarea
                             value={recipeForm.instructions}
-                            onChange={(e) => setRecipeForm({...recipeForm, instructions: e.target.value})}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 3000) {
+                                setRecipeForm({...recipeForm, instructions: e.target.value});
+                              }
+                            }}
                             required
                             rows={6}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            maxLength={3000}
                           />
+                          <p className="text-xs text-gray-500 mt-1">{recipeForm.instructions.length}/3000 characters</p>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -2791,14 +2821,21 @@
                     </div>
                   ) : (
                     recipes.map(recipe => {
-                      const isRecipeExpanded = expandedRecipe === recipe.id;
+                      const isRecipeExpanded = expandedRecipe.includes(recipe.id);
                       
                       return (
-                        <div key={recipe.id} className="bg-white rounded-lg border">
+                        <div key={recipe.id} className="bg-white rounded-lg border" style={{ borderColor: '#A7ACD9', borderWidth: '2px' }}>
                           {/* Recipe Header - Always Visible */}
                           <div 
                             className="p-5 cursor-pointer relative"
-                            onClick={() => setExpandedRecipe(isRecipeExpanded ? null : recipe.id)}
+                            style={{ background: 'linear-gradient(to bottom, #f6e3fa 0%, #ffffff 100%)' }}
+                            onClick={() => {
+                              if (isRecipeExpanded) {
+                                setExpandedRecipe(expandedRecipe.filter(id => id !== recipe.id));
+                              } else {
+                                setExpandedRecipe([...expandedRecipe, recipe.id]);
+                              }
+                            }}
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
@@ -2850,10 +2887,12 @@
 
                           {/* Recipe Details - Only When Expanded */}
                           {isRecipeExpanded && (
-                            <div className="px-5 pb-5 border-t border-gray-100 pt-4">
+                            <div className="px-5 pb-5 border-t pt-4" style={{ borderColor: '#A7ACD9', backgroundColor: '#fefefe' }}>
                               {/* All Ingredients as Cards */}
                               <div className="mb-4">
-                                <h4 className="font-medium text-gray-800 mb-2">{translations.ingredients}:</h4>
+                                <h4 className="font-semibold text-lg mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: '#f6e3fa', color: '#525174' }}>
+                                  {translations.ingredients}:
+                                </h4>
                                 <div className="space-y-1">
                                   {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => {
                                     // If ingredient is in database, show full interactive card
@@ -2876,7 +2915,10 @@
                                               <div className="flex-shrink-0 text-xs">
                                                 {getScoreIcon(food.level)}
                                               </div>
-                                              <span className="font-medium text-gray-800 truncate text-sm">{food.name}</span>
+                                              <span className="font-medium text-gray-800 truncate text-sm">
+                                                {ingredient.amount && <span className="font-bold text-gray-900">{ingredient.amount} </span>}
+                                                {food.name}
+                                              </span>
                                               {myRating && (
                                                 <span className="text-sm flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
                                                   {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
@@ -3025,10 +3067,16 @@
                                         </div>
                                       );
                                     } else {
-                                      // If ingredient is NOT in database, show simple gray card (not expandable)
+                                      // If ingredient is NOT in database, show simple card with a unique symbol
                                       return (
-                                        <div key={idx} className="bg-gray-100 rounded-lg border border-gray-200 px-3 py-2">
-                                          <span className="font-medium text-gray-700 text-sm">{ingredient.name}</span>
+                                        <div key={idx} className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2">
+                                          <div className="flex-shrink-0 text-xs">
+                                            <span className="text-lg" style={{ color: '#9CA3AF' }}>◈</span>
+                                          </div>
+                                          <span className="font-medium text-gray-700 text-sm">
+                                            {ingredient.amount && <span className="font-bold text-gray-900">{ingredient.amount} </span>}
+                                            {ingredient.name}
+                                          </span>
                                         </div>
                                       );
                                     }
@@ -3038,8 +3086,10 @@
 
                               {/* Instructions */}
                               <div>
-                                <h4 className="font-medium text-gray-800 mb-2">{translations.recipeInstructions}:</h4>
-                                <p className="text-gray-700 whitespace-pre-wrap">{recipe.instructions}</p>
+                                <h4 className="font-semibold text-lg mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: '#A7ACD9', color: '#525174' }}>
+                                  {translations.recipeInstructions}:
+                                </h4>
+                                <p className="text-gray-700 whitespace-pre-wrap px-3">{recipe.instructions}</p>
                               </div>
                             </div>
                           )}
