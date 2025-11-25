@@ -1982,9 +1982,7 @@
                   className={`flex-1 py-2 rounded-lg font-medium text-sm ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
                   style={view === "database" ? { backgroundColor: '#525174' } : {}}
                 >
-                  <span ClassName=flex flex-col items-center sm:flex-row sm:items-center sm:gap-1">
-                  <Search className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" /><span>{translations.database}</span>
-                  </span>
+                  <Search className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.database}
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
@@ -1992,7 +1990,7 @@
                   style={view === "profile" ? { backgroundColor: '#525174' } : {}}
                 >
                   <User className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.profile}
-                  <br className="block sm:hidden" />
+
                 </button>
                 <button 
                   onClick={() => setView("recipes")} 
@@ -2000,7 +1998,7 @@
                   style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
                 >
                   <BookOpen className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.recipes}
-                  <br className="block sm:hidden" />
+
                 </button>
                 <button 
                   onClick={() => setView("info")} 
@@ -2008,7 +2006,7 @@
                   style={view === "info" ? { backgroundColor: '#525174' } : {}}
                 >
                   <Info className="w-6 h-6 sm:w-4 sm:h-4 inline mr-1" />{translations.info}
-                  <br className="block sm:hidden" />
+
                 </button>
               </div>
             </div>
