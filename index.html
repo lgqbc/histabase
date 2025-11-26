@@ -240,9 +240,9 @@
       }
 
       .food-card-second-row .vote-button {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.875rem !important;
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 1.575rem !important;
       }
 
       /* Make badges smaller and tighter */
@@ -1896,8 +1896,8 @@
                     <div className="flex gap-1 w-[96px]" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => submitRating(food.id, "tolerate")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
-                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-300"
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
+                          myRating && myRating.rating === "tolerate" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "tolerate" ? { color: '#00A676' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#00A676')}
@@ -1907,19 +1907,19 @@
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "moderation")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
-                          myRating && myRating.rating === "moderation" ? "" : "text-gray-300"
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
+                          myRating && myRating.rating === "moderation" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "moderation" ? { color: '#FBAF00' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#FBAF00')}
                         onMouseLeave={(e) => !myRating && (e.target.style.color = '')}
                       >
-                        {'\u25CF'}
+                        {'\u2B24'}
                       </button>
                       <button
                         onClick={() => submitRating(food.id, "avoid")}
-                        className={`vote-button w-8 h-8 flex items-center justify-center text-lg transition-colors ${
-                          myRating && myRating.rating === "avoid" ? "" : "text-gray-300"
+                        className={`vote-button w-8 h-8 flex items-center justify-center text-2xl transition-colors ${
+                          myRating && myRating.rating === "avoid" ? "" : "text-gray-200"
                         }`}
                         style={myRating && myRating.rating === "avoid" ? { color: '#BB342F' } : {}}
                         onMouseEnter={(e) => !myRating && (e.target.style.color = '#BB342F')}
@@ -2049,7 +2049,7 @@
                 <line x1="4" y1="18" x2="20" y2="18" strokeWidth="2" strokeLinecap="round"/>
               </svg>
             </button>
-            <div style={{ width: '40px' }}></div>
+            <div style={{ width: '80px' }}></div>
             <div className="mobile-title-section">
               <h1 style={{ color: '#525174' }}>Hista<span style={{ color: '#a7acd6' }}>Base</span></h1>
               <p className="text-gray-400" style={{ color: '#a7acd6' }}>The histamine food database</p>
@@ -2085,7 +2085,7 @@
                     <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#525174' }}>Hista<span style={{ color: '#a7acd6' }}>Base</span></h1>
                     <p className="text-gray-400 text-xs md:text-sm" style={{ color: '#a7acd6' }}>The histamine food database</p>
                   </div>
-                  <div className="flex-1 flex items-center gap-2 ml-6">
+                  <div className="flex-1 flex items-center gap-2 justify-end">
                     {user ? (
                       <>
                         <button
@@ -2238,47 +2238,6 @@
                       </div>
                     </div>
 
-                    {/* Login/Logout buttons */}
-                    <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      {user ? (
-                        <div className="flex flex-col gap-2">
-                          <button
-                            onClick={() => {
-                              setView("profile");
-                              setMobileSidebarOpen(false);
-                            }}
-                            className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white"
-                            style={{ backgroundColor: '#f4d7f7' }}
-                          >
-                            {displayName || user.email.split('@')[0]}
-                          </button>
-                          <button
-                            onClick={() => {
-                              handleLogout();
-                              setMobileSidebarOpen(false);
-                            }}
-                            className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white flex items-center justify-center gap-2"
-                            style={{ backgroundColor: '#A7ACD9' }}
-                          >
-                            <LogOut className="w-4 h-4" /> Logout
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setShowAuthModal(true);
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white flex items-center justify-center gap-2"
-                          style={{ backgroundColor: '#A7ACD9' }}
-                        >
-                          <LogIn className="w-4 h-4" /> Login
-                        </button>
-                      )}
-                    </div>
-
-                    {view === "database" && (
-                      <div>
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">DATABSE LANGUAGE</p>
                       <div className="flex gap-2">
@@ -2545,7 +2504,6 @@
                         </label>
                       ))}
                     </div>
-                    )}
                   </div>
                 )}
 
