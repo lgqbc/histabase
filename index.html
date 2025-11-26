@@ -356,67 +356,448 @@
   </style>
 
   <style id="light-dark-theme">
-    /* SUBTLE OFF-WHITE THEME - Warm and inviting */
-    body {
-      background-color: #FAF9F7 !important;
+    /* ============================================ */
+    /* THEME: CSS VARIABLES SYSTEM */
+    /* ============================================ */
+    
+    :root {
+      /* Background Colors - Light Theme */
+      --bg-base: #FAF9F7;
+      --bg-surface: #FFFEFB;
+      --bg-elevated: #faf8fc;
+      --bg-secondary: #faf6f5;
+      --bg-input: #FDFCFA;
+      --bg-gray-light: #F0EEE9;
+      
+      /* Border Colors */
+      --border-subtle: #F0EEE9;
+      --border-default: #E8E6E3;
+      
+      /* Text Colors */
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-tertiary: #9ca3af;
+      --text-white: #ffffff;
+      
+      /* Brand Colors */
+      --color-primary: #525174;
+      --color-primary-light: #a7acd6;
+      --color-primary-lighter: #A7ACD9;
+      --color-primary-alpha-10: rgba(82, 81, 116, 0.0625);
+      --color-primary-dark: #351c75;
+      
+      /* Status Colors - Food Safety */
+      --color-tolerate: #00A676;
+      --color-tolerate-light: rgba(0, 166, 118, 0.2);
+      --color-moderation: #FBAF00;
+      --color-moderation-light: rgba(251, 175, 0, 0.2);
+      --color-avoid: #BB342F;
+      --color-avoid-light: rgba(187, 52, 47, 0.2);
+      
+      /* Accent Colors */
+      --color-accent-blue: #9fc5e8;
+      --color-accent-pink: #ead1dc;
+      
+      /* Purple Tints & Borders */
+      --color-purple-tint-1: #f6e3fa;
+      --color-purple-tint-2: #faf8fc;
+      --color-purple-tint-3: #fdf8fa;
+      --color-purple-tint-4: #f4d7f7;
+      --color-purple-border: #D8B4FE;
+      --color-pink-border: #FBD0E4;
+      --color-purple-secondary: #E9D5FF;
+      
+      /* Overlay Colors */
+      --color-blue-alpha: rgba(191, 219, 254, 0.5);
+      --color-purple-alpha: rgba(139, 127, 195, 0.31);
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 1px 3px rgba(0,0,0,0.06);
     }
     
-    /* Main background areas - warm off-white */
+    /* Dark Mode Theme Variables */
+    .dark {
+      --bg-base: #524b59;
+      --bg-surface: #3d3742;
+      --bg-elevated: #4a4450;
+      --bg-secondary: #48424d;
+      --bg-input: #3d3742;
+      --bg-gray-light: #5a5460;
+      
+      --border-subtle: #615a66;
+      --border-default: #6e6873;
+      
+      --text-primary: #e8e6ea;
+      --text-secondary: #b8b5bb;
+      --text-tertiary: #8a8690;
+      
+      /* Brand colors adjusted for dark mode */
+      --color-primary: #7d7a9a;
+      --color-primary-light: #9d9ab8;
+      --color-primary-lighter: #b5b2d0;
+      --color-primary-dark: #5a5775;
+      --color-purple-secondary: #6b657a;
+      
+      /* Status colors stay vibrant in dark mode */
+      --color-tolerate: #00d68f;
+      --color-moderation: #ffc529;
+      --color-avoid: #ff5252;
+    }
+    
+    /* ============================================ */
+    /* BASE THEME APPLICATION */
+    /* ============================================ */
+    
+    body {
+      background-color: var(--bg-base) !important;
+    }
+    
+    /* Main background areas */
     .bg-gray-100,
     .min-h-screen {
-      background-color: #faf6f5 !important;
+      background-color: var(--bg-secondary) !important;
     }
     
-    /* Cards - warm off-white */
+    /* Cards */
     .bg-white {
-      background-color: #FFFEFB !important;
-      border-color: #E8E6E3 !important;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      background-color: var(--bg-surface) !important;
+      border-color: var(--border-default) !important;
+      box-shadow: var(--shadow-md);
     }
     
-    /* Keep original text colors */
-    
-    /* Borders - warm subtle */
+    /* Borders */
     .border-gray-100 {
-      border-color: #F0EEE9 !important;
+      border-color: var(--border-subtle) !important;
     }
     
     .border-gray-200 {
-      border-color: #E8E6E3 !important;
+      border-color: var(--border-default) !important;
     }
     
-    /* Input fields - warm slight tint */
+    /* Input fields */
     input[type="text"],
     input[type="email"],
     input[type="password"],
     input[type="search"],
     select,
     textarea {
-      background-color: #FDFCFA !important;
-      border-color: #E8E6E3 !important;
+      background-color: var(--bg-input) !important;
+      border-color: var(--border-default) !important;
     }
     
-    /* Sidebar - warm slight tint */
+    /* Sidebar */
     .bg-gray-50 {
-      background-color: #faf8fc !important;
+      background-color: var(--bg-elevated) !important;
     }
     
     /* Category dividers */
     .bg-gray-200 {
-      background-color: #F0EEE9 !important;
+      background-color: var(--bg-gray-light) !important;
     }
     
     /* Subtle shadows */
     button {
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-sm);
     }
     
-    /* Remove shadow from voting buttons */
+    /* Remove shadow from specific buttons */
     .vote-button {
       box-shadow: none !important;
       border: none !important;
     }
     
+    .language-button {
+      box-shadow: none !important;
+    }
+    
+    /* Dark mode text color adjustments */
+    .dark .text-gray-600 {
+      color: #b8b5bb !important;
+    }
+    
+    .dark .text-gray-700 {
+      color: #c8c5cb !important;
+    }
+    
+    .dark .text-gray-500 {
+      color: #9a97a0 !important;
+    }
+    
+    .dark .text-gray-400 {
+      color: #8a8690 !important;
+    }
+    
+    .dark .hover\:bg-gray-100:hover {
+      background-color: #5a5460 !important;
+    }
+    
+    /* Dark mode food card text */
+    .dark .text-gray-800 {
+      color: #f0eef2 !important;
+    }
+    
+    /* Dark mode vote button inactive states */
+    .dark .bg-tolerate-light {
+      background-color: #2a252e !important;
+    }
+    
+    .dark .bg-moderation-light {
+      background-color: #2a252e !important;
+    }
+    
+    .dark .bg-avoid-light {
+      background-color: #2a252e !important;
+    }
+    
+    /* Override hover states in dark mode for inactive vote buttons */
+    .dark .hover\:bg-green-200:hover {
+      background-color: #3a3540 !important;
+    }
+    
+    .dark .hover\:bg-yellow-200:hover {
+      background-color: #3a3540 !important;
+    }
+    
+    .dark .hover\:bg-red-200:hover {
+      background-color: #3a3540 !important;
+    }
+    
+    /* Dark mode quick vote arrows (inactive state) */
+    .dark .vote-button.text-gray-200 {
+      color: #2a252e;
+    }
+    
+    /* Dark mode vote button hover colors - allow inline styles to work */
+    .dark .vote-button:hover {
+      color: inherit;
+    }
+    
+    /* Dark mode profile section backgrounds */
+    .dark .bg-purple-tint-1 {
+      background-color: #655d6e !important;
+    }
+    
+    .dark .bg-purple-tint-2 {
+      background-color: #5e5669 !important;
+    }
+    
+    .dark .bg-purple-tint-3 {
+      background-color: #625a6b !important;
+    }
+    
+    .dark .bg-purple-tint-4 {
+      background-color: #6b6374 !important;
+    }
+    
+    /* Dark mode border overrides - remove bright outlines */
+    .dark .border-gray-200 {
+      border-color: #6e6873 !important;
+    }
+    
+    .dark .border {
+      border-color: #6e6873 !important;
+    }
+    
+    /* Dark mode donate panel */
+    .dark .dark-donate-panel {
+      background: linear-gradient(to right, #6b6374, #655d6e) !important;
+    }
+    
+    /* Dark mode gradient fade */
+    .dark .gradient-fade-bottom {
+      background: linear-gradient(to top, #3d3742, transparent) !important;
+    }
+
+    /* ============================================ */
+    /* CUSTOM COLOR UTILITY CLASSES */
+    /* ============================================ */
+    
+    /* Primary Brand Colors */
+    .bg-primary {
+      background-color: var(--color-primary) !important;
+    }
+    
+    .bg-primary-light {
+      background-color: var(--color-primary-light) !important;
+    }
+    
+    .bg-primary-lighter {
+      background-color: var(--color-primary-lighter) !important;
+    }
+    
+    .bg-primary-alpha-10 {
+      background-color: var(--color-primary-alpha-10) !important;
+    }
+    
+    .bg-primary-secondary {
+      background-color: var(--color-purple-secondary) !important;
+    }
+    
+    .text-primary {
+      color: var(--color-primary) !important;
+    }
+    
+    .text-primary-light {
+      color: var(--color-primary-light) !important;
+    }
+    
+    .text-primary-dark {
+      color: var(--color-primary-dark) !important;
+    }
+    
+    .border-primary {
+      border-color: var(--color-primary) !important;
+    }
+    
+    /* Status Colors - Tolerate (Green) */
+    .bg-tolerate {
+      background-color: var(--color-tolerate) !important;
+    }
+    
+    .bg-tolerate-light {
+      background-color: var(--color-tolerate-light) !important;
+    }
+    
+    .text-tolerate {
+      color: var(--color-tolerate) !important;
+    }
+    
+    /* Status Colors - Moderation (Yellow) */
+    .bg-moderation {
+      background-color: var(--color-moderation) !important;
+    }
+    
+    .bg-moderation-light {
+      background-color: var(--color-moderation-light) !important;
+    }
+    
+    .text-moderation {
+      color: var(--color-moderation) !important;
+    }
+    
+    /* Status Colors - Avoid (Red) */
+    .bg-avoid {
+      background-color: var(--color-avoid) !important;
+    }
+    
+    .bg-avoid-light {
+      background-color: var(--color-avoid-light) !important;
+    }
+    
+    .text-avoid {
+      color: var(--color-avoid) !important;
+    }
+    
+    /* Accent Colors */
+    .bg-accent-blue {
+      background-color: var(--color-accent-blue) !important;
+    }
+    
+    .text-accent-blue {
+      color: var(--color-accent-blue) !important;
+    }
+    
+    .bg-accent-pink {
+      background-color: var(--color-accent-pink) !important;
+    }
+    
+    .text-accent-pink {
+      color: var(--color-accent-pink) !important;
+    }
+    
+    /* Purple Tints */
+    .bg-purple-tint-1 {
+      background-color: var(--color-purple-tint-1) !important;
+    }
+    
+    .bg-purple-tint-2 {
+      background-color: var(--color-purple-tint-2) !important;
+    }
+    
+    .bg-purple-tint-3 {
+      background-color: var(--color-purple-tint-3) !important;
+    }
+    
+    .bg-purple-tint-4 {
+      background-color: var(--color-purple-tint-4) !important;
+    }
+    
+    .bg-purple-border {
+      background-color: var(--color-purple-border) !important;
+    }
+    
+    .border-purple-light {
+      border-color: var(--color-purple-border) !important;
+    }
+    
+    .border-pink-light {
+      border-color: var(--color-pink-border) !important;
+    }
+    
+    /* Overlay Colors */
+    .bg-blue-light-alpha {
+      background-color: var(--color-blue-alpha) !important;
+    }
+    
+    .bg-purple-alpha {
+      background-color: var(--color-purple-alpha) !important;
+    }
+    
+    /* Text Utilities */
+    .text-gray-mid {
+      color: #666666 !important;
+    }
+    
+    .text-gray-light {
+      color: #999999 !important;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+      background-color: var(--color-primary) !important;
+      color: var(--text-white) !important;
+    }
+    
+    .btn-primary-light {
+      background-color: var(--color-primary-lighter) !important;
+      color: var(--text-white) !important;
+    }
+    
+    .btn-primary-lighter {
+      background-color: var(--color-primary-light) !important;
+      color: var(--color-primary) !important;
+    }
+    
+    .btn-secondary {
+      background-color: var(--color-purple-secondary) !important;
+      color: var(--color-primary) !important;
+    }
+    
+    /* Navigation Active State */
+    .nav-active {
+      background-color: var(--color-primary) !important;
+      color: var(--text-white) !important;
+    }
+    
+    .nav-inactive {
+      background-color: var(--bg-surface) !important;
+      color: var(--text-secondary) !important;
+    }
+    
+    /* Mobile Sidebar Navigation */
+    .mobile-nav-active {
+      background-color: var(--color-primary) !important;
+      color: var(--text-white) !important;
+    }
+    
+    .mobile-nav-inactive {
+      background-color: var(--color-purple-secondary) !important;
+      color: var(--color-primary) !important;
+    }
+  </style>
+
+  <style>
     /* Remove shadow from language buttons */
     .language-button {
       box-shadow: none !important;
@@ -601,6 +982,26 @@
       </svg>
     );
 
+    const Sun = ({ className }) => (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="5" strokeWidth="2"/>
+        <line x1="12" y1="1" x2="12" y2="3" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="12" y1="21" x2="12" y2="23" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="1" y1="12" x2="3" y2="12" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="21" y1="12" x2="23" y2="12" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" strokeWidth="2" strokeLinecap="round"/>
+      </svg>
+    );
+
+    const Moon = ({ className }) => (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+
     // Fuzzy search helper - calculates similarity between two strings
     function fuzzyMatch(str, query) {
       str = str.toLowerCase();
@@ -693,6 +1094,12 @@
       const [isFilterButtonFloating, setIsFilterButtonFloating] = useState(false);
       const filterButtonRef = React.useRef(null);
       const [showDetailedInfo, setShowDetailedInfo] = useState(false); // for expandable detailed info section
+      
+      // Dark mode state
+      const [darkMode, setDarkMode] = useState(() => {
+        const saved = localStorage.getItem('darkMode');
+        return saved === 'true';
+      });
 
       // Authentication state
       const [user, setUser] = useState(null);
@@ -742,6 +1149,16 @@
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
       const hasLoadedInitialDataRef = useRef(false);
+
+      // Dark mode effect
+      useEffect(() => {
+        if (darkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        localStorage.setItem('darkMode', darkMode);
+      }, [darkMode]);
 
       // Load food database from external URL
       useEffect(() => {
@@ -1942,10 +2359,10 @@
                 <div className="px-4 pb-4 border-t border-gray-100 pt-3">
                   <p className="text-gray-500 text-sm mb-2">{food.category}</p>
                   <p className="text-gray-600 text-base mb-3">{food.description}</p>
-                  <div className="bg-gray-50 rounded p-3 mb-3" style={{ backgroundColor: '#BFDBFE80' }}>
+                  <div className="bg-gray-50 rounded p-3 mb-3 bg-blue-light-alpha">
                     <p className="text-sm font-medium text-gray-700 mb-2">
                       Database Score: {food.score === -1 ? <span className="text-gray-400">N/A</span> : 
-                        <span style={{ color: food.score === 0 ? '#00A676' : food.score <= 2 ? '#FBAF00' : '#BB342F' }}>
+                        <span className={food.score === 0 ? 'text-tolerate' : food.score <= 2 ? 'text-moderation' : 'text-avoid'}>
                           {food.score}/3
                         </span>
                       }
@@ -1975,7 +2392,7 @@
                     </div>
                   </div>
                   {stats && (
-                    <div className="rounded p-3 mb-3" style={{ backgroundColor: '#8B7FC350' }}>
+                    <div className="rounded p-3 mb-3 bg-purple-alpha">
                       <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-1">
                         <Users className="w-4 h-4" /> Community Reports
                       </p>
@@ -2002,27 +2419,24 @@
                     <button
                       onClick={(e) => { e.stopPropagation(); submitRating(food.id, "tolerate"); }}
                       className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
-                        myRating && myRating.rating === "tolerate" ? "text-white" : "text-gray-700 hover:bg-green-200"
+                        myRating && myRating.rating === "tolerate" ? "bg-tolerate text-white" : "bg-tolerate-light text-gray-700 hover:bg-green-200"
                       }`}
-                      style={myRating && myRating.rating === "tolerate" ? { backgroundColor: '#00A676' } : { backgroundColor: '#00A67633' }}
                     >
                       {'\u25B2'} I tolerate
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); submitRating(food.id, "moderation"); }}
                       className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
-                        myRating && myRating.rating === "moderation" ? "text-white" : "text-gray-700 hover:bg-yellow-200"
+                        myRating && myRating.rating === "moderation" ? "bg-moderation text-white" : "bg-moderation-light text-gray-700 hover:bg-yellow-200"
                       }`}
-                      style={myRating && myRating.rating === "moderation" ? { backgroundColor: '#FBAF00' } : { backgroundColor: '#FBAF0033' }}
                     >
                       {'\u25CF'} In moderation
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); submitRating(food.id, "avoid"); }}
                       className={`flex-1 py-2 rounded text-sm font-medium flex items-center justify-center gap-1 transition-colors ${
-                        myRating && myRating.rating === "avoid" ? "text-white" : "text-gray-700 hover:bg-red-200"
+                        myRating && myRating.rating === "avoid" ? "bg-avoid text-white" : "bg-avoid-light text-gray-700 hover:bg-red-200"
                       }`}
-                      style={myRating && myRating.rating === "avoid" ? { backgroundColor: '#BB342F' } : { backgroundColor: '#BB342F33' }}
                     >
                       {'\u25BC'} I react
                     </button>
@@ -2050,23 +2464,21 @@
             </button>
             <div style={{ width: '80px' }}></div>
             <div className="mobile-title-section">
-              <h1 style={{ color: '#525174' }}>Hista<span style={{ color: '#a7acd6' }}>Base</span></h1>
-              <p className="text-gray-400" style={{ color: '#a7acd6' }}>The histamine food database</p>
+              <h1 className="text-primary">Hista<span className="text-primary-light">Base</span></h1>
+              <p className="text-primary-light">The histamine food database</p>
             </div>
             <div className="mobile-auth-section">
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="rounded-full font-medium text-white"
-                  style={{ backgroundColor: '#A7ACD9' }}
+                  className="rounded-full font-medium btn-primary-light"
                 >
                   Logout
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="rounded-full font-medium text-white"
-                  style={{ backgroundColor: '#A7ACD9' }}
+                  className="rounded-full font-medium btn-primary-light"
                 >
                   Login
                 </button>
@@ -2081,23 +2493,36 @@
                 <div className="flex items-center mb-2 mobile-auth-buttons">
                   <div className="flex-1"></div>
                   <div className="text-center">
-                    <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#525174' }}>Hista<span style={{ color: '#a7acd6' }}>Base</span></h1>
-                    <p className="text-gray-400 text-xs md:text-sm" style={{ color: '#a7acd6' }}>The histamine food database</p>
+                    <h1 className="text-xl md:text-2xl font-bold text-primary">Hista<span className="text-primary-light">Base</span></h1>
+                    <p className="text-xs md:text-sm text-primary-light">The histamine food database</p>
                   </div>
                   <div className="flex-1 flex items-center gap-2 justify-end">
+                    {/* Theme toggle button */}
+                    <button
+                      onClick={() => setDarkMode(!darkMode)}
+                      className={`flex items-center justify-center p-2 rounded-full transition-all border-2 ${
+                        darkMode ? 'border-primary' : 'border-transparent btn-secondary hover:opacity-80'
+                      }`}
+                      style={darkMode ? { backgroundColor: '#3d3742' } : {}}
+                    >
+                      {darkMode ? (
+                        <Moon className="w-4 h-4" />
+                      ) : (
+                        <Sun className="w-4 h-4" />
+                      )}
+                    </button>
+                    
                     {user ? (
                       <>
                         <button
                           onClick={handleLogout}
-                          className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
-                          style={{ backgroundColor: '#A7ACD9' }}
+                          className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium btn-primary-light"
                         >
                           <LogOut className="w-3 h-3 md:w-4 md:h-4" /> Logout
                         </button>
                       <button
                         onClick={() => setView("profile")} 
-                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
-                        style={{ backgroundColor: '#f4d7f7' }}
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white bg-purple-tint-4"
                       >
                         {displayName || user.email.split('@')[0]}
                       </button>
@@ -2106,8 +2531,7 @@
                     ) : (
                       <button
                         onClick={() => setShowAuthModal(true)}
-                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white"
-                        style={{ backgroundColor: '#A7ACD9' }}
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium btn-primary-light"
                       >
                         <LogIn className="w-3 h-3 md:w-4 md:h-4" /> Login
                       </button>
@@ -2118,16 +2542,14 @@
               <div className="flex gap-2 mb-8 max-w-2xl mx-auto mobile-nav-bar">
                 <button 
                   onClick={() => setView("database")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "database" ? "text-white" : "bg-white text-gray-600"}`}
-                  style={view === "database" ? { backgroundColor: '#525174' } : {}}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "database" ? "nav-active" : "nav-inactive"}`}
                 >
                   <Search className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
                   <span className="text-xs sm:text-sm">{translations.database}</span>
                 </button>
                 <button 
                   onClick={() => setView("profile")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "profile" ? "text-white" : "bg-white text-gray-600"}`}
-                  style={view === "profile" ? { backgroundColor: '#525174' } : {}}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "profile" ? "nav-active" : "nav-inactive"}`}
                 >
                   <User className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
                   <span className="text-xs sm:text-sm">{translations.profile}</span>
@@ -2135,8 +2557,7 @@
                 </button>
                 <button 
                   onClick={() => setView("recipes")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "recipes" ? "text-white" : "bg-white text-gray-600"}`}
-                  style={view === "recipes" ? { backgroundColor: '#525174' } : {}}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "recipes" ? "nav-active" : "nav-inactive"}`}
                 >
                   <BookOpen className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
                   <span className="text-xs sm:text-sm">{translations.recipes}</span>
@@ -2144,8 +2565,7 @@
                 </button>
                 <button 
                   onClick={() => setView("info")} 
-                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "info" ? "text-white" : "bg-white text-gray-600"}`}
-                  style={view === "info" ? { backgroundColor: '#525174' } : {}}
+                  className={`flex-1 py-2 rounded-lg font-medium text-sm flex flex-col items-center sm:flex-row sm:justify-center ${view === "info" ? "nav-active" : "nav-inactive"}`}
                 >
                   <Info className="w-7 h-7 sm:w-4 sm:h-4 sm:mr-1" />
                   <span className="text-xs sm:text-sm">{translations.info}</span>
@@ -2173,19 +2593,32 @@
                   </button>
                 </div>
 
+                {/* Theme toggle at very top */}
+                <div className="mb-4">
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`flex items-center justify-center px-3 py-3 rounded-lg transition-all border-2 ${
+                      darkMode ? 'border-primary' : 'border-transparent btn-secondary hover:opacity-80'
+                    }`}
+                    style={darkMode ? { backgroundColor: '#3d3742' } : {}}
+                  >
+                    {darkMode ? (
+                      <Moon className="w-6 h-6" />
+                    ) : (
+                      <Sun className="w-6 h-6" />
+                    )}
+                  </button>
+                </div>
+
                 {/* Mobile Secondary Navigation - always shown */}
-                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                <div className="mb-6 pb-6 border-b border-purple-light">
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
                         setView("database");
                         setMobileSidebarOpen(false);
                       }}
-                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                      style={{ 
-                        backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
-                        color: view === "database" ? 'white' : '#525174'
-                      }}
+                      className={`flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1 ${view === "database" ? "mobile-nav-active" : "mobile-nav-inactive"}`}
                     >
                       <Search className="w-4 h-4" />
                       <span>{translations.database}</span>
@@ -2195,11 +2628,7 @@
                         setView("profile");
                         setMobileSidebarOpen(false);
                       }}
-                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                      style={{ 
-                        backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
-                        color: view === "profile" ? 'white' : '#525174'
-                      }}
+                      className={`flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1 ${view === "profile" ? "mobile-nav-active" : "mobile-nav-inactive"}`}
                     >
                       <User className="w-4 h-4" />
                       <span>{translations.profile}</span>
@@ -2209,11 +2638,7 @@
                         setView("recipes");
                         setMobileSidebarOpen(false);
                       }}
-                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                      style={{ 
-                        backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
-                        color: view === "recipes" ? 'white' : '#525174'
-                      }}
+                      className={`flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1 ${view === "recipes" ? "mobile-nav-active" : "mobile-nav-inactive"}`}
                     >
                       <BookOpen className="w-4 h-4" />
                       <span>{translations.recipes}</span>
@@ -2223,11 +2648,7 @@
                         setView("info");
                         setMobileSidebarOpen(false);
                       }}
-                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                      style={{ 
-                        backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
-                        color: view === "info" ? 'white' : '#525174'
-                      }}
+                      className={`flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1 ${view === "info" ? "mobile-nav-active" : "mobile-nav-inactive"}`}
                     >
                       <Info className="w-4 h-4" />
                       <span>{translations.info}</span>
@@ -2236,7 +2657,7 @@
                 </div>
 
                 {/* Login/Logout Section - always shown */}
-                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                <div className="mb-6 pb-6 border-b border-purple-light">
                   {user ? (
                     <div className="space-y-2">
                       <div className="text-sm text-gray-600 mb-2">
@@ -2247,8 +2668,7 @@
                           handleLogout();
                           setMobileSidebarOpen(false);
                         }}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
-                        style={{ backgroundColor: '#A7ACD9' }}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium btn-primary-light"
                       >
                         <LogOut className="w-4 h-4" /> Logout
                       </button>
@@ -2259,8 +2679,7 @@
                         setShowAuthModal(true);
                         setMobileSidebarOpen(false);
                       }}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
-                      style={{ backgroundColor: '#A7ACD9' }}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium btn-primary-light"
                     >
                       <LogIn className="w-4 h-4" /> Login
                     </button>
@@ -2295,21 +2714,18 @@
                       <button 
                         onClick={() => setDietFilter("all")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.vegan}
                       </button>
@@ -2417,7 +2833,8 @@
               <div className="relative">
                 {/* Desktop Sidebar (always visible on desktop) - positioned with fixed/sticky behavior */}
                 {sidebarOpen && (
-                  <div className="desktop-sidebar w-56 bg-gray-50 border border-gray-200 rounded-xl p-4" style={{ position: 'fixed', left: 'calc(50% - 300px - 252px)', top: 'calc(1rem + 148px)', zIndex: 10 }}>
+                  <div className="desktop-sidebar w-56 bg-gray-50 border border-gray-200 rounded-xl p-4" style={{ position: 'fixed', left: 'calc(50% - 300px - 252px)', top: 'calc(1rem + 292px)', zIndex: 10 }}>
+                    
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">LANGUAGE</p>
                       <div className="flex gap-2">
@@ -2443,21 +2860,18 @@
                       <button 
                         onClick={() => setDietFilter("all")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "all" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegetarian" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
                         className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
-                        style={dietFilter === "vegan" ? { backgroundColor: '#a7acd6', color: '#525174' } : {}}
                       >
                         {translations.vegan}
                       </button>
@@ -2703,7 +3117,7 @@
 
             {view === "profile" && (
               <div className="max-w-2xl mx-auto space-y-4">
-                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#f6e3fa' }}>
+                <div className="rounded-lg p-4 border bg-purple-tint-1">
                   {user && (
                     <>
                       <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
@@ -2769,6 +3183,7 @@
                   <div className="space-y-3">
                     <div>
                       <h3 className="font-semibold text-gray-800 text-sm mb-2">Defaults</h3>
+                      
                       <div className="flex gap-1">
                         <button
                           onClick={() => {
@@ -2977,7 +3392,7 @@
                   </div>
                 </div>
 
-                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#faf8fc', borderColor: '#D8B4FE' }}>
+                <div className="rounded-lg p-4 border bg-purple-tint-2 border-purple-light">
                   <h3 className="font-semibold text-gray-800 text-base mb-2">{translations.aboutYourRatings}</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-start gap-2">
@@ -3402,8 +3817,7 @@
                         <div key={recipe.id} className="bg-white rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: isRecipeExpanded ? '#A7ACD9' : '#e5e7eb' }}>
                           {/* Recipe Header - Always Visible */}
                           <div 
-                            className="p-5 cursor-pointer relative rounded-t-xl"
-                            style={{ backgroundColor: isRecipeExpanded ? '#faf9fc' : '#ffffff' }}
+                            className={`p-5 cursor-pointer relative rounded-t-xl ${isRecipeExpanded ? 'bg-purple-tint-2' : 'bg-white'}`}
                             onClick={() => {
                               if (isRecipeExpanded) {
                                 setExpandedRecipe(expandedRecipe.filter(id => id !== recipe.id));
@@ -3416,7 +3830,7 @@
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <h3 className="font-semibold text-lg" style={{ color: isRecipeExpanded ? '#525174' : '#1f2937' }}>{recipe.title}</h3>
+                                  <h3 className={`font-semibold text-lg ${isRecipeExpanded ? 'text-primary' : 'text-gray-800'}`}>{recipe.title}</h3>
                                   {user && user.id === recipe.user_id && (
                                     <>
                                       {recipe.is_public ? (
@@ -3479,7 +3893,7 @@
 
                           {/* Recipe Details - Only When Expanded */}
                           {isRecipeExpanded && (
-                            <div className="px-5 pb-5 pt-4" style={{ backgroundColor: '#fdf8fa' }}>
+                            <div className="px-5 pb-5 pt-4 bg-purple-tint-3">
                               {/* Date on left, views and stars on right */}
                               <div className="flex justify-between mb-4 text-xs text-gray-400">
                                 <span>{new Date(recipe.created_at).toLocaleDateString()}</span>
@@ -3546,10 +3960,10 @@
                                             <div className="px-3 pb-3 border-t border-gray-100 pt-2">
                                               <p className="text-gray-500 text-xs mb-1">{food.category}</p>
                                               <p className="text-gray-600 text-sm mb-2">{food.description}</p>
-                                              <div className="bg-gray-50 rounded p-2 mb-2" style={{ backgroundColor: '#BFDBFE80' }}>
+                                              <div className="bg-gray-50 rounded p-2 mb-2" style={{ removed }}>
                                                 <p className="text-xs font-medium text-gray-700 mb-1">
                                                   Database Score: {food.score === -1 ? <span className="text-gray-400">N/A</span> : 
-                                                    <span style={{ color: food.score === 0 ? '#00A676' : food.score <= 2 ? '#FBAF00' : '#BB342F' }}>
+                                                    <span className={food.score === 0 ? 'text-tolerate' : food.score <= 2 ? 'text-moderation' : 'text-avoid'}>
                                                       {food.score}/3
                                                     </span>
                                                   }
@@ -3579,7 +3993,7 @@
                                                 </div>
                                               </div>
                                               {stats && (
-                                                <div className="rounded p-2 mb-2" style={{ backgroundColor: '#8B7FC350' }}>
+                                                <div className="rounded p-2 mb-2 bg-purple-alpha">
                                                   <p className="text-xs font-medium text-gray-700 mb-2 flex items-center gap-1">
                                                     <Users className="w-3 h-3" /> Community Reports
                                                   </p>
@@ -3606,27 +4020,24 @@
                                                 <button
                                                   onClick={(e) => { e.stopPropagation(); submitRating(food.id, "tolerate"); }}
                                                   className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
-                                                    myRating && myRating.rating === "tolerate" ? "text-white" : "text-gray-700 hover:bg-green-200"
+                                                    myRating && myRating.rating === "tolerate" ? "bg-tolerate text-white" : "bg-tolerate-light text-gray-700 hover:bg-green-200"
                                                   }`}
-                                                  style={myRating && myRating.rating === "tolerate" ? { backgroundColor: '#00A676' } : { backgroundColor: '#00A67633' }}
                                                 >
                                                   {'\u25B2'} Tolerate
                                                 </button>
                                                 <button
                                                   onClick={(e) => { e.stopPropagation(); submitRating(food.id, "moderation"); }}
                                                   className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
-                                                    myRating && myRating.rating === "moderation" ? "text-white" : "text-gray-700 hover:bg-yellow-200"
+                                                    myRating && myRating.rating === "moderation" ? "bg-moderation text-white" : "bg-moderation-light text-gray-700 hover:bg-yellow-200"
                                                   }`}
-                                                  style={myRating && myRating.rating === "moderation" ? { backgroundColor: '#FBAF00' } : { backgroundColor: '#FBAF0033' }}
                                                 >
                                                   {'\u25CF'} Moderate
                                                 </button>
                                                 <button
                                                   onClick={(e) => { e.stopPropagation(); submitRating(food.id, "avoid"); }}
                                                   className={`flex-1 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
-                                                    myRating && myRating.rating === "avoid" ? "text-white" : "text-gray-700 hover:bg-red-200"
+                                                    myRating && myRating.rating === "avoid" ? "bg-avoid text-white" : "bg-avoid-light text-gray-700 hover:bg-red-200"
                                                   }`}
-                                                  style={myRating && myRating.rating === "avoid" ? { backgroundColor: '#BB342F' } : { backgroundColor: '#BB342F33' }}
                                                 >
                                                   {'\u25BC'} Avoid
                                                 </button>
@@ -3685,17 +4096,17 @@
                   <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Combining <span style={{ color: '#9fc5e8' }}>research data</span> and <span style={{ color: '#ead1dc' }}>user reports</span>, <span style={{ color: '#351c75' }}>HistaBase</span> aims to be a comprehensive <span style={{ color: '#351c75' }}>Database</span> of foods and ingredients!
+                      ◯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
                     </p>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Use <span style={{ color: '#351c75' }}>HistaBase</span> to help you <span style={{ color: '#351c75' }}>track</span> which foods affect your <span style={{ color: '#9fc5e8' }}>histamine levels</span>. Keep a personalized <span style={{ color: '#351c75' }}>log</span> based on your <span style={{ color: '#9fc5e8' }}>reactions</span> and compare your <span style={{ color: '#351c75' }}>ratings</span> with others sharing your condition. Create and share <span style={{ color: '#ead1dc' }}>custom recipes!</span>
+                      ◯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
                     </p>
                     <p className="text-sm text-gray-600">
-                      ◯ Please note that <span style={{ color: '#9fc5e8' }}>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
+                      ◯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border-2 flex flex-col items-center justify-center text-center" style={{ borderColor: '#FBD0E4' }}>
+                  <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border-2 border-pink-light flex flex-col items-center justify-center text-center dark-donate-panel">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
                       <Heart className="w-5 h-5 text-pink-500" /> {translations.supportTitle}
                     </h2>
@@ -3742,7 +4153,7 @@
                             Histamine intolerance (HIT) happens when the body cannot break down histamine efficiently. The enzyme diamine oxidase (DAO) does most of this work. When DAO activity is low, histamine builds up and causes symptoms such as headaches, digestive issues, flushing, itching, or rapid heart rate.
                           </p>
                         </div>
-                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none gradient-fade-bottom"></div>
                       </div>
                     )}
                   </button>
