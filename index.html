@@ -2161,14 +2161,15 @@
               </div>
             </div>
 
-            {/* Mobile backdrop */}
-            <div 
-              className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
-              onClick={() => setMobileSidebarOpen(false)}
-            ></div>
+            {/* Mobile backdrop and sidebar - available on all views */}
+            <>
+              <div 
+                className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
+                onClick={() => setMobileSidebarOpen(false)}
+              ></div>
 
-            {/* Mobile Sidebar (overlay) - shows on all views */}
-            <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
+              {/* Mobile Sidebar (overlay) - shows on all views */}
+              <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold text-gray-700"></h3>
@@ -2554,6 +2555,7 @@
                 )}
               </div>
             </div>
+            </>
 
             {view === "database" && (
               <div className="flex gap-4 items-start">
