@@ -96,8 +96,8 @@
 
       /* Adjust nav bar spacing */
       .mobile-nav-bar {
-        padding: 0.5rem 1rem;
-        margin-bottom: 0.5rem;
+        padding: 0.375rem 1rem;
+        margin-bottom: 0.375rem;
       }
 
       /* Adjust main container padding on mobile */
@@ -2155,89 +2155,122 @@
               </div>
             </div>
 
-            {view === "database" && (
-              <div className="flex gap-4 items-start">
-                {/* Mobile backdrop */}
-                <div 
-                  className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
-                  onClick={() => setMobileSidebarOpen(false)}
-                ></div>
+            {/* Mobile backdrop - shown for all views */}
+            <div 
+              className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
+              onClick={() => setMobileSidebarOpen(false)}
+            ></div>
 
-                {/* Mobile Sidebar (overlay) */}
-                <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="font-semibold text-gray-700"></h3>
-                      <button 
-                        onClick={() => setMobileSidebarOpen(false)}
-                        className="text-gray-400 hover:text-gray-600 text-2xl"
+            {/* Mobile Sidebar (overlay) - shown for all views */}
+            <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold text-gray-700"></h3>
+                  <button 
+                    onClick={() => setMobileSidebarOpen(false)}
+                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {/* Mobile Secondary Navigation - always shown */}
+                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setView("database");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
+                        color: view === "database" ? 'white' : '#525174'
+                      }}
+                    >
+                      <Search className="w-4 h-4" />
+                      <span>{translations.database}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("profile");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
+                        color: view === "profile" ? 'white' : '#525174'
+                      }}
+                    >
+                      <User className="w-4 h-4" />
+                      <span>{translations.profile}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("recipes");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
+                        color: view === "recipes" ? 'white' : '#525174'
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      <span>{translations.recipes}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("info");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
+                        color: view === "info" ? 'white' : '#525174'
+                      }}
+                    >
+                      <Info className="w-4 h-4" />
+                      <span>{translations.info}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Login/Logout Section - always shown */}
+                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                  {user ? (
+                    <div className="space-y-2">
+                      <div className="text-sm text-gray-600 mb-2">
+                        Logged in as: <span className="font-semibold">{displayName || user.email.split('@')[0]}</span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setMobileSidebarOpen(false);
+                        }}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
+                        style={{ backgroundColor: '#A7ACD9' }}
                       >
-                        &times;
+                        <LogOut className="w-4 h-4" /> Logout
                       </button>
                     </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setShowAuthModal(true);
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
+                      style={{ backgroundColor: '#A7ACD9' }}
+                    >
+                      <LogIn className="w-4 h-4" /> Login
+                    </button>
+                  )}
+                </div>
 
-                    {/* Mobile Secondary Navigation */}
-                    <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => {
-                            setView("database");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
-                            color: view === "database" ? 'white' : '#525174'
-                          }}
-                        >
-                          <Search className="w-4 h-4" />
-                          <span>{translations.database}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("profile");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
-                            color: view === "profile" ? 'white' : '#525174'
-                          }}
-                        >
-                          <User className="w-4 h-4" />
-                          <span>{translations.profile}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("recipes");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
-                            color: view === "recipes" ? 'white' : '#525174'
-                          }}
-                        >
-                          <BookOpen className="w-4 h-4" />
-                          <span>{translations.recipes}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("info");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
-                            color: view === "info" ? 'white' : '#525174'
-                          }}
-                        >
-                          <Info className="w-4 h-4" />
-                          <span>{translations.info}</span>
-                        </button>
-                      </div>
-                    </div>
-
+                {/* Database Filters - only shown on database view */}
+                {view === "database" && (
+                  <>
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">DATABSE LANGUAGE</p>
                       <div className="flex gap-2">
@@ -2356,7 +2389,7 @@
                       </div>
                     </div>
 
-                    <div>
+                    <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.sources.toUpperCase()}</p>
                       {allSources.map(s => (
                         <label key={s} className="flex items-center gap-2 text-gray-600 cursor-pointer py-1 text-sm">
@@ -2376,9 +2409,13 @@
                         </label>
                       ))}
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
+              </div>
+            </div>
 
+            {view === "database" && (
+              <div className="flex gap-4 items-start">
                 {/* Desktop Sidebar (always visible on desktop) */}
                 {sidebarOpen && (
                   <div className="desktop-sidebar w-56 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
@@ -3199,7 +3236,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        Ã¢Å“â€œ Save
+                                        ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Save
                                       </button>
                                       <button
                                         type="button"
@@ -3209,7 +3246,7 @@
                                         }}
                                         className="text-gray-500 hover:text-gray-700 text-xs"
                                       >
-                                        Ã¢Å“â€” Cancel
+                                        ÃƒÂ¢Ã…â€œÃ¢â‚¬â€ Cancel
                                       </button>
                                     </div>
                                   ) : (
@@ -3644,13 +3681,13 @@
                   <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Combining <span style={{ color: '#9fc5e8' }}>research data</span> and <span style={{ color: '#ead1dc' }}>user reports</span>, <span style={{ color: '#351c75' }}>HistaBase</span> aims to be a comprehensive <span style={{ color: '#351c75' }}>Database</span> of foods and ingredients!
+                      â—¯ Combining <span style={{ color: '#9fc5e8' }}>research data</span> and <span style={{ color: '#ead1dc' }}>user reports</span>, <span style={{ color: '#351c75' }}>HistaBase</span> aims to be a comprehensive <span style={{ color: '#351c75' }}>Database</span> of foods and ingredients!
                     </p>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Use <span style={{ color: '#351c75' }}>HistaBase</span> to help you <span style={{ color: '#351c75' }}>track</span> which foods affect your <span style={{ color: '#9fc5e8' }}>histamine levels</span>. Keep a personalized <span style={{ color: '#351c75' }}>log</span> based on your <span style={{ color: '#9fc5e8' }}>reactions</span> and compare your <span style={{ color: '#351c75' }}>ratings</span> with others sharing your condition. Create and share <span style={{ color: '#ead1dc' }}>custom recipes!</span>
+                      â—¯ Use <span style={{ color: '#351c75' }}>HistaBase</span> to help you <span style={{ color: '#351c75' }}>track</span> which foods affect your <span style={{ color: '#9fc5e8' }}>histamine levels</span>. Keep a personalized <span style={{ color: '#351c75' }}>log</span> based on your <span style={{ color: '#9fc5e8' }}>reactions</span> and compare your <span style={{ color: '#351c75' }}>ratings</span> with others sharing your condition. Create and share <span style={{ color: '#ead1dc' }}>custom recipes!</span>
                     </p>
                     <p className="text-sm text-gray-600">
-                      ◯ Please note that <span style={{ color: '#9fc5e8' }}>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
+                      â—¯ Please note that <span style={{ color: '#9fc5e8' }}>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
                     </p>
                   </div>
 
@@ -3729,11 +3766,11 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If foodâ€”especially fish, meat, or leftoversâ€”is stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodÃ¢â‚¬â€especially fish, meat, or leftoversÃ¢â‚¬â€is stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0â€“4Â°C stays safe.</li>
-                        <li>Temperatures above 10Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                        <li>Fresh fish kept at 0Ã¢â‚¬â€œ4Ã‚Â°C stays safe.</li>
+                        <li>Temperatures above 10Ã‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -3751,7 +3788,7 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additivesâ€”including benzoates and sulfitesâ€”may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                        Certain additivesÃ¢â‚¬â€including benzoates and sulfitesÃ¢â‚¬â€may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
@@ -3778,7 +3815,7 @@
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple timesâ€”cooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesÃ¢â‚¬â€cooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -3804,9 +3841,9 @@
                           <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
                           <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
                           <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">4. WÃ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref4" className="scroll-mt-4">4. WÃƒÂ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
                           <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">6. KÃ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref6" className="scroll-mt-4">6. KÃƒÂ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
                           <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
