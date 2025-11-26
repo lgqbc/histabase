@@ -2191,6 +2191,155 @@
         setShowDownloadMenu(false);
       }
 
+      function generateRecipePDF(recipe) {
+        // Build ingredients list
+        const ingredientsContent = [];
+        if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+          recipe.ingredients.forEach(ingredient => {
+            if (ingredient && ingredient.name) {
+              const amount = ingredient.amount ? `${ingredient.amount} - ` : '';
+              ingredientsContent.push({
+                text: `• ${amount}${ingredient.name}`,
+                fontSize: 11,
+                margin: [0, 2, 0, 2],
+                color: '#333333'
+              });
+            }
+          });
+        }
+
+        if (ingredientsContent.length === 0) {
+          ingredientsContent.push({
+            text: 'No ingredients listed',
+            fontSize: 10,
+            color: '#999999',
+            italics: true
+          });
+        }
+
+        // Define PDF document structure
+        const docDefinition = {
+          pageSize: 'A4',
+          pageMargins: [40, 60, 40, 60],
+          content: [
+            // Header
+            {
+              text: 'HistaBase',
+              fontSize: 24,
+              bold: true,
+              color: '#525174',
+              alignment: 'center',
+              margin: [0, 0, 0, 5]
+            },
+            {
+              text: 'RECIPE',
+              fontSize: 14,
+              color: '#525174',
+              alignment: 'center',
+              margin: [0, 0, 0, 20]
+            },
+            
+            // Recipe Title
+            {
+              text: recipe.title,
+              fontSize: 20,
+              bold: true,
+              color: '#333333',
+              margin: [0, 0, 0, 8]
+            },
+            
+            // Author and Date
+            {
+              text: `By ${recipe.author_name}`,
+              fontSize: 10,
+              color: '#666666',
+              margin: [0, 0, 0, 3]
+            },
+            {
+              text: `Created: ${new Date(recipe.created_at).toLocaleDateString()}`,
+              fontSize: 9,
+              color: '#999999',
+              margin: [0, 0, 0, 15]
+            },
+            
+            // Description (if exists)
+            ...(recipe.description ? [{
+              text: recipe.description,
+              fontSize: 11,
+              color: '#555555',
+              margin: [0, 0, 0, 20],
+              italics: true
+            }] : []),
+            
+            // Separator line
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0, y1: 0,
+                  x2: 515, y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0'
+                }
+              ],
+              margin: [0, 0, 0, 20]
+            },
+            
+            // Ingredients Section
+            {
+              text: 'INGREDIENTS',
+              fontSize: 14,
+              bold: true,
+              color: '#525174',
+              margin: [0, 0, 0, 10]
+            },
+            ...ingredientsContent,
+            
+            // Separator line
+            {
+              canvas: [
+                {
+                  type: 'line',
+                  x1: 0, y1: 0,
+                  x2: 515, y2: 0,
+                  lineWidth: 1,
+                  lineColor: '#E0E0E0'
+                }
+              ],
+              margin: [0, 20, 0, 20]
+            },
+            
+            // Instructions Section
+            {
+              text: 'INSTRUCTIONS',
+              fontSize: 14,
+              bold: true,
+              color: '#525174',
+              margin: [0, 0, 0, 10]
+            },
+            {
+              text: recipe.instructions || 'No instructions provided',
+              fontSize: 11,
+              color: '#333333',
+              lineHeight: 1.4,
+              margin: [0, 0, 0, 20]
+            },
+            
+            // Footer
+            {
+              text: 'Generated from HistaBase',
+              fontSize: 8,
+              color: '#999999',
+              alignment: 'center',
+              margin: [0, 30, 0, 0]
+            }
+          ]
+        };
+
+        const filename = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        pdfMake.createPdf(docDefinition).download(`recipe_${filename}.pdf`);
+      }
+
       async function handleAuth(e) {
         e.preventDefault();
         setAuthError("");
@@ -4068,6 +4217,22 @@
                                   {translations.recipeInstructions}
                                 </h4>
                                 <p className="text-gray-700 whitespace-pre-wrap leading-relaxed px-1 break-words overflow-wrap-anywhere">{recipe.instructions}</p>
+                              </div>
+                              
+                              {/* Download PDF Button */}
+                              <div className="mt-6 flex justify-center">
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    generateRecipePDF(recipe);
+                                  }}
+                                  className="flex items-center gap-1 px-3 py-1.5 text-white rounded-lg text-sm font-medium"
+                                  style={{ backgroundColor: '#525174' }}
+                                  onMouseEnter={(e) => e.target.style.backgroundColor = '#3f3e5c'}
+                                  onMouseLeave={(e) => e.target.style.backgroundColor = '#525174'}
+                                >
+                                  <Download className="w-4 h-4" /> {translations.downloadPDF}
+                                </button>
                               </div>
                             </div>
                           )}
