@@ -2161,89 +2161,129 @@
               </div>
             </div>
 
-            {view === "database" && (
-              <div className="flex gap-4 items-start">
-                {/* Mobile backdrop */}
-                <div 
-                  className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
-                  onClick={() => setMobileSidebarOpen(false)}
-                ></div>
+            {/* Mobile backdrop */}
+            <div 
+              className={`mobile-backdrop ${mobileSidebarOpen ? 'open' : ''}`}
+              onClick={() => setMobileSidebarOpen(false)}
+            ></div>
 
-                {/* Mobile Sidebar (overlay) */}
-                <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="font-semibold text-gray-700"></h3>
-                      <button 
-                        onClick={() => setMobileSidebarOpen(false)}
-                        className="text-gray-400 hover:text-gray-600 text-2xl"
+            {/* Mobile Sidebar (overlay) - shows on all views */}
+            <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold text-gray-700"></h3>
+                  <button 
+                    onClick={() => setMobileSidebarOpen(false)}
+                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {/* Mobile Secondary Navigation */}
+                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        setView("database");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
+                        color: view === "database" ? 'white' : '#525174'
+                      }}
+                    >
+                      <Search className="w-4 h-4" />
+                      <span>{translations.database}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("profile");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
+                        color: view === "profile" ? 'white' : '#525174'
+                      }}
+                    >
+                      <User className="w-4 h-4" />
+                      <span>{translations.profile}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("recipes");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
+                        color: view === "recipes" ? 'white' : '#525174'
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      <span>{translations.recipes}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setView("info");
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
+                      style={{ 
+                        backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
+                        color: view === "info" ? 'white' : '#525174'
+                      }}
+                    >
+                      <Info className="w-4 h-4" />
+                      <span>{translations.info}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Login/Logout buttons */}
+                <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
+                  {user ? (
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => {
+                          setView("profile");
+                          setMobileSidebarOpen(false);
+                        }}
+                        className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white"
+                        style={{ backgroundColor: '#f4d7f7' }}
                       >
-                        &times;
+                        {displayName || user.email.split('@')[0]}
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setMobileSidebarOpen(false);
+                        }}
+                        className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white flex items-center justify-center gap-2"
+                        style={{ backgroundColor: '#A7ACD9' }}
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
                       </button>
                     </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setShowAuthModal(true);
+                        setMobileSidebarOpen(false);
+                      }}
+                      className="w-full py-2 px-4 rounded-lg font-medium text-sm text-white flex items-center justify-center gap-2"
+                      style={{ backgroundColor: '#A7ACD9' }}
+                    >
+                      <LogIn className="w-4 h-4" /> Login
+                    </button>
+                  )}
+                </div>
 
-                    {/* Mobile Secondary Navigation */}
-                    <div className="mb-6 pb-6" style={{ borderBottom: '1px solid #D8B4FE' }}>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => {
-                            setView("database");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "database" ? '#525174' : '#E9D5FF',
-                            color: view === "database" ? 'white' : '#525174'
-                          }}
-                        >
-                          <Search className="w-4 h-4" />
-                          <span>{translations.database}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("profile");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "profile" ? '#525174' : '#E9D5FF',
-                            color: view === "profile" ? 'white' : '#525174'
-                          }}
-                        >
-                          <User className="w-4 h-4" />
-                          <span>{translations.profile}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("recipes");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "recipes" ? '#525174' : '#E9D5FF',
-                            color: view === "recipes" ? 'white' : '#525174'
-                          }}
-                        >
-                          <BookOpen className="w-4 h-4" />
-                          <span>{translations.recipes}</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setView("info");
-                            setMobileSidebarOpen(false);
-                          }}
-                          className="flex-1 py-2 px-2 rounded-lg font-medium text-xs transition-colors flex flex-col items-center gap-1"
-                          style={{ 
-                            backgroundColor: view === "info" ? '#525174' : '#E9D5FF',
-                            color: view === "info" ? 'white' : '#525174'
-                          }}
-                        >
-                          <Info className="w-4 h-4" />
-                          <span>{translations.info}</span>
-                        </button>
-                      </div>
-                    </div>
-
+                {/* Database filters - only show on database view */}
+                {view === "database" && (
+                  <>
                     <div className="mb-4">
                       <p className="font-semibold text-gray-500 mb-2 text-sm">DATABSE LANGUAGE</p>
                       <div className="flex gap-2">
@@ -2510,9 +2550,13 @@
                         </label>
                       ))}
                     </div>
-                  </div>
+                  </>
                 )}
+              </div>
+            </div>
 
+            {view === "database" && (
+              <div className="flex gap-4 items-start">
                 <div className="flex-1 main-content">
                   <div className="relative mb-4">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
