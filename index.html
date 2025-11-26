@@ -15,6 +15,11 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -1880,10 +1885,10 @@
       }
 
       function getScoreIcon(level) {
-        if (level === "safe") return <CheckCircle className="w-5 h-5" style={{ color: '#00A676' }} />;
-        if (level === "moderate") return <AlertCircle className="w-5 h-5" style={{ color: '#FBAF00' }} />;
-        if (level === "unknown") return <HelpCircle className="w-5 h-5 text-gray-400" />;
-        return <XCircle className="w-5 h-5" style={{ color: '#BB342F' }} />;
+        if (level === "safe") return <CheckCircle className="w-5 h-5 text-black dark:text-white" />;
+        if (level === "moderate") return <AlertCircle className="w-5 h-5 text-black dark:text-white" />;
+        if (level === "unknown") return <HelpCircle className="w-5 h-5 text-black dark:text-white" />;
+        return <XCircle className="w-5 h-5 text-black dark:text-white" />;
       }
 
       function getUserScoreColor(percentage) {
@@ -2273,7 +2278,7 @@
                 {categoryName}
               </div>
             )}
-            <div className="bg-white rounded-lg border border-gray-100 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 mb-2">
               <div 
                 className="px-4 py-3 cursor-pointer food-card-inner flex items-center gap-3" 
                 onClick={() => setExpanded(isExp ? null : food.id)}
@@ -2282,7 +2287,7 @@
                   <div className="flex-shrink-0">
                     {getScoreIcon(food.level)}
                   </div>
-                  <span className="font-medium text-gray-800 text-base truncate">{food.name}</span>
+                  <span className="font-medium text-black dark:text-white text-base truncate">{food.name}</span>
                   {myRating && (
                     <span className="text-base flex-shrink-0" style={{ color: myRating.rating === "tolerate" ? '#00A676' : myRating.rating === "moderation" ? '#FBAF00' : '#BB342F' }}>
                       {myRating.rating === "tolerate" ? "\u25B2" : myRating.rating === "moderation" ? "\u25CF" : "\u25BC"}
@@ -2692,22 +2697,22 @@
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 dark:text-gray-400 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.vegan}
                       </button>
@@ -2838,22 +2843,22 @@
                     </div>
 
                     <div className="mb-4">
-                      <p className="font-semibold text-gray-500 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
+                      <p className="font-semibold text-gray-500 dark:text-gray-400 mb-2 text-sm">{translations.diet.toUpperCase()}</p>
                       <button 
                         onClick={() => setDietFilter("all")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "all" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.allFoods}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegetarian")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegetarian" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.vegetarian}
                       </button>
                       <button 
                         onClick={() => setDietFilter("vegan")} 
-                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`block w-full text-left px-3 py-2 rounded text-sm font-medium ${dietFilter === "vegan" ? "bg-purple-100 dark:bg-[#7d7a9a] text-gray-800 dark:text-white" : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                       >
                         {translations.vegan}
                       </button>
@@ -3637,7 +3642,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        ö¢Ã…â€œÃ¢â‚¬Å“ Save
+                                        Ã¶Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Save
                                       </button>
                                       <button
                                         type="button"
@@ -3647,7 +3652,7 @@
                                         }}
                                         className="text-gray-500 hover:text-gray-700 text-xs"
                                       >
-                                        ö¢Ã…â€œ— Cancel
+                                        Ã¶Â¢Ãƒâ€¦Ã¢â‚¬Å“â€”Â Cancel
                                       </button>
                                     </div>
                                   ) : (
@@ -3907,7 +3912,7 @@
                                             <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right hidden md:block">
                                               {ingredient.amount || ''}
                                             </span>
-                                            <div className="bg-white rounded-lg border border-gray-100 flex-1 recipe-ingredient-card md:ml-0">
+                                            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 flex-1 recipe-ingredient-card md:ml-0">
                                           <div 
                                             className="px-2 py-1 cursor-pointer flex items-center gap-1.5 text-xs" 
                                             onClick={(e) => { e.stopPropagation(); setExpanded(isExp ? null : food.id); }}
@@ -3919,7 +3924,7 @@
                                               <span className="font-semibold text-sm text-gray-600 flex-shrink-0 md:hidden min-w-[3rem]">
                                                 {ingredient.amount || ''}
                                               </span>
-                                              <span className="font-medium text-gray-800 truncate text-sm">
+                                              <span className="font-medium text-black dark:text-white truncate text-sm">
                                                 {food.name}
                                               </span>
                                               {myRating && (
@@ -4078,13 +4083,13 @@
                   <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
+                      â—¯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
                     </p>
                     <p className="text-sm text-gray-600 mb-4">
-                      ◯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
+                      â—¯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
                     </p>
                     <p className="text-sm text-gray-600">
-                      ◯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
+                      â—¯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
                     </p>
                   </div>
 
@@ -4163,11 +4168,11 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodâ€”Âespecially fish, meat, or leftoversâ€”Âis stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0–4°C stays safe.</li>
-                        <li>Temperatures above 10°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                        <li>Fresh fish kept at 0â€“4Â°C stays safe.</li>
+                        <li>Temperatures above 10Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -4185,7 +4190,7 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                        Certain additivesâ€”Âincluding benzoates and sulfitesâ€”Âmay also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
@@ -4212,7 +4217,7 @@
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesâ€”Âcooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -4238,9 +4243,9 @@
                           <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
                           <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
                           <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">4. Wöhrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref4" className="scroll-mt-4">4. WÃ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
                           <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">6. Küfner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref6" className="scroll-mt-4">6. KÃ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
                           <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
