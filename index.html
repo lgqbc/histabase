@@ -402,7 +402,7 @@
       --color-purple-tint-1: #f6e3fa;
       --color-purple-tint-2: #faf8fc;
       --color-purple-tint-3: #fdf8fa;
-      --color-purple-tint-4: #f4d7f7;
+      --color-purple-tint-4: #bac7f7;
       --color-purple-border: #D8B4FE;
       --color-pink-border: #FBD0E4;
       --color-purple-secondary: #E9D5FF;
@@ -575,7 +575,7 @@
     
     /* Dark mode profile section backgrounds */
     .dark .bg-purple-tint-1 {
-      background-color: #655d6e !important;
+      background-color: #514d7d !important;
     }
     
     .dark .bg-purple-tint-2 {
@@ -583,11 +583,11 @@
     }
     
     .dark .bg-purple-tint-3 {
-      background-color: #625a6b !important;
+      background-color: #19141f !important;
     }
     
     .dark .bg-purple-tint-4 {
-      background-color: #6b6374 !important;
+      background-color: #4e3d61 !important;
     }
     
     /* Dark mode border overrides - remove bright outlines */
@@ -2522,7 +2522,7 @@
                         </button>
                       <button
                         onClick={() => setView("profile")} 
-                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white bg-purple-tint-4"
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium text-white bg-purple-tint-3"
                       >
                         {displayName || user.email.split('@')[0]}
                       </button>
@@ -3251,7 +3251,7 @@
                   </div>
                 </div>
                 
-                <div className="rounded-lg p-4 border" style={{ backgroundColor: '#A7ACD9' }}>
+                <div className="rounded-lg p-4 border bg-purple-tint-4">
                   <h2 className="font-semibold text-gray-800 text-base mb-3">{translations.yourConditions}</h2>
                   <div className="flex flex-wrap gap-2">
                     {conditions.map(c => (
@@ -3392,7 +3392,7 @@
                   </div>
                 </div>
 
-                <div className="rounded-lg p-4 border bg-purple-tint-2 border-purple-light">
+                <div className="rounded-lg p-4 border color-primary-light border-purple-light">
                   <h3 className="font-semibold text-gray-800 text-base mb-2">{translations.aboutYourRatings}</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-start gap-2">
