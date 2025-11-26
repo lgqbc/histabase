@@ -327,8 +327,7 @@
       
       /* Center the food cards section on desktop */
       .main-content {
-        max-width: 1000px !important;
-        margin-right: auto !important;
+        /* Styling handled inline for proper centering */
       }
     }
 
@@ -2415,7 +2414,7 @@
             </div>
 
             {view === "database" && (
-              <div className="flex gap-4 items-start">
+              <div className="flex gap-4 items-start justify-center">
                 {/* Desktop Sidebar (always visible on desktop) */}
                 {sidebarOpen && (
                   <div className="desktop-sidebar w-56 bg-gray-50 border border-gray-200 rounded-xl p-4 sticky top-4">
@@ -2544,7 +2543,7 @@
                   </div>
                 )}
 
-                <div className="flex-1 main-content">
+                <div className="main-content" style={{ width: '100%', maxWidth: '600px' }}>
                   <div className="relative mb-4">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
