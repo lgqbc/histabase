@@ -3962,10 +3962,10 @@
             {view === "profile" && (
               <div className="max-w-2xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-lg p-4 border bg-purple-tint-1">
+                <div className="rounded-lg p-4 border bg-purple-tint-1 leading-tight sm:leading-normal space-y-2 sm:space-y-4">
                   {user && (
                     <>
-                      <h2 className="font-semibold text-gray-800 text-sm sm:text-base mb-2">{translations.account}</h2>
+                      <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
                       <p className="text-sm text-gray-600 mb-4">
                         {translations.loggedInAs} <span className="font-medium" style={{ color: '#525174' }}>{user.email}</span>
                       </p>
