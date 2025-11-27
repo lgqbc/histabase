@@ -1142,6 +1142,7 @@
       // Use ref to track if we're currently loading data
       const isLoadingDataRef = useRef(false);
       const hasLoadedInitialDataRef = useRef(false);
+      const initialCheckDoneRef = useRef(false); // Track auth initialization (prevents race conditions)
 
       // Dark mode effect
       useEffect(() => {
@@ -1167,10 +1168,10 @@
                 const parsedCache = JSON.parse(cached);
                 setFoodDatabase(parsedCache);
                 setLoading(false);
-                console.log(`✅ [DB] Loaded ${parsedCache.length} foods from cache (${language})`);
+                console.log(`âœ… [DB] Loaded ${parsedCache.length} foods from cache (${language})`);
                 return;
               } catch (e) {
-                console.warn('⚠️ [DB] Cache parse error, fetching fresh data');
+                console.warn('âš ï¸ [DB] Cache parse error, fetching fresh data');
                 localStorage.removeItem(cacheKey);
               }
             }
@@ -1190,14 +1191,14 @@
             // Save to localStorage for next time (huge performance boost!)
             try {
               localStorage.setItem(cacheKey, JSON.stringify(data));
-              console.log(`💾 [DB] Cached ${data.length} foods (${language})`);
+              console.log(`ðŸ’¾ [DB] Cached ${data.length} foods (${language})`);
             } catch (e) {
-              console.warn('⚠️ [DB] Failed to cache database (localStorage full?)');
+              console.warn('âš ï¸ [DB] Failed to cache database (localStorage full?)');
             }
             
             setLoading(false);
           } catch (err) {
-            console.error('❌ [DB] Load error:', err);
+            console.error('âŒ [DB] Load error:', err);
             setError(err.message);
             setLoading(false);
           }
@@ -1208,7 +1209,6 @@
       // Check authentication state on mount  
       useEffect(() => {
         let mounted = true;
-        let initialCheckDone = false;
         
         async function checkAuth() {
           const { data: { session } } = await supabase.auth.getSession();
@@ -1221,17 +1221,17 @@
             console.log('[MOUNT] No session, loading community ratings only...');
             await loadCommunityRatings();
           }
-          initialCheckDone = true;
+          initialCheckDoneRef.current = true; // Use ref instead of local variable
           console.log('[MOUNT] Initial check complete');
         }
         checkAuth();
 
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-          console.log('[AUTH] Event:', event, 'InitialCheckDone:', initialCheckDone);
+        // Listen for auth changes (no async to prevent race conditions)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+          console.log('[AUTH] Event:', event, 'InitialCheckDone:', initialCheckDoneRef.current);
           
           // Ignore events until initial check is done
-          if (!initialCheckDone) {
+          if (!initialCheckDoneRef.current) { // Use ref instead of local variable
             console.log('[AUTH] Ignoring event (initial check not done)');
             return;
           }
@@ -1240,7 +1240,8 @@
             console.log('[AUTH] User signed in, loading data...');
             setUser(session.user);
             setShowAuthModal(false);
-            await loadUserData(session.user.id);
+            // Load user data in background (no await = modal closes instantly)
+            loadUserData(session.user.id);
           } else if (event === 'SIGNED_OUT' && mounted) {
             console.log('[AUTH] User signed out, clearing data...');
             setUser(null);
@@ -1256,7 +1257,8 @@
             } else {
               setShoppingList(new Set());
             }
-            await loadCommunityRatings();
+            // Load community ratings in background (no await = instant logout)
+            loadCommunityRatings();
           }
         });
 
@@ -1265,6 +1267,30 @@
           subscription.unsubscribe();
         };
       }, []);
+
+      // SAFETY NET: Periodically validate auth state and recover if corrupted
+      useEffect(() => {
+        const interval = setInterval(async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          // If we have a session but user is null → STATE CORRUPTED, RECOVER
+          if (session?.user && !user) {
+            console.warn('[RECOVERY] User state was null but session exists, recovering...');
+            setUser(session.user);
+            loadUserData(session.user.id);
+          }
+          
+          // If we have user but no session → STATE CORRUPTED, CLEAR
+          if (user && !session) {
+            console.warn('[RECOVERY] User exists but no session, clearing...');
+            setUser(null);
+            setMyRatings({});
+            setUserConditions(["Histamine Intolerance"]);
+          }
+        }, 15000); // Check every 15 seconds
+        
+        return () => clearInterval(interval);
+      }, [user]);
 
       // Load user data from Supabase
       async function loadUserData(userId) {
@@ -1359,6 +1385,11 @@
             setMyRatings({});
           }
         }
+      }
+
+      // DEFENSIVE: Validate user state is not corrupted
+      function isUserValid(userObj) {
+        return userObj && userObj.id && typeof userObj.id === 'string';
       }
 
       // Load community ratings from Supabase
@@ -1622,7 +1653,20 @@
       // Create or update recipe
       const saveRecipe = async (e) => {
         e.preventDefault();
-        if (!user) return;
+        
+        // DEFENSIVE: Validate user state with recovery attempt
+        if (!isUserValid(user)) {
+          console.error('[BUG] User state invalid in saveRecipe, attempting recovery...');
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            setUser(session.user);
+            alert('Session recovered. Please try saving again.');
+            return;
+          } else {
+            setShowAuthModal(true);
+            return;
+          }
+        }
         
         if (!displayName) {
           setShowNameModal(true);
@@ -2034,50 +2078,65 @@
       }
 
       async function toggleShoppingList(foodId) {
+        // OPTIMISTIC UPDATE - Update UI immediately for instant feedback
         const newList = new Set(shoppingList);
+        const isRemoving = newList.has(foodId);
         
-        if (newList.has(foodId)) {
-          // Remove from shopping list
+        if (isRemoving) {
           newList.delete(foodId);
-          
-          // Update database for logged-in users
-          if (user) {
-            try {
-              await supabase
+        } else {
+          newList.add(foodId);
+        }
+        
+        // Update UI immediately - no waiting for database
+        setShoppingList(newList);
+        
+        // Sync to database in background (no await = non-blocking)
+        if (user) {
+          try {
+            if (isRemoving) {
+              // Remove from database in background
+              supabase
                 .from('shopping_list')
                 .delete()
                 .eq('user_id', user.id)
-                .eq('food_id', foodId);
-            } catch (error) {
-              console.error('Error removing from shopping list:', error);
-            }
-          } else {
-            // Update localStorage for non-logged users
-            localStorage.setItem('shoppingList', JSON.stringify([...newList]));
-          }
-        } else {
-          // Add to shopping list
-          newList.add(foodId);
-          
-          // Update database for logged-in users
-          if (user) {
-            try {
-              await supabase
+                .eq('food_id', foodId)
+                .then(() => console.log('✅ Removed from shopping list'))
+                .catch(err => {
+                  console.error('❌ Failed to remove from shopping list:', err);
+                  // Rollback on error
+                  setShoppingList(prev => {
+                    const rollback = new Set(prev);
+                    rollback.add(foodId);
+                    return rollback;
+                  });
+                });
+            } else {
+              // Add to database in background
+              supabase
                 .from('shopping_list')
                 .insert({
                   user_id: user.id,
                   food_id: foodId
+                })
+                .then(() => console.log('✅ Added to shopping list'))
+                .catch(err => {
+                  console.error('❌ Failed to add to shopping list:', err);
+                  // Rollback on error
+                  setShoppingList(prev => {
+                    const rollback = new Set(prev);
+                    rollback.delete(foodId);
+                    return rollback;
+                  });
                 });
-            } catch (error) {
-              console.error('Error adding to shopping list:', error);
             }
-          } else {
-            // Update localStorage for non-logged users
-            localStorage.setItem('shoppingList', JSON.stringify([...newList]));
+          } catch (error) {
+            console.error('Error syncing shopping list:', error);
           }
+        } else {
+          // Update localStorage for non-logged users (fast, non-blocking)
+          localStorage.setItem('shoppingList', JSON.stringify([...newList]));
         }
-        
-        setShoppingList(newList);
       }
 
       async function clearShoppingList() {
@@ -2104,9 +2163,18 @@
       }
 
       async function submitRating(foodId, rating) {
-        if (!user) {
-          setShowAuthModal(true);
-          return;
+        // DEFENSIVE: Validate user state with recovery attempt
+        if (!isUserValid(user)) {
+          console.error('[BUG] User state invalid in submitRating, attempting recovery...');
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            setUser(session.user);
+            // Retry after recovery
+            return setTimeout(() => submitRating(foodId, rating), 100);
+          } else {
+            setShowAuthModal(true);
+            return;
+          }
         }
 
         if (userConditions.length === 0) { 
@@ -2126,13 +2194,13 @@
               .eq('user_id', user.id)
               .eq('food_id', foodId);
 
-            // Update local state
+            // Update local state immediately (optimistic update)
             const newMyRatings = {...myRatings};
             delete newMyRatings[foodId];
             setMyRatings(newMyRatings);
 
-            // Reload community ratings
-            await loadCommunityRatings();
+            // Reload community ratings in background (no await = non-blocking)
+            loadCommunityRatings();
           } catch (err) {
             console.error('Error deleting rating:', err);
           }
@@ -2160,7 +2228,7 @@
               conditions: userConditions
             });
 
-          // Update local state
+          // Update local state immediately (optimistic update)
           setMyRatings({
             ...myRatings,
             [foodId]: { 
@@ -2169,8 +2237,8 @@
             }
           });
 
-          // Reload community ratings
-          await loadCommunityRatings();
+          // Reload community ratings in background (no await = non-blocking)
+          loadCommunityRatings();
         } catch (err) {
           console.error('Error saving rating:', err);
         }
@@ -2380,7 +2448,7 @@
             if (ingredient && ingredient.name) {
               const amount = ingredient.amount ? `${ingredient.amount} - ` : '';
               ingredientsContent.push({
-                text: `â€¢ ${amount}${ingredient.name}`,
+                text: `Ã¢â‚¬Â¢ ${amount}${ingredient.name}`,
                 fontSize: 11,
                 margin: [0, 2, 0, 2],
                 color: '#333333'
@@ -2545,7 +2613,7 @@
 
           byCategory[category].forEach(item => {
             const ratingSymbol = item.rating 
-              ? (item.rating.rating === 'tolerate' ? 'â–²' : item.rating.rating === 'moderation' ? 'â—' : 'â–¼')
+              ? (item.rating.rating === 'tolerate' ? 'Ã¢â€“Â²' : item.rating.rating === 'moderation' ? 'Ã¢â€”Â' : 'Ã¢â€“Â¼')
               : '';
             const ratingColor = item.rating
               ? (item.rating.rating === 'tolerate' ? '#00A676' : item.rating.rating === 'moderation' ? '#FBAF00' : '#BB342F')
@@ -2608,7 +2676,7 @@
             text += `${category.toUpperCase()}\n`;
             byCategory[category].forEach(item => {
               const ratingSymbol = item.rating 
-                ? (item.rating.rating === 'tolerate' ? 'â–² ' : item.rating.rating === 'moderation' ? 'â— ' : 'â–¼ ')
+                ? (item.rating.rating === 'tolerate' ? 'Ã¢â€“Â² ' : item.rating.rating === 'moderation' ? 'Ã¢â€”Â ' : 'Ã¢â€“Â¼ ')
                 : '';
               text += `  ${ratingSymbol}${item.food.name}\n`;
             });
@@ -2792,7 +2860,7 @@
                     className="text-gray-400 hover:text-red-500 text-sm"
                     title="Clear all"
                   >
-                    ×
+                    Ã—
                   </button>
                 )}
               </div>
@@ -2813,7 +2881,7 @@
                               className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                               title="Remove"
                             >
-                              ×
+                              Ã—
                             </button>
                           </div>
                         );
@@ -3421,7 +3489,7 @@
                             className="text-gray-400 hover:text-red-500 text-sm"
                             title="Clear all"
                           >
-                            Ã—
+                            Ãƒâ€”
                           </button>
                         )}
                       </div>
@@ -3442,7 +3510,7 @@
                                     className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                                     title="Remove"
                                   >
-                                    Ã—
+                                    Ãƒâ€”
                                   </button>
                                 </div>
                               );
@@ -3621,7 +3689,7 @@
                             className="text-gray-400 hover:text-red-500 text-sm"
                             title="Clear all"
                           >
-                            Ã—
+                            Ãƒâ€”
                           </button>
                         )}
                       </div>
@@ -3642,7 +3710,7 @@
                                     className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                                     title="Remove"
                                   >
-                                    Ã—
+                                    Ãƒâ€”
                                   </button>
                                 </div>
                               );
@@ -4512,7 +4580,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        ÃƒÂ¶Ã‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ Save
+                                        ÃƒÆ’Ã‚Â¶Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Save
                                       </button>
                                       <button
                                         type="button"
@@ -4522,7 +4590,7 @@
                                         }}
                                         className="text-gray-500 hover:text-gray-700 text-xs"
                                       >
-                                        ÃƒÂ¶Ã‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃ¢â‚¬â€Ã‚Â Cancel
+                                        ÃƒÆ’Ã‚Â¶Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Â Cancel
                                       </button>
                                     </div>
                                   ) : (
@@ -4980,13 +5048,13 @@
                   <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-sm text-gray-600 mb-4">
-                      â—¯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
+                      Ã¢â€”Â¯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
                     </p>
                     <p className="text-sm text-gray-600 mb-4">
-                      â—¯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
+                      Ã¢â€”Â¯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
                     </p>
                     <p className="text-sm text-gray-600">
-                      â—¯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
+                      Ã¢â€”Â¯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
                     </p>
                   </div>
 
@@ -5065,11 +5133,11 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If foodÃ¢â‚¬â€Ã‚Âespecially fish, meat, or leftoversÃ¢â‚¬â€Ã‚Âis stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If foodÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âespecially fish, meat, or leftoversÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âis stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0Ã¢â‚¬â€œ4Ã‚Â°C stays safe.</li>
-                        <li>Temperatures above 10Ã‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                        <li>Fresh fish kept at 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“4Ãƒâ€šÃ‚Â°C stays safe.</li>
+                        <li>Temperatures above 10Ãƒâ€šÃ‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -5087,7 +5155,7 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additivesÃ¢â‚¬â€Ã‚Âincluding benzoates and sulfitesÃ¢â‚¬â€Ã‚Âmay also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                        Certain additivesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âincluding benzoates and sulfitesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âmay also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
@@ -5114,7 +5182,7 @@
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple timesÃ¢â‚¬â€Ã‚Âcooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple timesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âcooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -5140,9 +5208,9 @@
                           <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
                           <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
                           <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">4. WÃƒÂ¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref4" className="scroll-mt-4">4. WÃƒÆ’Ã‚Â¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
                           <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">6. KÃƒÂ¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref6" className="scroll-mt-4">6. KÃƒÆ’Ã‚Â¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
                           <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
