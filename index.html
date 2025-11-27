@@ -3962,13 +3962,13 @@
             {view === "profile" && (
               <div className="max-w-2xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-lg p-4 border bg-purple-tint-1 leading-tight leading-normal space-y-1 sm:space-y-2">
+                <div className="rounded-lg p-4 border bg-purple-tint-1 leading-tight space-y-1 sm:space-y-2">
                   {user && (
                     <>
-                      <div className="flex justify-between items-center mb-1">
+                      <div className="flex justify-between items-start mb-1">
                         <h2 className="font-semibold text-gray-800 text-base mb-1">{translations.account}</h2>
-                        <p className="text-xs text-gray-600 mb-2">
-                          {translations.loggedInAs} <span className="font-medium text-xs" style={{ color: '#525174' }}>{user.email}</span>
+                        <p className="text-xs text-gray-600 mb-2"> 
+                          {translations.loggedInAs} <br /> <span className="font-medium text-xs" style={{ color: '#525174' }}>{user.email}</span>
                         </p>
                        </div>
                       
