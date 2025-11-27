@@ -942,7 +942,7 @@
       createFirstRecipe: "Create your first recipe to get started!",
       setNameFirst: "Please set your display name in your profile before creating recipes.",
       displayName: "Display Name",
-      displayNameDesc: "This name will be shown on your public recipes",
+      displayNameDesc: "Disyplay name for uploaded recipes",
       ingredientsInDatabase: "Ingredients in Database",
       ingredientNotFound: "Not in database"
     };
@@ -3962,7 +3962,7 @@
             {view === "profile" && (
               <div className="max-w-2xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div className="rounded-lg p-4 border bg-purple-tint-1 leading-tight sm:leading-normal space-y-2 sm:space-y-4">
+                <div className="rounded-lg p-4 border bg-purple-tint-1 leading-tight leading-normal space-y-2 sm:space-y-4">
                   {user && (
                     <>
                       <h2 className="font-semibold text-gray-800 text-base mb-2">{translations.account}</h2>
@@ -4020,12 +4020,12 @@
                             </button>
                           </div>
                         )}
-                                                <h4 className="text-sm text-gray-600 mb-2">{translations.displayNameDesc}</h4>
+                                                <h4 className="text-sm italic text-gray-600 mb-2">{translations.displayNameDesc}</h4>
                       </div>
                     </>
                   )}
                   
-                  <div className="space-y-3">
+                  <div className="space-y-1">
                     <div>
                       <h3 className="font-semibold text-gray-800 text-sm mb-2">Defaults</h3>
                       
@@ -4349,7 +4349,7 @@
             {view === "recipes" && (
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* Header text */}
-                <h2 className="text-center text-base sm: text-xl text-gray-700 mb-4">
+                <h2 className="text-center text-gray-700 mb-4 text-base sm:text-xl">
                   Look at other people's recipes or share your own!
                 </h2>
                 
@@ -5045,18 +5045,27 @@
               <div className="max-w-4xl mx-auto space-y-4">
                 {/* About and Donate side-by-side */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white rounded-lg p-5 border md:col-span-2">
-                    <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
-                    <p className="text-sm text-gray-600 mb-4">
-                      ◯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
-                    </p>
-                    <p className="text-sm text-gray-600 mb-4">
-                      ◯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      ◯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
-                    </p>
-                  </div>
+                 <div className="bg-white rounded-lg p-5 border md:col-span-2">
+                  <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
+                
+                  <p className="text-sm text-gray-600 mb-4 pl-4">
+                    <span className="text-primary-dark -ml-4 inline-block mr-1">◎  </span>
+                    Combining research data and user reports, HistaBase aims to be a comprehensive
+                    <span className="font-bold"> Database of foods and ingredients!</span>
+                  </p>
+                
+                  <p className="text-sm text-gray-600 mb-4 pl-4">
+                    <span className="text-accent-blue -ml-4 inline-block mr-1">◎  </span>
+                    Use HistaBase to help you track which foods affect your histamine levels. <br />
+                    Keep a personalized log based on your reactions and <span className="font-bold">compare your ratings</span> with others sharing your condition. Create and share <span className="font-bold">custom recipes!</span>
+                  </p>
+                
+                  <p className="text-sm text-gray-600 pl-4">
+                    <span className="text-accent-pink -ml-4 inline-block mr-1">◎  </span>
+                    Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage. The data found on HistaBase should just be seen as a <span className="font-bold">general guideline.</span>
+                  </p>
+                </div>
+
 
                   <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg p-5 border-2 border-pink-light flex flex-col items-center justify-center text-center dark-donate-panel">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3 flex items-center gap-2">
