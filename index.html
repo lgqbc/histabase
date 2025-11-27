@@ -870,7 +870,7 @@
       aboutP2: "Use HistaBase to help you track which foods affect your histamine levels and keep a personalized log based on your reactions and compare your ratings with others sharing your condition.",
       aboutP3: "Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage.",
       
-      detailedInfoTitle: "Understanding Histamine Intolerance",
+      detailedInfoTitle: "More about Histamine Intolerance",
       detailedInfoButton: "Read More About Histamine Management",
       detailedInfoHideButton: "Hide Details",
       
@@ -4351,7 +4351,7 @@
             {view === "recipes" && (
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* Header text */}
-                <h2 className="text-center text-gray-700 mb-4 text-base sm:text-xl">
+                <h2 className="text-center italic text-gray-700 mb-4 text-sm sm:text-base">
                   Look at other people's recipes or share your own!
                 </h2>
                 
@@ -4772,7 +4772,7 @@
                                     </>
                                   )}
                                 </div>
-                                <p className="text-sm text-gray-500">{translations.by} {recipe.author_name}</p>
+                                <p className="text-sm italic text-gray-500">{translations.by} {recipe.author_name}</p>
                               </div>
                               {user && user.id === recipe.user_id && (
                                 <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
@@ -5051,20 +5051,20 @@
                   <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                 
                   <p className="text-sm text-gray-600 mb-4 pl-4">
-                    <span className="text-primary-dark -ml-4 inline-block mr-1">◎  </span>
+                    <span className="text-primary-dark -ml-4 inline-block mr-1">◉</span>
                     Combining research data and user reports, HistaBase aims to be a comprehensive
-                    <span className="font-bold"> Database of foods and ingredients!</span>
+                    <span className="font-semibold"> Database of foods and ingredients!</span>
                   </p>
                 
                   <p className="text-sm text-gray-600 mb-4 pl-4">
-                    <span className="text-accent-blue -ml-4 inline-block mr-1">◎  </span>
+                    <span className="text-accent-blue -ml-4 inline-block mr-1">◉</span>
                     Use HistaBase to help you track which foods affect your histamine levels. <br />
-                    Keep a personalized log based on your reactions and <span className="font-bold">compare your ratings</span> with others sharing your condition. Create and share <span className="font-bold">custom recipes!</span>
+                    Keep a personalized log based on your reactions and <span className="font-semibold">compare your ratings</span> with others sharing your condition. Create and share <span className="font-semibold">custom recipes!</span>
                   </p>
                 
                   <p className="text-sm text-gray-600 pl-4">
-                    <span className="text-accent-pink -ml-4 inline-block mr-1">◎  </span>
-                    Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage. The data found on HistaBase should just be seen as a <span className="font-bold">general guideline.</span>
+                    <span className="text-accent-pink -ml-4 inline-block mr-1">◉</span>
+                    Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage. The data found on HistaBase should just be seen as a <span className="font-semibold">general guideline.</span>
                   </p>
                 </div>
 
@@ -5144,11 +5144,11 @@
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Why Freshness Matters</h3>
                       <p>
-                        Histamine forms when bacteria have time to grow. If foodÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âespecially fish, meat, or leftoversÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âis stored too long or too warm, histamine levels rise.
+                        Histamine forms when bacteria have time to grow. If food—especially fish, meat, or leftovers—is stored too long or too warm, histamine levels rise.
                       </p>
                       <ul className="list-disc list-inside ml-4 space-y-1">
-                        <li>Fresh fish kept at 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“4Ãƒâ€šÃ‚Â°C stays safe.</li>
-                        <li>Temperatures above 10Ãƒâ€šÃ‚Â°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
+                        <li>Fresh fish kept at 0–4°C stays safe.</li>
+                        <li>Temperatures above 10°C lead to rapid histamine formation.<a href="#ref3" className="text-blue-600 hover:underline"><sup>3</sup></a></li>
                       </ul>
                       <p className="mt-2">
                         This applies to meat as well: freshly prepared meat is typically tolerated, while aged, marinated, or processed meats are more likely to trigger symptoms.
@@ -5166,7 +5166,7 @@
                         <li>Chocolate</li>
                       </ul>
                       <p className="mt-2">
-                        Certain additivesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âincluding benzoates and sulfitesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âmay also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
+                        Certain additives—including benzoates and sulfites—may also worsen symptoms by affecting DAO activity.<a href="#ref4" className="text-blue-600 hover:underline"><sup>4</sup></a>
                       </p>
                       
                       <h3 className="font-semibold text-gray-800 text-base mt-4">Foods Usually Better Tolerated</h3>
@@ -5193,7 +5193,7 @@
                         <li>Refrigerate immediately after cooking or purchasing.</li>
                         <li>Freeze portions right away if not eating soon.</li>
                         <li>Consume leftovers within 24 hours.</li>
-                        <li>Avoid reheating food multiple timesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Âcooling/warming cycles allow bacteria to grow again.</li>
+                        <li>Avoid reheating food multiple times—cooling/warming cycles allow bacteria to grow again.</li>
                       </ol>
                       <p className="mt-2">
                         These steps help keep histamine levels low even in foods you normally tolerate.
@@ -5219,15 +5219,16 @@
                           <li id="ref1" className="scroll-mt-4">1. Maintz, L., & Novak, N. (2007). Histamine and histamine intolerance. <em>The American Journal of Clinical Nutrition</em>, 85(5), 1185-1196.</li>
                           <li id="ref2" className="scroll-mt-4">2. Jarisch, R. (2014). <em>Histamine Intolerance: Histamine and Seasickness</em>. Springer.</li>
                           <li id="ref3" className="scroll-mt-4">3. Lehane, L., & Olley, J. (2000). Histamine fish poisoning revisited. <em>International Journal of Food Microbiology</em>, 58(1-2), 1-37; Visciano, P., Schirone, M., Tofalo, R., & Suzzi, G. (2012). Biogenic amines in raw and processed seafood. <em>Frontiers in Microbiology</em>, 3, 188.</li>
-                          <li id="ref4" className="scroll-mt-4">4. WÃƒÆ’Ã‚Â¶hrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
+                          <li id="ref4" className="scroll-mt-4">4. Wöhrl, S., Hemmer, W., Focke, M., Rappersberger, K., & Jarisch, R. (2004). Histamine intolerance-like symptoms in healthy volunteers after oral provocation with liquid histamine. <em>Allergy and Asthma Proceedings</em>, 25(5), 305-311.</li>
                           <li id="ref5" className="scroll-mt-4">5. Reese, I., Ballmer-Weber, B., Beyer, K., et al. (2017). German guideline for the management of adverse reactions to ingested histamine. <em>Allergo Journal International</em>, 26(2), 72-79.</li>
-                          <li id="ref6" className="scroll-mt-4">6. KÃƒÆ’Ã‚Â¼fner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
+                          <li id="ref6" className="scroll-mt-4">6. Küfner, M. A., Ulrich, P., Raithel, M., & Schwelberger, H. G. (2008). Determination of histamine in gut luminal contents. <em>Inflammation Research</em>, 57(Suppl 1), S91-S92.</li>
                           <li id="ref7" className="scroll-mt-4">7. Kofler, L., Ulmer, H., & Kofler, H. (2011). Histamine 50-skin-prick test: A tool to diagnose histamine intolerance. <em>ISRN Allergy</em>, 2011.</li>
                         </ul>
                       </div>
                     </div>
-                  )}
+                )}
                 </div>
+                
 
                 <div className="bg-white rounded-lg p-5 border">
                   <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.sourcesTitle}</h2>
