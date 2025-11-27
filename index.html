@@ -2448,7 +2448,7 @@
             if (ingredient && ingredient.name) {
               const amount = ingredient.amount ? `${ingredient.amount} - ` : '';
               ingredientsContent.push({
-                text: `Ã¢â‚¬Â¢ ${amount}${ingredient.name}`,
+                text: `• ${amount}${ingredient.name}`,
                 fontSize: 11,
                 margin: [0, 2, 0, 2],
                 color: '#333333'
@@ -2613,7 +2613,7 @@
 
           byCategory[category].forEach(item => {
             const ratingSymbol = item.rating 
-              ? (item.rating.rating === 'tolerate' ? 'Ã¢â€“Â²' : item.rating.rating === 'moderation' ? 'Ã¢â€”Â' : 'Ã¢â€“Â¼')
+              ? (item.rating.rating === 'tolerate' ? '▲' : item.rating.rating === 'moderation' ? '●' : '▼')
               : '';
             const ratingColor = item.rating
               ? (item.rating.rating === 'tolerate' ? '#00A676' : item.rating.rating === 'moderation' ? '#FBAF00' : '#BB342F')
@@ -2676,7 +2676,7 @@
             text += `${category.toUpperCase()}\n`;
             byCategory[category].forEach(item => {
               const ratingSymbol = item.rating 
-                ? (item.rating.rating === 'tolerate' ? 'Ã¢â€“Â² ' : item.rating.rating === 'moderation' ? 'Ã¢â€”Â ' : 'Ã¢â€“Â¼ ')
+                ? (item.rating.rating === 'tolerate' ? '▲ ' : item.rating.rating === 'moderation' ? '● ' : '▼ ')
                 : '';
               text += `  ${ratingSymbol}${item.food.name}\n`;
             });
@@ -4580,7 +4580,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        ÃƒÆ’Ã‚Â¶Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Save
+                                        ✓ Save
                                       </button>
                                       <button
                                         type="button"
@@ -4590,7 +4590,7 @@
                                         }}
                                         className="text-gray-500 hover:text-gray-700 text-xs"
                                       >
-                                        ÃƒÆ’Ã‚Â¶Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚Â Cancel
+                                        X Cancel
                                       </button>
                                     </div>
                                   ) : (
@@ -5048,13 +5048,13 @@
                   <div className="bg-white rounded-lg p-5 border md:col-span-2">
                     <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                     <p className="text-sm text-gray-600 mb-4">
-                      Ã¢â€”Â¯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
+                      ◯ Combining <span className='text-accent-blue'>research data</span> and <span className='text-accent-pink'>user reports</span>, <span className='text-primary-dark'>HistaBase</span> aims to be a comprehensive <span className='text-primary-dark'>Database</span> of foods and ingredients!
                     </p>
                     <p className="text-sm text-gray-600 mb-4">
-                      Ã¢â€”Â¯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
+                      ◯ Use <span className='text-primary-dark'>HistaBase</span> to help you <span className='text-primary-dark'>track</span> which foods affect your <span className='text-accent-blue'>histamine levels</span>. Keep a personalized <span className='text-primary-dark'>log</span> based on your <span className='text-accent-blue'>reactions</span> and compare your <span className='text-primary-dark'>ratings</span> with others sharing your condition. Create and share <span className='text-accent-pink'>custom recipes!</span>
                     </p>
                     <p className="text-sm text-gray-600">
-                      Ã¢â€”Â¯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
+                      ◯ Please note that <span className='text-accent-blue'>histamine content</span> varies <span style={{ fontWeight: 'bold' }}>greatly</span> in foods depending on many factors such as freshness and storage.
                     </p>
                   </div>
 
