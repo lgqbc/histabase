@@ -5,43 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="max-age=31536000">
   <meta http-equiv="Pragma" content="cache">
-  <title>HistaBase - Histamine Food Tracker (Optimized)</title>
-  <!--
-  ================================================
-  HISTABASE - OPTIMIZED VERSION (Phase 1)
-  ================================================
-  
-  Key Optimizations Applied:
-  
-  1. ✅ DATABASE CACHING (localStorage)
-     - Food database now cached in browser storage
-     - Instant load on repeat visits (no network request!)
-     - Reduces server load and bandwidth usage
-     - Version-based cache invalidation
-  
-  2. ✅ MEMOIZED FOOD CARDS (React.memo)
-     - FoodCard components only re-render when their props change
-     - Prevents cascade re-renders from parent state updates
-     - Dramatically improves scroll performance with 500+ foods
-  
-  3. ✅ EXTRACTED SIDEBAR COMPONENT (DRY principle)
-     - Eliminated 300+ lines of duplicate code
-     - Single SidebarFilters component used by mobile & desktop
-     - Easier to maintain and update
-  
-  4. ✅ OPTIMIZED ASSET LOADING
-     - Added proper cache headers for faster subsequent loads
-     - Browser caching enabled for external resources
-  
-  Performance Impact:
-  - Initial load: Same speed (first-time database fetch)
-  - Repeat visits: 90% faster (cached database)
-  - Scrolling/filtering: 60% smoother (memoized cards)
-  - Code maintainability: Significantly improved (DRY)
-  
-  Next Phase: Component extraction, build system, code splitting
-  ================================================
-  -->
+  <title>HistaBase - Histamine Food Tracker</title>
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
