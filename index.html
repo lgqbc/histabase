@@ -4745,7 +4745,11 @@
                         <div key={recipe.id} className="bg-white rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow" style={{ borderColor: isRecipeExpanded ? '#A7ACD9' : '#e5e7eb' }}>
                           {/* Recipe Header - Always Visible */}
                           <div 
-                            className={`p-5 cursor-pointer relative rounded-t-xl ${isRecipeExpanded ? 'bg-purple-tint-2' : 'bg-white'}`}
+                            className={`
+                              p-5 cursor-pointer relative
+                              ${isRecipeExpanded ? 'rounded-t-xl' : 'rounded-xl'}
+                              ${isRecipeExpanded ? 'bg-purple-tint-2' : 'bg-white'}
+                            `}
                             onClick={() => {
                               if (isRecipeExpanded) {
                                 setExpandedRecipe(expandedRecipe.filter(id => id !== recipe.id));
@@ -4820,8 +4824,10 @@
                           </div>
 
                           {/* Recipe Details - Only When Expanded */}
-                          {isRecipeExpanded && (
-                            <div className="px-5 pb-5 pt-4 bg-purple-tint-3">
+                         {isRecipeExpanded && (
+                            <div
+                              className={`px-5 pb-5 pt-4 bg-purple-tint-3 ${isRecipeExpanded ? 'rounded-b-xl' : ''}`}
+                            >
                               {/* Date on left, views and stars on right */}
                               <div className="flex justify-between mb-4 text-xs text-gray-400">
                                 <span>{new Date(recipe.created_at).toLocaleDateString()}</span>
