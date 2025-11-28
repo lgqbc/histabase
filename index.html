@@ -774,12 +774,12 @@
     
     /* Mobile Sidebar Navigation */
     .mobile-nav-active {
-      background-color: var(--color-primary) !important;
+      background-color: var(--color-primary-dark) !important;
       color: var(--text-white) !important;
     }
     
     .mobile-nav-inactive {
-      background-color: var(--color-purple-secondary) !important;
+      background-color: var(--color-purple-primary) !important;
       color: var(--color-primary) !important;
     }
   </style>
@@ -3317,7 +3317,8 @@
             ></div>
 
             {/* Mobile Sidebar (overlay) - shown for all views */}
-            <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}>
+            <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}
+              style={darkMode ? { backgroundColor: '#141314' } : {}}>
               <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold text-gray-700"></h3>
@@ -3334,9 +3335,9 @@
                   <button
                     onClick={() => setDarkMode(!darkMode)}
                     className={`flex items-center justify-center px-3 py-3 rounded-lg transition-all border-2 ${
-                      darkMode ? 'border-primary' : 'border-transparent btn-secondary hover:opacity-80'
+                      darkMode ? 'border-transparent' : 'border-transparent btn-secondary hover:opacity-80'
                     }`}
-                    style={darkMode ? { backgroundColor: '#3d3742' } : {}}
+                    style={darkMode ? { backgroundColor: '#2b2947' } : {}}
                   >
                     {darkMode ? (
                       <Moon className="w-6 h-6" />
