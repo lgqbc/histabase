@@ -3320,7 +3320,7 @@
             <div className={`mobile-sidebar ${mobileSidebarOpen ? 'open' : ''}`}
               style={darkMode ? { backgroundColor: '#141314' } : {}}>
               <div className="p-4">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center">
                   <h3 className="font-semibold text-gray-700"></h3>
                   <button 
                     onClick={() => setMobileSidebarOpen(false)}
@@ -3331,7 +3331,7 @@
                 </div>
 
                 {/* Theme toggle at very top */}
-                <div className="mb-4">
+                <div className="mb-4 mt-[-22px]">
                   <button
                     onClick={() => setDarkMode(!darkMode)}
                     className={`flex items-center justify-center px-3 py-3 rounded-lg transition-all border-2 ${
