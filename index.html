@@ -38,6 +38,11 @@
       outline: none;
       box-shadow: 0 0 0 3px rgba(82, 81, 116, 0.2);
     }
+    
+    /* Prevent layout shift from scrollbar */
+  html {
+        scrollbar-gutter: stable;
+      }
 
     /* Compact mobile header layout */
     @media (max-width: 768px) {
@@ -4954,7 +4959,7 @@
                                           
                                           return (
                                             <div key={idx} className="flex items-start gap-2">
-                                              <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right hidden md:block">
+                                              <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
                                                 {ingredient.amount || ''}
                                               </span>
                                               <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 flex-1 recipe-ingredient-card md:ml-0">
@@ -4964,7 +4969,7 @@
                                             >
                                               <div className="flex items-center gap-2 flex-1 min-w-0">
                                                 <button
-                                                  className="flex-shrink-0 cursor-pointer hover:opacity-70 transition-opacity text-xs hidden md:block"
+                                                  className="flex-shrink-0 cursor-pointer hover:opacity-70 transition-opacity text-xs"
                                                   onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleShoppingList(food.id);
@@ -4977,7 +4982,7 @@
                                                     <Circle className="w-4 h-4 text-black dark:text-white" />
                                                   )}
                                                 </button>
-                                                <span className="font-semibold text-sm text-gray-600 flex-shrink-0 md:hidden min-w-[3rem]">
+                                                <span className="font-semibold text-sm text-gray-600 flex-shrink-0 min-w-[3rem]">
                                                   {ingredient.amount || ''}
                                                 </span>
                                                 <span className="font-medium text-black dark:text-white truncate text-sm">
@@ -5094,11 +5099,11 @@
                                         // If ingredient is NOT in database, show simple card with a unique symbol
                                         return (
                                           <div key={idx} className="flex items-start gap-2">
-                                            <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right hidden md:block">
+                                            <span className="font-semibold text-sm text-gray-600 pt-2 w-16 flex-shrink-0 text-right">
                                               {ingredient.amount || ''}
                                             </span>
                                             <div className="bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 flex items-center gap-2 flex-1 recipe-ingredient-card md:ml-0">
-                                              <div className="flex-shrink-0 text-xs hidden md:block">
+                                              <div className="flex-shrink-0 text-xs">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                               </div>
                                               <span className="font-semibold text-sm text-gray-600 flex-shrink-0 md:hidden min-w-[3rem]">
