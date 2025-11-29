@@ -1173,7 +1173,7 @@
                 console.log(`✅ [DB] Loaded ${parsedCache.length} foods from cache (${language})`);
                 return;
               } catch (e) {
-                console.warn('Ã¢Å¡Â Ã¯Â¸Â [DB] Cache parse error, fetching fresh data');
+                console.warn('⚠️ [DB] Cache parse error, fetching fresh data');
                 localStorage.removeItem(cacheKey);
               }
             }
@@ -1195,12 +1195,12 @@
               localStorage.setItem(cacheKey, JSON.stringify(data));
               console.log(`💾 [DB] Cached ${data.length} foods (${language})`);
             } catch (e) {
-              console.warn('Ã¢Å¡Â Ã¯Â¸Â [DB] Failed to cache database (localStorage full?)');
+              console.warn('⚠️ [DB] Failed to cache database (localStorage full?)');
             }
             
             setLoading(false);
           } catch (err) {
-            console.error('Ã¢ÂÅ’ [DB] Load error:', err);
+            console.error('❌ [DB] Load error:', err);
             setError(err.message);
             setLoading(false);
           }
@@ -2615,7 +2615,7 @@
 
           byCategory[category].forEach(item => {
             const ratingSymbol = item.rating 
-              ? (item.rating.rating === 'tolerate' ? 'â–²' : item.rating.rating === 'moderation' ? 'â—Â' : 'â–¼')
+              ? (item.rating.rating === 'tolerate' ? '▲' : item.rating.rating === 'moderation' ? '●Â' : '▼')
               : '';
             const ratingColor = item.rating
               ? (item.rating.rating === 'tolerate' ? '#00A676' : item.rating.rating === 'moderation' ? '#FBAF00' : '#BB342F')
@@ -2678,7 +2678,7 @@
             text += `${category.toUpperCase()}\n`;
             byCategory[category].forEach(item => {
               const ratingSymbol = item.rating 
-                ? (item.rating.rating === 'tolerate' ? 'â–² ' : item.rating.rating === 'moderation' ? 'â— ' : 'â–¼ ')
+                ? (item.rating.rating === 'tolerate' ? '▲ ' : item.rating.rating === 'moderation' ? '● ' : '▼ ')
                 : '';
               text += `  ${ratingSymbol}${item.food.name}\n`;
             });
@@ -4585,7 +4585,7 @@
                                         }}
                                         className="text-green-600 hover:text-green-700 text-xs"
                                       >
-                                        âœ“ Save
+                                        ✓ Save
                                       </button>
                                       <button
                                         type="button"
@@ -5141,19 +5141,19 @@
                   <h2 className="font-semibold text-gray-800 text-lg mb-3">{translations.aboutTitle}</h2>
                 
                   <p className="text-sm text-gray-600 mb-4 pl-4">
-                    <span className="text-primary-dark -ml-4 inline-block mr-1">â—‰</span>
+                    <span className="text-primary-dark -ml-4 inline-block mr-1">◉</span>
                     Combining research data and user reports, HistaBase aims to be a comprehensive
                     <span className="font-semibold"> Database of foods and ingredients!</span>
                   </p>
                 
                   <p className="text-sm text-gray-600 mb-4 pl-4">
-                    <span className="text-accent-blue -ml-4 inline-block mr-1">â—‰</span>
+                    <span className="text-accent-blue -ml-4 inline-block mr-1">◉</span>
                     Use HistaBase to help you track which foods affect your histamine levels. <br />
                     Keep a personalized log based on your reactions and <span className="font-semibold">compare your ratings</span> with others sharing your condition. Create and share <span className="font-semibold">custom recipes!</span>
                   </p>
                 
                   <p className="text-sm text-gray-600 pl-4">
-                    <span className="text-accent-pink -ml-4 inline-block mr-1">â—‰</span>
+                    <span className="text-accent-pink -ml-4 inline-block mr-1">◉</span>
                     Please note that histamine content varies greatly in foods depending on many factors such as freshness and storage. The data found on HistaBase should just be seen as a <span className="font-semibold">general guideline.</span>
                   </p>
                 </div>
