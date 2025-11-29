@@ -2107,9 +2107,9 @@ const saveRecipe = async (imageUrl = null) => {
                 .delete()
                 .eq('user_id', user.id)
                 .eq('food_id', foodId)
-                .then(() => console.log('âœ… Removed from shopping list'))
+                .then(() => console.log('✓ Removed from shopping list'))
                 .catch(err => {
-                  console.error('âŒ Failed to remove from shopping list:', err);
+                  console.error('× Failed to remove from shopping list:', err);
                   // Rollback on error
                   setShoppingList(prev => {
                     const rollback = new Set(prev);
@@ -2125,9 +2125,9 @@ const saveRecipe = async (imageUrl = null) => {
                   user_id: user.id,
                   food_id: foodId
                 })
-                .then(() => console.log('âœ… Added to shopping list'))
+                .then(() => console.log('✓ Added to shopping list'))
                 .catch(err => {
-                  console.error('âŒ Failed to add to shopping list:', err);
+                  console.error('× Failed to add to shopping list:', err);
                   // Rollback on error
                   setShoppingList(prev => {
                     const rollback = new Set(prev);
@@ -2619,7 +2619,7 @@ const saveRecipe = async (imageUrl = null) => {
 
           byCategory[category].forEach(item => {
             const ratingSymbol = item.rating 
-              ? (item.rating.rating === 'tolerate' ? '▲' : item.rating.rating === 'moderation' ? '●Â' : '▼')
+              ? (item.rating.rating === 'tolerate' ? '▲' : item.rating.rating === 'moderation' ? '●' : '▼')
               : '';
             const ratingColor = item.rating
               ? (item.rating.rating === 'tolerate' ? '#00A676' : item.rating.rating === 'moderation' ? '#FBAF00' : '#BB342F')
@@ -2866,7 +2866,7 @@ const saveRecipe = async (imageUrl = null) => {
                     className="text-gray-400 hover:text-red-500 text-sm"
                     title="Clear all"
                   >
-                    â¨¯
+                    ×
                   </button>
                 )}
               </div>
@@ -2887,7 +2887,7 @@ const saveRecipe = async (imageUrl = null) => {
                               className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                               title="Remove"
                             >
-                              â¨¯
+                              ×
                             </button>
                           </div>
                         );
@@ -3496,7 +3496,7 @@ const saveRecipe = async (imageUrl = null) => {
                             className="text-gray-400 hover:text-red-500 text-sm"
                             title="Clear all"
                           >
-                            â¨¯
+                            ×
                           </button>
                         )}
                       </div>
@@ -3517,7 +3517,7 @@ const saveRecipe = async (imageUrl = null) => {
                                     className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                                     title="Remove"
                                   >
-                                    â¨¯
+                                    ×
                                   </button>
                                 </div>
                               );
@@ -3696,7 +3696,7 @@ const saveRecipe = async (imageUrl = null) => {
                             className="text-gray-400 hover:text-red-500 text-sm"
                             title="Clear all"
                           >
-                            â¨¯
+                            ×
                           </button>
                         )}
                       </div>
@@ -3717,7 +3717,7 @@ const saveRecipe = async (imageUrl = null) => {
                                     className="text-gray-400 hover:text-red-500 ml-2 flex-shrink-0"
                                     title="Remove"
                                   >
-                                    â¨¯
+                                    ×
                                   </button>
                                 </div>
                               );
