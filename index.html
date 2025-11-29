@@ -295,7 +295,7 @@
     }
       /* Floating show filters button */
       
-      
+    
       /* Floating filter menu icon button */
       .floating-filter-icon {
         position: fixed;
@@ -4359,7 +4359,7 @@ const saveRecipe = async (imageUrl = null) => {
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* Header text */}
                 <h2 className="text-center italic text-gray-700 mb-4 text-sm sm:text-base">
-                  Look at other people's recipes or share your own!
+                  Create recipes using ingredients from our database!
                 </h2>
                 
                 {/* Header with filters and Create Recipe button */}
@@ -4521,7 +4521,7 @@ const saveRecipe = async (imageUrl = null) => {
                             <textarea
                               value={recipeForm.description}
                               onChange={(e) => {
-                                if (e.target.value.length <= 100) {
+                                if (e.target.value.length <= 200) {
                                   setRecipeForm({ ...recipeForm, description: e.target.value });
                                 }
                               }}
@@ -4833,9 +4833,9 @@ const saveRecipe = async (imageUrl = null) => {
                             >
                               {/* Card Header */}
                               <div className="flex justify-between items-start mb-2">
-                                <div className="flex-1 min-w-0">
-                                  <h3 className="font-semibold text-base md:text-lg text-gray-800 line-clamp-2">{recipe.title}</h3>
-                                  <p className="text-xs md:text-sm italic text-gray-500 truncate">{translations.by} {recipe.author_name}</p>
+                                <div className="flex-1 rounded-xl min-w-0 backdrop-brightness-75 backdrop-blur p-2">
+                                  <h3 className="font-semibold text-base md:text-lg text-white line-clamp-2">{recipe.title}</h3>
+                                  <p className="text-xs md:text-sm italic text-white truncate">{translations.by} {recipe.author_name}</p>
                                 </div>
                                 <div className="flex gap-1 ml-2 flex-shrink-0">
                                   {user && user.id === recipe.user_id && (
@@ -4875,7 +4875,7 @@ const saveRecipe = async (imageUrl = null) => {
 
                               {/* Description */}
                               {recipe.description && (
-                                <p className="text-xs md:text-sm text-gray-600 break-words overflow-wrap-anywhere line-clamp-3 mb-2">{recipe.description}</p>
+                                <p className="text-xs md:text-sm text-white break-words overflow-wrap-anywhere line-clamp-3 mb-2 rounded-xl backdrop-brightness-75 backdrop-blur p-2">{recipe.description}</p>
                               )}
                               
                               {/* Bottom Info */}
