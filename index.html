@@ -4914,8 +4914,10 @@ const saveRecipe = async (imageUrl = null) => {
                               </button>
 
                               {/* Recipe Header */}
-                              <div className={`px-5 pt-5 pb-4 ${darkMode ? '' : 'bg-purple-tint-2'} rounded-t-xl`} style={darkMode ? { backgroundColor: '#3d3741' } : {}} style={{
-                                backgroundImage: recipe.image ? `url(${recipe.image})` : undefined }}>
+                              <div className={`px-5 pt-5 pb-4 ${darkMode ? '' : 'bg-purple-tint-2'} rounded-t-xl`} style={darkMode ? { backgroundColor: '#3d3741' } : {}}>
+                                {recipe.image && (
+                                  <img src={recipe.image} alt={recipe.title} className="w-full rounded-t-xl object-cover mb-4" />
+                                )}
                                 <div className="flex justify-between items-start mb-2 pr-12">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
