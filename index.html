@@ -1658,74 +1658,73 @@
       }
 
       // Create or update recipe
-      const saveRecipe = async (e) => {
-        e.preventDefault();
-        
-        // DEFENSIVE: Validate user state with recovery attempt
-        if (!isUserValid(user)) {
-          console.error('[BUG] User state invalid in saveRecipe, attempting recovery...');
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user) {
-            setUser(session.user);
-            alert('Session recovered. Please try saving again.');
-            return;
-          } else {
-            setShowAuthModal(true);
-            return;
-          }
-        }
-        
-        if (!displayName) {
-          setShowNameModal(true);
-          return;
-        }
+const saveRecipe = async (imageUrl = null) => {
+  if (!isUserValid(user)) {
+    console.error('[BUG] User state invalid in saveRecipe, attempting recovery...');
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      setUser(session.user);
+      alert('Session recovered. Please try saving again.');
+      return;
+    } else {
+      setShowAuthModal(true);
+      return;
+    }
+  }
+  
+  if (!displayName) {
+    setShowNameModal(true);
+    return;
+  }
 
-        try {
-          const recipeData = {
-            user_id: user.id,
-            author_name: displayName,
-            title: recipeForm.title,
-            description: recipeForm.description,
-            instructions: recipeForm.instructions,
-            ingredients: recipeForm.ingredients,
-            is_public: recipeForm.is_public,
-            updated_at: new Date().toISOString()
-          };
+  try {
+    const recipeData = {
+      user_id: user.id,
+      author_name: displayName,
+      title: recipeForm.title,
+      description: recipeForm.description,
+      instructions: recipeForm.instructions,
+      ingredients: recipeForm.ingredients,
+      is_public: recipeForm.is_public,
+      updated_at: new Date().toISOString()
+    };
 
-          if (editingRecipe) {
-            // Update existing recipe
-            const { error } = await supabase
-              .from('recipes')
-              .update(recipeData)
-              .eq('id', editingRecipe.id);
+    if (imageUrl) {
+      recipeData.image = imageUrl;
+    }
 
-            if (error) throw error;
-          } else {
-            // Create new recipe
-            recipeData.created_at = new Date().toISOString();
-            const { error } = await supabase
-              .from('recipes')
-              .insert([recipeData]);
+    if (editingRecipe) {
+      const { error } = await supabase
+        .from('recipes')
+        .update(recipeData)
+        .eq('id', editingRecipe.id);
 
-            if (error) throw error;
-          }
+      if (error) throw error;
+    } else {
+      recipeData.created_at = new Date().toISOString();
+      const { error } = await supabase
+        .from('recipes')
+        .insert([recipeData]);
 
-          // Reset form and reload recipes
-          setRecipeForm({
-            title: '',
-            description: '',
-            instructions: '',
-            ingredients: [],
-            is_public: false
-          });
-          setEditingRecipe(null);
-          setShowRecipeForm(false);
-          await loadRecipes();
-        } catch (err) {
-          console.error('Error saving recipe:', err);
-          alert('Error saving recipe. Please try again.');
-        }
-      };
+      if (error) throw error;
+    }
+
+    setRecipeForm({
+      title: '',
+      description: '',
+      instructions: '',
+      ingredients: [],
+      is_public: false,
+      image: null
+    });
+    setEditingRecipe(null);
+    setShowRecipeForm(false);
+    await loadRecipes();
+  } catch (err) {
+    console.error('Error saving recipe:', err);
+    alert('Error saving recipe. Please try again.');
+  }
+};
 
       // Delete recipe
       const deleteRecipe = async (recipeId) => {
@@ -4446,257 +4445,321 @@
                 </div>
 
                 {/* Recipe Form Modal */}
-                {showRecipeForm && (
-                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-                    <div className="bg-white rounded-xl p-6 max-w-2xl w-full my-8">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-semibold text-xl">
-                          {editingRecipe ? translations.editRecipe : translations.createRecipe}
-                        </h3>
-                        <button 
-                          onClick={() => {
-                            setShowRecipeForm(false);
-                            setEditingRecipe(null);
-                          }}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          <X className="w-6 h-6" />
-                        </button>
-                      </div>
-
-                      <form onSubmit={saveRecipe} className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {translations.recipeTitle} *
-                          </label>
-                          <input
-                            type="text"
-                            value={recipeForm.title}
-                            onChange={(e) => setRecipeForm({...recipeForm, title: e.target.value})}
-                            required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {translations.recipeDescription}
-                          </label>
-                          <textarea
-                            value={recipeForm.description}
-                            onChange={(e) => {
-                              if (e.target.value.length <= 100) {
-                                setRecipeForm({...recipeForm, description: e.target.value});
-                              }
-                            }}
-                            rows={3}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            maxLength={100}
-                          />
-                          <p className="text-xs text-gray-500 mt-1">{recipeForm.description.length}/100 characters</p>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {translations.ingredients} *
-                          </label>
-                          <div className="space-y-2">
-                            <div className="flex gap-2 relative">
-                              <input
-                                type="text"
-                                value={currentAmount}
-                                onChange={(e) => setCurrentAmount(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    addIngredient();
-                                  }
-                                }}
-                                placeholder="Amount (e.g. 200g, 1 cup)"
-                                className="w-40 px-4 py-2 border border-gray-300 rounded-lg"
-                              />
-                              <input
-                                type="text"
-                                value={currentIngredient}
-                                onChange={(e) => handleIngredientInput(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    addIngredient();
-                                  }
-                                }}
-                                placeholder={translations.ingredientName}
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => addIngredient()}
-                                className="px-4 py-2 text-white rounded-lg"
-                                style={{ backgroundColor: '#525174' }}
-                              >
-                                <Plus className="w-4 h-4" />
-                              </button>
-                              
-                              {/* Autocomplete suggestions */}
-                              {ingredientSuggestions.length > 0 && (
-                                <div className="absolute top-full left-40 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
-                                  {ingredientSuggestions.map((suggestion, idx) => (
-                                    <button
-                                      key={idx}
-                                      type="button"
-                                      onClick={() => {
-                                        addIngredient(suggestion.name);
-                                      }}
-                                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-                                    >
-                                      {suggestion.name}
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Ingredients list */}
-                            <div className="space-y-1">
-                              {recipeForm.ingredients.map((ingredient, idx) => (
-                                <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
-                                  {editingIngredientIdx === idx ? (
-                                    <div className="flex items-center gap-2 flex-1">
-                                      <input
-                                        type="text"
-                                        value={editingAmount}
-                                        onChange={(e) => setEditingAmount(e.target.value)}
-                                        placeholder="Amount"
-                                        className="w-32 px-2 py-1 border border-gray-300 rounded text-sm"
-                                        onKeyDown={(e) => {
-                                          if (e.key === 'Enter') {
-                                            const updated = [...recipeForm.ingredients];
-                                            updated[idx] = { ...updated[idx], amount: editingAmount };
-                                            setRecipeForm({...recipeForm, ingredients: updated});
-                                            setEditingIngredientIdx(null);
-                                            setEditingAmount("");
-                                          }
-                                        }}
-                                      />
-                                      <span className="text-sm">{ingredient.name}</span>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          const updated = [...recipeForm.ingredients];
-                                          updated[idx] = { ...updated[idx], amount: editingAmount };
-                                          setRecipeForm({...recipeForm, ingredients: updated});
-                                          setEditingIngredientIdx(null);
-                                          setEditingAmount("");
-                                        }}
-                                        className="text-green-600 hover:text-green-700 text-xs"
-                                      >
-                                        ✓ Save
-                                      </button>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          setEditingIngredientIdx(null);
-                                          setEditingAmount("");
-                                        }}
-                                        className="text-gray-500 hover:text-gray-700 text-xs"
-                                      >
-                                        â¨¯ Cancel
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <>
-                                      <span className="text-sm flex items-center gap-2">
-                                        {ingredient.amount && <span className="font-semibold text-gray-700">{ingredient.amount}</span>}
-                                        {ingredient.name}
-                                        {ingredient.inDatabase && (
-                                          <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
-                                            In DB
-                                          </span>
-                                        )}
-                                      </span>
-                                      <div className="flex items-center gap-2">
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setEditingIngredientIdx(idx);
-                                            setEditingAmount(ingredient.amount || "");
-                                          }}
-                                          className="text-blue-500 hover:text-blue-700"
-                                          title="Edit amount"
-                                        >
-                                          <Edit className="w-4 h-4" />
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => removeIngredient(idx)}
-                                          className="text-red-500 hover:text-red-700"
-                                        >
-                                          <X className="w-4 h-4" />
-                                        </button>
-                                      </div>
-                                    </>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {translations.recipeInstructions} *
-                          </label>
-                          <textarea
-                            value={recipeForm.instructions}
-                            onChange={(e) => {
-                              if (e.target.value.length <= 3000) {
-                                setRecipeForm({...recipeForm, instructions: e.target.value});
-                              }
-                            }}
-                            required
-                            rows={6}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            maxLength={3000}
-                          />
-                          <p className="text-xs text-gray-500 mt-1">{recipeForm.instructions.length}/3000 characters</p>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            id="is_public"
-                            checked={recipeForm.is_public}
-                            onChange={(e) => setRecipeForm({...recipeForm, is_public: e.target.checked})}
-                            className="w-4 h-4"
-                          />
-                          <label htmlFor="is_public" className="text-sm text-gray-700">
-                            {translations.makePublic}
-                          </label>
-                        </div>
-
-                        <div className="flex gap-3 pt-4">
-                          <button
-                            type="submit"
-                            className="flex-1 py-3 text-white rounded-lg font-medium"
-                            style={{ backgroundColor: '#525174' }}
-                          >
-                            {translations.saveRecipe}
-                          </button>
-                          <button
-                            type="button"
+                  {showRecipeForm && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                      <div className="bg-white rounded-xl p-6 max-w-2xl w-full my-8 max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center mb-4">
+                          <h3 className="font-semibold text-xl">
+                            {editingRecipe ? translations.editRecipe : translations.createRecipe}
+                          </h3>
+                          <button 
                             onClick={() => {
                               setShowRecipeForm(false);
                               setEditingRecipe(null);
                             }}
-                            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                            className="text-gray-400 hover:text-gray-600"
                           >
-                            {translations.cancel}
+                            <X className="w-6 h-6" />
                           </button>
                         </div>
-                      </form>
+                  
+                        <form
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                          
+                            let imageUrl = null;
+                          
+                            // Upload image FIRST if one was selected
+                            if (recipeForm.image) {
+                              const file = recipeForm.image;
+                              const fileName = `${Date.now()}-${file.name}`;
+                          
+                              const { data, error } = await supabase
+                                .storage
+                                .from('recipe-images')
+                                .upload(fileName, file);
+                          
+                              if (error) {
+                                console.error('Error uploading image:', error);
+                                alert('Error uploading image. Please try again.');
+                                return;
+                              }
+                          
+                              // Get the public URL
+                              const { data: publicUrlData } = supabase
+                                .storage
+                                .from('recipe-images')
+                                .getPublicUrl(fileName);
+                              
+                              imageUrl = publicUrlData.publicUrl;
+                            }
+                          
+                            // Now save the recipe with the image URL
+                            await saveRecipe(imageUrl);
+                          }}
+                          className="space-y-4"
+                        >
+                          {/* Title */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {translations.recipeTitle} *
+                            </label>
+                            <input
+                              type="text"
+                              value={recipeForm.title}
+                              onChange={(e) => setRecipeForm({ ...recipeForm, title: e.target.value })}
+                              required
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            />
+                          </div>
+                  
+                          {/* Description */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {translations.recipeDescription}
+                            </label>
+                            <textarea
+                              value={recipeForm.description}
+                              onChange={(e) => {
+                                if (e.target.value.length <= 100) {
+                                  setRecipeForm({ ...recipeForm, description: e.target.value });
+                                }
+                              }}
+                              rows={3}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                              maxLength={100}
+                            />
+                            <p className="text-xs text-gray-500 mt-1">{recipeForm.description.length}/100 characters</p>
+                          </div>
+                  
+                          {/* IMAGE UPLOAD – ADDED */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Recipe Image
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) =>
+                                setRecipeForm({ ...recipeForm, image: e.target.files[0] })
+                              }
+                              className="w-full text-sm"
+                            />
+                          </div>
+                  
+                          {/* Ingredients */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {translations.ingredients} *
+                            </label>
+                  
+                            <div className="space-y-2">
+                              <div className="flex gap-2 relative">
+                                <input
+                                  type="text"
+                                  value={currentAmount}
+                                  onChange={(e) => setCurrentAmount(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      addIngredient();
+                                    }
+                                  }}
+                                  placeholder="Amount (e.g. 200g, 1 cup)"
+                                  className="w-40 px-4 py-2 border border-gray-300 rounded-lg"
+                                />
+                  
+                                <input
+                                  type="text"
+                                  value={currentIngredient}
+                                  onChange={(e) => handleIngredientInput(e.target.value)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      addIngredient();
+                                    }
+                                  }}
+                                  placeholder={translations.ingredientName}
+                                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                                />
+                  
+                                <button
+                                  type="button"
+                                  onClick={() => addIngredient()}
+                                  className="px-4 py-2 text-white rounded-lg"
+                                  style={{ backgroundColor: '#525174' }}
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </button>
+                  
+                                {ingredientSuggestions.length > 0 && (
+                                  <div className="absolute top-full left-40 right-12 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto z-10">
+                                    {ingredientSuggestions.map((s, idx) => (
+                                      <button
+                                        key={idx}
+                                        type="button"
+                                        onClick={() => addIngredient(s.name)}
+                                        className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                                      >
+                                        {s.name}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                  
+                              <div className="space-y-1">
+                                {recipeForm.ingredients.map((ingredient, idx) => (
+                                  <div key={idx} className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
+                                    {editingIngredientIdx === idx ? (
+                                      <div className="flex items-center gap-2 flex-1">
+                                        <input
+                                          type="text"
+                                          value={editingAmount}
+                                          onChange={(e) => setEditingAmount(e.target.value)}
+                                          placeholder="Amount"
+                                          className="w-32 px-2 py-1 border border-gray-300 rounded text-sm"
+                                          onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                              const updated = [...recipeForm.ingredients];
+                                              updated[idx] = { ...updated[idx], amount: editingAmount };
+                                              setRecipeForm({ ...recipeForm, ingredients: updated });
+                                              setEditingIngredientIdx(null);
+                                              setEditingAmount("");
+                                            }
+                                          }}
+                                        />
+                                        <span className="text-sm">{ingredient.name}</span>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            const updated = [...recipeForm.ingredients];
+                                            updated[idx] = { ...updated[idx], amount: editingAmount };
+                                            setRecipeForm({ ...recipeForm, ingredients: updated });
+                                            setEditingIngredientIdx(null);
+                                            setEditingAmount("");
+                                          }}
+                                          className="text-green-600 hover:text-green-700 text-xs"
+                                        >
+                                          ✓ Save
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEditingIngredientIdx(null);
+                                            setEditingAmount("");
+                                          }}
+                                          className="text-gray-500 hover:text-gray-700 text-xs"
+                                        >
+                                          ✕ Cancel
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <>
+                                        <span className="text-sm flex items-center gap-2">
+                                          {ingredient.amount && (
+                                            <span className="font-semibold text-gray-700">
+                                              {ingredient.amount}
+                                            </span>
+                                          )}
+                                          {ingredient.name}
+                                          {ingredient.inDatabase && (
+                                            <span className="text-xs text-green-600 bg-green-100 px-2 py-0.5 rounded">
+                                              In DB
+                                            </span>
+                                          )}
+                                        </span>
+                  
+                                        <div className="flex items-center gap-2">
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setEditingIngredientIdx(idx);
+                                              setEditingAmount(ingredient.amount || "");
+                                            }}
+                                            className="text-blue-500 hover:text-blue-700"
+                                            title="Edit amount"
+                                          >
+                                            <Edit className="w-4 h-4" />
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => removeIngredient(idx)}
+                                            className="text-red-500 hover:text-red-700"
+                                          >
+                                            <X className="w-4 h-4" />
+                                          </button>
+                                        </div>
+                                      </>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                  
+                          {/* Instructions */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {translations.recipeInstructions} *
+                            </label>
+                            <textarea
+                              value={recipeForm.instructions}
+                              onChange={(e) => {
+                                if (e.target.value.length <= 3000) {
+                                  setRecipeForm({ ...recipeForm, instructions: e.target.value });
+                                }
+                              }}
+                              required
+                              rows={6}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                              maxLength={3000}
+                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                              {recipeForm.instructions.length}/3000 characters
+                            </p>
+                          </div>
+                  
+                          {/* Public toggle */}
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id="is_public"
+                              checked={recipeForm.is_public}
+                              onChange={(e) => setRecipeForm({ ...recipeForm, is_public: e.target.checked })}
+                              className="w-4 h-4"
+                            />
+                            <label htmlFor="is_public" className="text-sm text-gray-700">
+                              {translations.makePublic}
+                            </label>
+                          </div>
+                  
+                          {/* Buttons */}
+                          <div className="flex gap-3 pt-4">
+                            <button
+                              type="submit"
+                              className="flex-1 py-3 text-white rounded-lg font-medium"
+                              style={{ backgroundColor: '#525174' }}
+                            >
+                              {translations.saveRecipe}
+                            </button>
+                  
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowRecipeForm(false);
+                                setEditingRecipe(null);
+                              }}
+                              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium"
+                            >
+                              {translations.cancel}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+
 
                 {/* Display Name Modal */}
                 {showNameModal && (
@@ -4755,7 +4818,14 @@
                             <div 
                               key={recipe.id} 
                               className={`${darkMode ? '' : 'bg-purple-tint-2'} rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow cursor-pointer aspect-square flex flex-col p-3 md:p-5`}
-                              style={darkMode ? { borderColor: '#615a66', backgroundColor: '#3d3741' } : { borderColor: '#e5e7eb' }}
+                              style={{
+                                borderColor: darkMode ? '#615a66' : '#e5e7eb',
+                                backgroundColor: darkMode ? '#3d3741' : '#fff',
+                                backgroundImage: recipe.image ? `url(${recipe.image})` : undefined,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                              }}
                               onClick={() => {
                                 setExpandedRecipe([recipe.id]);
                                 trackRecipeView(recipe.id);
@@ -4844,7 +4914,8 @@
                               </button>
 
                               {/* Recipe Header */}
-                              <div className={`px-5 pt-5 pb-4 ${darkMode ? '' : 'bg-purple-tint-2'} rounded-t-xl`} style={darkMode ? { backgroundColor: '#3d3741' } : {}}>
+                              <div className={`px-5 pt-5 pb-4 ${darkMode ? '' : 'bg-purple-tint-2'} rounded-t-xl`} style={darkMode ? { backgroundColor: '#3d3741' } : {}} style={{
+                                backgroundImage: recipe.image ? `url(${recipe.image})` : undefined }}>
                                 <div className="flex justify-between items-start mb-2 pr-12">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
@@ -5394,7 +5465,13 @@
                     </button>
                   </div>
                   
-                  <form onSubmit={handleAuth} className="space-y-4">
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      // auth logic here
+                    }}
+                    className="space-y-4"
+                  >
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Email
