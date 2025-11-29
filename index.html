@@ -4817,7 +4817,7 @@ const saveRecipe = async (imageUrl = null) => {
                           return (
                             <div 
                               key={recipe.id} 
-                              className={`${darkMode ? '' : 'bg-purple-tint-2'} rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow cursor-pointer aspect-square flex flex-col p-3 md:p-5`}
+                              className={`${darkMode ? '' : 'bg-purple-tint-2'} rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow cursor-pointer aspect-square flex flex-col p-1 md:p-2`}
                               style={{
                                 borderColor: darkMode ? '#615a66' : '#e5e7eb',
                                 backgroundColor: darkMode ? '#3d3741' : '#fff',
@@ -4832,8 +4832,8 @@ const saveRecipe = async (imageUrl = null) => {
                               }}
                             >
                               {/* Card Header */}
-                              <div className="flex justify-between items-start mb-2">
-                                <div className="flex-1 rounded-xl min-w-0 backdrop-brightness-75 backdrop-blur p-2">
+                              <div className="flex justify-between items-start mb-2 backdrop-brightness-75 backdrop-blur p-2 rounded-xl">
+                                <div className="flex-1 min-w-0">
                                   <h3 className="font-semibold text-base md:text-lg text-white line-clamp-2">{recipe.title}</h3>
                                   <p className="text-xs md:text-sm italic text-white truncate">{translations.by} {recipe.author_name}</p>
                                 </div>
